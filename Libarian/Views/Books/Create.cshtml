@@ -1,0 +1,75 @@
+﻿@model Libarian.Models.Book
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Thêm Sách</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="bookID" class="control-label"></label>
+                <input asp-for="bookID" readonly class="form-control" />
+                <span asp-validation-for="bookID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="title" class="control-label"></label>
+                <input asp-for="title" class="form-control" />
+                <span asp-validation-for="title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="author" class="control-label"></label>
+                <input asp-for="author" class="form-control" />
+                <span asp-validation-for="author" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="image" class="control-label"></label>
+                <input asp-for="image" class="form-control" />
+                <span asp-validation-for="image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="publisher" class="control-label"></label>
+                <input asp-for="publisher" class="form-control" />
+                <span asp-validation-for="publisher" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="publishingYear" class="control-label"></label>
+                <input asp-for="publishingYear" class="form-control" />
+                <span asp-validation-for="publishingYear" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="summary" class="control-label"></label>
+                <input asp-for="summary" class="form-control" />
+                <span asp-validation-for="summary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="count" class="control-label"></label>
+                <input asp-for="count" class="form-control" />
+                <span asp-validation-for="count" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="addDate" class="control-label"></label>
+                <input asp-for="addDate" class="form-control" />
+                <span asp-validation-for="addDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="categoryID" class="control-label"></label>
+                <select asp-for="categoryID" class ="form-control" asp-items="ViewBag.categoryID"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Thêm" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Quay lại trang danh sách</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

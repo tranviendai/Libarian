@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Libarian.Models.Book>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.bookID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.author)
+            </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.publisher)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.publishingYear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.summary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.addDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                <td>
+                <img src="@item.image" width="100" height="100"/>    
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.bookID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.author)
+            </td>
+          
+            <td>
+                @Html.DisplayFor(modelItem => item.publisher)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.publishingYear)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.summary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.addDate)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.bookID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.bookID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.bookID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
