@@ -27,7 +27,7 @@ namespace Libarian.Models
         [Column(TypeName = "Date")]
 
         [DisplayFormat(DataFormatString = "{0:dd/M/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime deadlineDate { get; set; }
+        public DateTime deadline { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Ngày trả Sách")]

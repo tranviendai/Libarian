@@ -1,0 +1,75 @@
+﻿@using Libarian.Models;
+@model IEnumerable<Libarian.Models.UserRoleModel>
+
+@{
+    ViewData["Title"] = "Actors";
+}
+
+
+<div style="background-color:dodgerblue;border-radius:4px;padding:10px">
+    <a style="color:white; text-decoration:none" asp-area="Identity" asp-page="/Account/Register">
+        <div style="text-align:center">
+            Thêm Thủ Thư
+        </div>
+        </a>
+  </div>
+       
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model=>model.email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.fullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.birthday)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.startProfile)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Roles)
+            </th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.fullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.birthday)
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.address)
+                </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.startProfile)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Roles)
+                </td>
+              
+            </tr>
+        }
+    </tbody>
+</table>

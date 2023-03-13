@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Libarian.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,12 +15,12 @@ namespace Libarian.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public IndexModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -30,7 +31,7 @@ namespace Libarian.Areas.Identity.Pages.Account.Manage
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string Username { get; set; }
-
+       
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -56,20 +57,53 @@ namespace Libarian.Areas.Identity.Pages.Account.Manage
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Số Điện Thoại")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "Họ Tên")]
+            [StringLength(42)]
+            [Required(ErrorMessage = "Vui lòng nhập Họ Tên")]
+            public string fullName { get; set; }
+
+            [Display(Name = "Giới Tính")]
+            [Required]
+            [StringLength(4)]
+            public string sex { get; set; }
+
+            [StringLength(100)]
+            [Display(Name = "Địa Chỉ")]
+            public string address { get; set; }
+
+            [Display(Name = "Ngày Sinh")]
+            [DisplayFormat(DataFormatString = "{0:dd/M/yyyy}", ApplyFormatInEditMode = true)]
+            public string birthday { get; set; }
+
+            [DisplayFormat(DataFormatString = "{0:dd/M/yyyy}", ApplyFormatInEditMode = true)]
+            [Display(Name = "Ngày Tham Gia")]
+            public string startProfile { get; set; }
         }
 
-        private async Task LoadAsync(IdentityUser user)
+        private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
+            var fullname = user.fullName;
+            var address = user.address;
+            var birthday = user.birthday;
+            var startProfile = user.startProfile;
+            var sex = user.sex;
+             
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                fullName = fullname,
+                address = address,
+                birthday = birthday.ToShortDateString(),
+                sex= sex,
+                startProfile = startProfile.ToShortDateString()
             };
         }
 

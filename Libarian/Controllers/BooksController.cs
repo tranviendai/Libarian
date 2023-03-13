@@ -62,6 +62,7 @@ namespace Libarian.Controllers
             {
                 book.bookID = "B000" + (autoID.bookIndex + 1).ToString();
             }
+            ViewBag.categoryID = new SelectList(_context.Category, "categoryID", "nameCategory");
             return View(book);
         }
 

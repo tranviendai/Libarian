@@ -8,10 +8,12 @@ namespace Libarian.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int categoryID { get; set; }
-        [Display(Name ="Thể Loại")]
+        [Display(Name = "Thể Loại")]
         [StringLength(50)]
         public string nameCategory { get; set; }
 
-        public ICollection<Book> books { get; set; }
+        public List<Book> book { get; set; }
+
+       
     }
 }
