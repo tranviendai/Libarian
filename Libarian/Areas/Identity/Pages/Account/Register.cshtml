@@ -24,7 +24,7 @@
                 <label asp-for="Input.fullName">Họ Tên</label>
                 <span asp-validation-for="Input.fullName" class="text-danger"></span>
             </div>
-           
+
             <div class="form-floating mb-3">
                  <input asp-for="Input.birthday" class="form-control" aria-required="true placeholder="Ngày Sinh" />
                 <label asp-for="Input.birthday">Ngày Sinh</label>
@@ -61,5 +61,5 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+        <partial name="_ValidationScriptsPartial" />
 }

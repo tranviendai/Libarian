@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Libarian.Models.LBook>
+﻿@model IEnumerable<Librarian.Models.LBook>
 
 @{
     ViewData["Title"] = "Index";
@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.note)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.book)
+                @Html.DisplayNameFor(model => model.bookID)
             </th>
             <th></th>
         </tr>
@@ -40,7 +40,7 @@
                 @Html.DisplayFor(modelItem => item.note)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.book.bookID)
+                @Html.DisplayFor(modelItem => item.bookID)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.lBookID">Edit</a> |

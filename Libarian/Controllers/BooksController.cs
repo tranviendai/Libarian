@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Libarian.Data;
-using Libarian.Models;
+using Librarian.Data;
+using Librarian.Models;
 
-namespace Libarian.Controllers
+namespace Librarian.Controllers
 {
     public class BooksController : Controller
     {
@@ -22,9 +22,9 @@ namespace Libarian.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-              return _context.Book != null ? 
-                          View(await _context.Book.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Book'  is null.");
+            return _context.Book != null ?
+                        View(await _context.Book.ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.Book'  is null.");
         }
 
         // GET: Books/Details/5
@@ -46,13 +46,13 @@ namespace Libarian.Controllers
         }
 
         // GET: Books/Create
-        public IActionResult Create(int i =0)
+        public IActionResult Create(int i = 0)
         {
             Book book = new Book();
             var autoID = _context.Book.OrderByDescending(c => c.bookID).FirstOrDefault();
             if (i != 0)
             {
-                book = _context.Book.Where(x => x.bookIndex == i).FirstOrDefault<Book>();
+                book = _context.Book.Where(x => x.bookIndex == i).FirstOrDefault();
             }
             else if (autoID == null)
             {
@@ -165,14 +165,14 @@ namespace Libarian.Controllers
             {
                 _context.Book.Remove(book);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BookExists(string id)
         {
-          return (_context.Book?.Any(e => e.bookID == id)).GetValueOrDefault();
+            return (_context.Book?.Any(e => e.bookID == id)).GetValueOrDefault();
         }
     }
 }

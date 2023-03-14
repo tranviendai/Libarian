@@ -1,26 +1,26 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Libarian.Models
+namespace Librarian.Models
 {
-    public class LibaryCard
+    public class LibraryCard
     {
         [Key]
         [Display(Name = "Số Thẻ")]
-        [MaxLength(5)]
-        public string libaryCardID { get; set; }
+        [StringLength(5)]
+        public string libraryCardID { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int librayCardIndex { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập Họ Tên")]
         [Display(Name = "Họ Tên")]
-        [MaxLength(24)]
+        [StringLength(24)]
         public string fullName { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập Tình Trạng")]
         [Display(Name = "Tình Trạng")]
-        [MaxLength(12)]
+        [StringLength(12)]
         public string cardStatus { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Ngày Lập Thẻ")]
@@ -36,6 +36,5 @@ namespace Libarian.Models
 
         [DisplayFormat(DataFormatString = "{0:dd/M/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime expirationDate { get; set; }
-
     }
 }

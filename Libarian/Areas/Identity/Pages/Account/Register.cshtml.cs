@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Libarian.Models;
+using Librarian.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -20,9 +20,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 
-namespace Libarian.Areas.Identity.Pages.Account
+namespace Librarian.Areas.Identity.Pages.Account
 {
-    [Authorize(Roles ="Admin")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -108,7 +107,7 @@ namespace Libarian.Areas.Identity.Pages.Account
             public string fullName { get; set; }
 
             [Display(Name = "Giới Tính")]
-            [Required(ErrorMessage ="Vui lòng chọn giới tính")]
+            [Required(ErrorMessage = "Vui lòng chọn giới tính")]
             [StringLength(4)]
             public string sex { get; set; }
 
@@ -124,7 +123,7 @@ namespace Libarian.Areas.Identity.Pages.Account
             public DateTime birthday { get; set; }
 
             [Display(Name = "Số Điện Thoại")]
-            [Required(ErrorMessage ="Vui lòng nhập Số Điện Thoại")]
+            [Required(ErrorMessage = "Vui lòng nhập Số Điện Thoại")]
             [DataType(DataType.PhoneNumber)]
             public string Phone { get; set; }
         }
@@ -138,7 +137,6 @@ namespace Libarian.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
@@ -166,7 +164,7 @@ namespace Libarian.Areas.Identity.Pages.Account
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                        values: new { area = "Identity", userId, code, returnUrl },
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
@@ -174,7 +172,7 @@ namespace Libarian.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
                     }
                     else
                     {

@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Libarian.Models
+namespace Librarian.Models
 {
     public class UserRoleModel
     {
-        [Display(Name ="Email")]
+        [Display(Name = "Email")]
         public string email { get; set; }
 
         [Display(Name = "Họ Tên")]
@@ -31,7 +31,7 @@ namespace Libarian.Models
         [Display(Name = "Ngày Tham Gia")]
         public DateTime startProfile { get; set; }
 
-        [Display(Name ="Vai Trò")]
+        [Display(Name = "Vai Trò")]
         public IEnumerable<string> Roles { get; set; }
 
     }

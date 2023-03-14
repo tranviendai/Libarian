@@ -1,15 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Libarian.Models
+namespace Librarian.Models
 {
     public class LBook
     {
         [Key]
         [Display(Name = "Mã Đầu Sách")]
-        [MaxLength(8)]
+        [StringLength(8)]
         public string lBookID { get; set; }
 
+        [Display(Name = "Mã Sách")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int lBookIndex { get; set; }
 
@@ -18,12 +19,13 @@ namespace Libarian.Models
         [StringLength(12)]
         public string status { get; set; }
 
+        [Required(ErrorMessage ="Nhập Ghi Chú")]
         [Display(Name = "Ghi Chú")]
         public string note { get; set; }
 
-        [Display(Name = "Mã Sách")]
         public string bookID { get; set; }
         [ForeignKey("bookID")]
-        public Book book { get; set; }
+        public Book Books;
+
     }
 }

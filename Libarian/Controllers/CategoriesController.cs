@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Libarian.Data;
-using Libarian.Models;
+using Librarian.Data;
+using Librarian.Models;
 
-namespace Libarian.Controllers
+namespace Librarian.Controllers
 {
     public class CategoriesController : Controller
     {

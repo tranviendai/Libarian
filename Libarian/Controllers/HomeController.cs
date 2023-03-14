@@ -1,8 +1,8 @@
-﻿using Libarian.Models;
+﻿using Librarian.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Libarian.Controllers
+namespace Librarian.Controllers
 {
     public class HomeController : Controller
     {

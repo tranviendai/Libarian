@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Libarian.Models
+namespace Librarian.Models
 {
     public class Book
     {
         [Key]
         [Display(Name = "Mã Sách")]
-        [MaxLength(5)]
+        [StringLength(5)]
         public string bookID { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -15,12 +15,12 @@ namespace Libarian.Models
 
         [Required(ErrorMessage = "Vui lòng nhập Tên Sách")]
         [Display(Name = "Tên Sách")]
-        [MaxLength(32)]
+        [StringLength(32)]
         public string title { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập Tác Giả")]
         [Display(Name = "Tác Giả")]
-        [MaxLength(24)]
+        [StringLength(24)]
         public string author { get; set; }
 
         [Display(Name = "Hình Ảnh")]
@@ -29,7 +29,7 @@ namespace Libarian.Models
 
         [Required(ErrorMessage = "Vui lòng nhập Nhà Sản Xuất")]
         [Display(Name = "Nhà Sản Xuất")]
-        [MaxLength(32)]
+        [StringLength(32)]
         public string publisher { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập Năm Sản Xuất")]
@@ -44,7 +44,7 @@ namespace Libarian.Models
         [Required(ErrorMessage = "Vui lòng nhập tóm tắt cho sách này")]
         public string summary { get; set; }
 
-        [Display(Name ="Số Lượng")]
+        [Display(Name = "Số Lượng")]
         public int count { get; set; }
 
         [DataType(DataType.Date)]
@@ -53,10 +53,12 @@ namespace Libarian.Models
         [Column(TypeName = "Date")]
         public DateTime addDate { get; set; }
 
-        [Display(Name ="Thể Loại")]
+        [Display(Name = "Thể Loại")]
         public int categoryID { get; set; }
         [ForeignKey("categoryID")]
         public Category category;
+
+        public ICollection<LBook> LBooks;
 
     }
 }

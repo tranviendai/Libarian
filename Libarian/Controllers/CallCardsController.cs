@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Libarian.Data;
-using Libarian.Models;
+using Librarian.Data;
+using Librarian.Models;
 
-namespace Libarian.Controllers
+namespace Librarian.Controllers
 {
     public class CallCardsController : Controller
     {
@@ -22,8 +22,9 @@ namespace Libarian.Controllers
         // GET: CallCards
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.CallCard.Include(c => c.lBook).Include(c => c.libaryCard);
-            return View(await applicationDbContext.ToListAsync());
+              return _context.CallCard != null ? 
+                          View(await _context.CallCard.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.CallCard'  is null.");
         }
 
         // GET: CallCards/Details/5
@@ -35,8 +36,6 @@ namespace Libarian.Controllers
             }
 
             var callCard = await _context.CallCard
-                .Include(c => c.lBook)
-                .Include(c => c.libaryCard)
                 .FirstOrDefaultAsync(m => m.callCardID == id);
             if (callCard == null)
             {
@@ -49,8 +48,8 @@ namespace Libarian.Controllers
         // GET: CallCards/Create
         public IActionResult Create()
         {
-            ViewData["lBookID"] = new SelectList(_context.LBooks, "lBookID", "lBookID");
-            ViewData["libaryCardID"] = new SelectList(_context.LibaryCard, "libaryCardID", "libaryCardID");
+            ViewBag.libraryCardID = new SelectList(_context.LibraryCard, "libraryCardID", "libraryCardID");
+            ViewBag.lBookID = new SelectList(_context.LBooks, "lBookID", "lBookID");
             return View();
         }
 
@@ -59,7 +58,7 @@ namespace Libarian.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("callCardID,callCardIndex,startDate,deadline,endDate,bookStatus,libaryCardID,lBookID")] CallCard callCard)
+        public async Task<IActionResult> Create([Bind("callCardID,callCardIndex,startDate,deadline,endDate,bookStatus,libraryCardID,lBookID")] CallCard callCard)
         {
             if (ModelState.IsValid)
             {
@@ -67,8 +66,9 @@ namespace Libarian.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["lBookID"] = new SelectList(_context.LBooks, "lBookID", "lBookID", callCard.lBookID);
-            ViewData["libaryCardID"] = new SelectList(_context.LibaryCard, "libaryCardID", "libaryCardID", callCard.libaryCardID);
+            ViewBag.libraryCardID = new SelectList(_context.LibraryCard, "libraryCardID", "libraryCardID");
+            ViewBag.lBookID = new SelectList(_context.LBooks, "lBookID", "lBookID");
+
             return View(callCard);
         }
 
@@ -85,8 +85,6 @@ namespace Libarian.Controllers
             {
                 return NotFound();
             }
-            ViewData["lBookID"] = new SelectList(_context.LBooks, "lBookID", "lBookID", callCard.lBookID);
-            ViewData["libaryCardID"] = new SelectList(_context.LibaryCard, "libaryCardID", "libaryCardID", callCard.libaryCardID);
             return View(callCard);
         }
 
@@ -95,7 +93,7 @@ namespace Libarian.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("callCardID,callCardIndex,startDate,deadline,endDate,bookStatus,libaryCardID,lBookID")] CallCard callCard)
+        public async Task<IActionResult> Edit(string id, [Bind("callCardID,callCardIndex,startDate,deadline,endDate,bookStatus,libraryCardID,lBookID")] CallCard callCard)
         {
             if (id != callCard.callCardID)
             {
@@ -122,8 +120,6 @@ namespace Libarian.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["lBookID"] = new SelectList(_context.LBooks, "lBookID", "lBookID", callCard.lBookID);
-            ViewData["libaryCardID"] = new SelectList(_context.LibaryCard, "libaryCardID", "libaryCardID", callCard.libaryCardID);
             return View(callCard);
         }
 
@@ -136,8 +132,6 @@ namespace Libarian.Controllers
             }
 
             var callCard = await _context.CallCard
-                .Include(c => c.lBook)
-                .Include(c => c.libaryCard)
                 .FirstOrDefaultAsync(m => m.callCardID == id);
             if (callCard == null)
             {

@@ -1,11 +1,11 @@
-﻿using Libarian.Models;
+﻿using Librarian.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Libarian.Controllers
+namespace Librarian.Controllers
 {
-    [Authorize(Roles="Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;

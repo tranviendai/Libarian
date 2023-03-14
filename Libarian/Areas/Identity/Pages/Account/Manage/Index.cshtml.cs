@@ -6,12 +6,12 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Libarian.Models;
+using Librarian.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Libarian.Areas.Identity.Pages.Account.Manage
+namespace Librarian.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {
@@ -31,7 +31,7 @@ namespace Libarian.Areas.Identity.Pages.Account.Manage
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string Username { get; set; }
-       
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -93,7 +93,7 @@ namespace Libarian.Areas.Identity.Pages.Account.Manage
             var birthday = user.birthday;
             var startProfile = user.startProfile;
             var sex = user.sex;
-             
+
             Username = userName;
 
             Input = new InputModel
@@ -102,7 +102,7 @@ namespace Libarian.Areas.Identity.Pages.Account.Manage
                 fullName = fullname,
                 address = address,
                 birthday = birthday.ToShortDateString(),
-                sex= sex,
+                sex = sex,
                 startProfile = startProfile.ToShortDateString()
             };
         }

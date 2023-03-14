@@ -1,4 +1,4 @@
-﻿@model Libarian.Models.LBook
+﻿@model Librarian.Models.LBook
 
 @{
     ViewData["Title"] = "Delete";
@@ -30,10 +30,10 @@
             @Html.DisplayFor(model => model.note)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.book)
+            @Html.DisplayNameFor(model => model.bookID)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.book.bookID)
+            @Html.DisplayFor(model => model.bookID)
         </dd>
     </dl>
     

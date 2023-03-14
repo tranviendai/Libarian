@@ -1,18 +1,18 @@
-﻿using Libarian.Data;
-using Libarian.Models;
+﻿using Librarian.Data;
+using Librarian.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Libarian.Controllers
+namespace Librarian.Controllers
 {
     public class ActorsController : Controller
     {
-        private readonly UserManager<Libarian.Models.ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _db;
 
-        public ActorsController(UserManager<Libarian.Models.ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext db)
+        public ActorsController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext db)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -30,7 +30,7 @@ namespace Libarian.Controllers
                 thisModel.fullName = user.fullName;
                 thisModel.address = user.address;
                 thisModel.startProfile = user.startProfile;
-                thisModel.birthday= user.birthday;
+                thisModel.birthday = user.birthday;
                 thisModel.phone = user.PhoneNumber;
                 thisModel.email = user.Email;
                 thisModel.Roles = await GetUserRoles(user);
@@ -45,17 +45,17 @@ namespace Libarian.Controllers
         }
         public async Task<IActionResult> Lock(string id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
-            var applicationUser = await _db.Users.FirstOrDefaultAsync(m => m.Id ==id);
-            if(applicationUser == null)
+            var applicationUser = await _db.Users.FirstOrDefaultAsync(m => m.Id == id);
+            if (applicationUser == null)
             {
                 return NotFound();
             }
             applicationUser.LockoutEnd = DateTime.Now.AddYears(1000);
-            await  _db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
             return RedirectToAction(nameof(List));
         }
         public async Task<IActionResult> UnLock(string id)

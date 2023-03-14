@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Libarian.Data;
-using Libarian.Models;
+using Librarian.Data;
+using Librarian.Models;
 
-namespace Libarian.Controllers
+namespace Librarian.Controllers
 {
     public class PenaltyTicketsController : Controller
     {
@@ -22,8 +22,9 @@ namespace Libarian.Controllers
         // GET: PenaltyTickets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.PenaltyTicket.Include(p => p.callCard);
-            return View(await applicationDbContext.ToListAsync());
+              return _context.PenaltyTicket != null ? 
+                          View(await _context.PenaltyTicket.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.PenaltyTicket'  is null.");
         }
 
         // GET: PenaltyTickets/Details/5
@@ -35,7 +36,6 @@ namespace Libarian.Controllers
             }
 
             var penaltyTicket = await _context.PenaltyTicket
-                .Include(p => p.callCard)
                 .FirstOrDefaultAsync(m => m.callCardID == id);
             if (penaltyTicket == null)
             {
@@ -48,7 +48,7 @@ namespace Libarian.Controllers
         // GET: PenaltyTickets/Create
         public IActionResult Create()
         {
-            ViewData["callCardID"] = new SelectList(_context.CallCard, "callCardID", "callCardID");
+            ViewBag.callCardID = new SelectList(_context.CallCard, "callCardID", "callCardID");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace Libarian.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["callCardID"] = new SelectList(_context.CallCard, "callCardID", "callCardID", penaltyTicket.callCardID);
+            ViewBag.callCardID = new SelectList(_context.CallCard, "callCardID", "callCardID");
             return View(penaltyTicket);
         }
 
@@ -82,7 +82,6 @@ namespace Libarian.Controllers
             {
                 return NotFound();
             }
-            ViewData["callCardID"] = new SelectList(_context.CallCard, "callCardID", "callCardID", penaltyTicket.callCardID);
             return View(penaltyTicket);
         }
 
@@ -118,7 +117,6 @@ namespace Libarian.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["callCardID"] = new SelectList(_context.CallCard, "callCardID", "callCardID", penaltyTicket.callCardID);
             return View(penaltyTicket);
         }
 
@@ -131,7 +129,6 @@ namespace Libarian.Controllers
             }
 
             var penaltyTicket = await _context.PenaltyTicket
-                .Include(p => p.callCard)
                 .FirstOrDefaultAsync(m => m.callCardID == id);
             if (penaltyTicket == null)
             {

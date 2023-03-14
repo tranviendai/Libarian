@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Libarian.Models.CallCard>
+﻿@model IEnumerable<Librarian.Models.CallCard>
 
 @{
     ViewData["Title"] = "Index";
@@ -28,10 +28,10 @@
                 @Html.DisplayNameFor(model => model.bookStatus)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.libaryCard)
+                @Html.DisplayNameFor(model => model.libraryCardID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.lBook)
+                @Html.DisplayNameFor(model => model.lBookID)
             </th>
             <th></th>
         </tr>
@@ -55,10 +55,10 @@
                 @Html.DisplayFor(modelItem => item.bookStatus)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.libaryCard.libaryCardID)
+                @Html.DisplayFor(modelItem => item.libraryCardID)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.lBook.lBookID)
+                @Html.DisplayFor(modelItem => item.lBookID)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.callCardID">Edit</a> |

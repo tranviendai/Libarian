@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Libarian.Models
+namespace Librarian.Models
 {
     public class CallCard
     {
         [Key]
-        [MaxLength(5)]
+        [StringLength(5)]
         [Display(Name = "Mã Mượn Sách")]
         public string callCardID { get; set; }
 
@@ -35,17 +35,17 @@ namespace Libarian.Models
         [DisplayFormat(DataFormatString = "{0:dd/M/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime endDate { get; set; }
 
-        [Display(Name ="Tình trạng sách")]
+        [Display(Name = "Tình trạng sách")]
         [StringLength(24)]
         public string bookStatus { get; set; }
 
         [Display(Name = "Số Thẻ")]
-        public string libaryCardID { get; set; }
-        [ForeignKey("libaryCardID")]
-        public LibaryCard libaryCard { get; set; }
+        public string libraryCardID { get; set; }
+        [ForeignKey("libraryCardID")]
+        public LibraryCard libaryCard;
 
         public string lBookID { get; set; }
         [ForeignKey("lBookID")]
-        public LBook lBook { get; set; }
+        public LBook lBook;
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Libarian.Models.LibaryCard>
+﻿@model IEnumerable<Librarian.Models.LibraryCard>
 
 @{
     ViewData["Title"] = "Index";
@@ -49,9 +49,9 @@
                 @Html.DisplayFor(modelItem => item.expirationDate)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.libaryCardID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.libaryCardID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.libaryCardID">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.libraryCardID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.libraryCardID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.libraryCardID">Delete</a>
             </td>
         </tr>
 }

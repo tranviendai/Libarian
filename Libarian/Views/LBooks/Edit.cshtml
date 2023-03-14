@@ -1,4 +1,4 @@
-﻿@model Libarian.Models.LBook
+﻿@model Librarian.Models.LBook
 
 @{
     ViewData["Title"] = "Edit";
@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="bookID" class="control-label"></label>
-                <select asp-for="bookID" class="form-control" asp-items="ViewBag.bookID"></select>
+                <input asp-for="bookID" class="form-control" />
                 <span asp-validation-for="bookID" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -44,6 +44,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

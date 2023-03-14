@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Libarian.Migrations
+namespace Librarian.Migrations
 {
     /// <inheritdoc />
-    public partial class Data01 : Migration
+    public partial class Database01 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,10 +57,10 @@ namespace Libarian.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LibaryCard",
+                name: "LibraryCard",
                 columns: table => new
                 {
-                    libaryCardID = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
+                    libraryCardID = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
                     librayCardIndex = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     fullName = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: false),
@@ -70,7 +70,7 @@ namespace Libarian.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LibaryCard", x => x.libaryCardID);
+                    table.PrimaryKey("PK_LibraryCard", x => x.libraryCardID);
                 });
 
             migrationBuilder.CreateTable(
@@ -254,7 +254,7 @@ namespace Libarian.Migrations
                     deadline = table.Column<DateTime>(type: "Date", nullable: false),
                     endDate = table.Column<DateTime>(type: "Date", nullable: false),
                     bookStatus = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: false),
-                    libaryCardID = table.Column<string>(type: "nvarchar(5)", nullable: false),
+                    libraryCardID = table.Column<string>(type: "nvarchar(5)", nullable: false),
                     lBookID = table.Column<string>(type: "nvarchar(8)", nullable: false)
                 },
                 constraints: table =>
@@ -267,10 +267,10 @@ namespace Libarian.Migrations
                         principalColumn: "lBookID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CallCard_LibaryCard_libaryCardID",
-                        column: x => x.libaryCardID,
-                        principalTable: "LibaryCard",
-                        principalColumn: "libaryCardID",
+                        name: "FK_CallCard_LibraryCard_libraryCardID",
+                        column: x => x.libraryCardID,
+                        principalTable: "LibraryCard",
+                        principalColumn: "libraryCardID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -297,7 +297,7 @@ namespace Libarian.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "address", "birthday", "fullName", "sex", "startProfile" },
-                values: new object[] { "a79e98b4-d8a6-4640-98eb-5b417ffb2661", 0, "42e4f84a-a38c-42d7-9e5c-293b30220358", "admin@gmail.com", true, false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAIAAYagAAAAELolmSdyCOTdHmxrpPlxPjrqVSbfFdZu3pPWHF0fBgGrKTKJrQEPCAfMP9Pc3+1O1A==", "0582072743", false, "9ef42db6-127e-4e1d-b396-b9636a7a448b", false, "admin@gmail.com", "Tắc Vân - Cà Mau", new DateTime(2023, 3, 14, 15, 14, 22, 603, DateTimeKind.Local).AddTicks(4607), "Trần Viễn Đại", "Nam", new DateTime(2023, 3, 14, 15, 14, 22, 603, DateTimeKind.Local).AddTicks(4623) });
+                values: new object[] { "a79e98b4-d8a6-4640-98eb-5b417ffb2661", 0, "12ee1ab1-605b-4a1e-9585-882539691e94", "admin@gmail.com", true, false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAIAAYagAAAAEK2C91lY3ec8MIBtm0vqSm7MJR38tQiBqxUH9RjWzSfOoFVCzxv27sUuY6o5PffR4w==", "0582072743", false, "d804d7ad-2e29-4d26-86c1-d164856aabd8", false, "admin@gmail.com", "Tắc Vân - Cà Mau", new DateTime(2023, 3, 14, 21, 53, 39, 405, DateTimeKind.Local).AddTicks(8889), "Trần Viễn Đại", "Nam", new DateTime(2023, 3, 14, 21, 53, 39, 405, DateTimeKind.Local).AddTicks(8902) });
 
             migrationBuilder.InsertData(
                 table: "Role",
@@ -336,9 +336,9 @@ namespace Libarian.Migrations
                 column: "lBookID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CallCard_libaryCardID",
+                name: "IX_CallCard_libraryCardID",
                 table: "CallCard",
-                column: "libaryCardID");
+                column: "libraryCardID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LBooks_bookID",
@@ -407,7 +407,7 @@ namespace Libarian.Migrations
                 name: "LBooks");
 
             migrationBuilder.DropTable(
-                name: "LibaryCard");
+                name: "LibraryCard");
 
             migrationBuilder.DropTable(
                 name: "Book");

@@ -1,7 +1,8 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Globalization;
-namespace Libarian.Converters
+
+namespace Librarian.Converters
 {
     public class DateConvert : JsonConverter<DateTime>
     {
@@ -13,7 +14,7 @@ namespace Libarian.Converters
 
         public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
         {
-           writer.WriteStringValue(value.ToString(formatDate));
+            writer.WriteStringValue(value.ToString(formatDate));
         }
     }
 }

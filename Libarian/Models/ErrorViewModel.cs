@@ -1,4 +1,4 @@
-namespace Libarian.Models
+namespace Librarian.Models
 {
     public class ErrorViewModel
     {

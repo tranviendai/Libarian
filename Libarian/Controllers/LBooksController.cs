@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Libarian.Data;
-using Libarian.Models;
+using Librarian.Data;
+using Librarian.Models;
 
-namespace Libarian.Controllers
+namespace Librarian.Controllers
 {
     public class LBooksController : Controller
     {
@@ -22,8 +22,9 @@ namespace Libarian.Controllers
         // GET: LBooks
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.LBooks.Include(l => l.book);
-            return View(await applicationDbContext.ToListAsync());
+              return _context.LBooks != null ? 
+                          View(await _context.LBooks.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.LBooks'  is null.");
         }
 
         // GET: LBooks/Details/5
@@ -35,7 +36,6 @@ namespace Libarian.Controllers
             }
 
             var lBook = await _context.LBooks
-                .Include(l => l.book)
                 .FirstOrDefaultAsync(m => m.lBookID == id);
             if (lBook == null)
             {
@@ -48,7 +48,7 @@ namespace Libarian.Controllers
         // GET: LBooks/Create
         public IActionResult Create()
         {
-            ViewData["bookID"] = new SelectList(_context.Book, "bookID", "bookID");
+            ViewBag.BookID = new SelectList(_context.Book, "bookID", "title");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace Libarian.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["bookID"] = new SelectList(_context.Book, "bookID", "bookID", lBook.bookID);
+            ViewBag.BookID = new SelectList(_context.Book, "bookID", "title");
             return View(lBook);
         }
 
@@ -82,7 +82,6 @@ namespace Libarian.Controllers
             {
                 return NotFound();
             }
-            ViewData["bookID"] = new SelectList(_context.Book, "bookID", "bookID", lBook.bookID);
             return View(lBook);
         }
 
@@ -118,7 +117,6 @@ namespace Libarian.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["bookID"] = new SelectList(_context.Book, "bookID", "bookID", lBook.bookID);
             return View(lBook);
         }
 
@@ -131,7 +129,6 @@ namespace Libarian.Controllers
             }
 
             var lBook = await _context.LBooks
-                .Include(l => l.book)
                 .FirstOrDefaultAsync(m => m.lBookID == id);
             if (lBook == null)
             {

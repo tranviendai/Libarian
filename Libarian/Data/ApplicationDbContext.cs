@@ -1,11 +1,11 @@
-﻿using Libarian.Models;
+﻿using Librarian.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
-namespace Libarian.Data
+namespace Librarian.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -73,21 +73,20 @@ namespace Libarian.Data
                     NormalizedUserName = "ADMIN@GMAIL.COM",
                     EmailConfirmed = true,
                     fullName = "Trần Viễn Đại",
-                    PhoneNumber="0582072743",
+                    PhoneNumber = "0582072743",
                     address = "Tắc Vân - Cà Mau",
                     birthday = DateTime.Now,
                     startProfile = DateTime.Now,
-                    sex ="Nam",
-                    
+                    sex = "Nam",
                 });
-           
+
         }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
         public DbSet<Book> Book { get; set; }
-        public DbSet<LibaryCard> LibaryCard { get; set; }
+        public DbSet<LibraryCard> LibraryCard { get; set; }
         public DbSet<LBook> LBooks { get; set; }
 
         public DbSet<CallCard> CallCard { get; set; }
