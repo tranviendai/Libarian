@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Libarian.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230313180303_Database01")]
-    partial class Database01
+    [Migration("20230314081422_Data01")]
+    partial class Data01
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,6 +109,30 @@ namespace Libarian.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "a79e98b4-d8a6-4640-98eb-5b417ffb2661",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "42e4f84a-a38c-42d7-9e5c-293b30220358",
+                            Email = "admin@gmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@GMAIL.COM",
+                            NormalizedUserName = "ADMIN@GMAIL.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAELolmSdyCOTdHmxrpPlxPjrqVSbfFdZu3pPWHF0fBgGrKTKJrQEPCAfMP9Pc3+1O1A==",
+                            PhoneNumber = "0582072743",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "9ef42db6-127e-4e1d-b396-b9636a7a448b",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@gmail.com",
+                            address = "Tắc Vân - Cà Mau",
+                            birthday = new DateTime(2023, 3, 14, 15, 14, 22, 603, DateTimeKind.Local).AddTicks(4607),
+                            fullName = "Trần Viễn Đại",
+                            sex = "Nam",
+                            startProfile = new DateTime(2023, 3, 14, 15, 14, 22, 603, DateTimeKind.Local).AddTicks(4623)
+                        });
                 });
 
             modelBuilder.Entity("Libarian.Models.Book", b =>
@@ -336,6 +360,20 @@ namespace Libarian.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("Role", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "07bf1560-b5ff-4702-a9f1-a64026e570cf",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "2ccdcef3-db18-46c7-b5ff-910be6ae4906",
+                            Name = "Thủ Thư",
+                            NormalizedName = "THỦ THƯ"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -425,6 +463,13 @@ namespace Libarian.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("UserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "a79e98b4-d8a6-4640-98eb-5b417ffb2661",
+                            RoleId = "07bf1560-b5ff-4702-a9f1-a64026e570cf"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

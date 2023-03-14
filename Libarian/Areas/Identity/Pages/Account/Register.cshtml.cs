@@ -77,6 +77,7 @@ namespace Libarian.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
+            [DataType(DataType.EmailAddress, ErrorMessage = "Email không hợp lệ")]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -85,7 +86,7 @@ namespace Libarian.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Vui lòng nhập mật khẩu có trên 6 kí tự.")]
             [StringLength(100, ErrorMessage = "Vui lòng nhập mật khẩu có trên 6 kí tự.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
@@ -97,6 +98,7 @@ namespace Libarian.Areas.Identity.Pages.Account
             /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
+            [Required(ErrorMessage = "Vui lòng nhập mật khẩu.")]
             [Compare("Password", ErrorMessage = "Xác nhận mật khẩu không chính xác.")]
             public string ConfirmPassword { get; set; }
 
@@ -106,12 +108,13 @@ namespace Libarian.Areas.Identity.Pages.Account
             public string fullName { get; set; }
 
             [Display(Name = "Giới Tính")]
-            [Required]
+            [Required(ErrorMessage ="Vui lòng chọn giới tính")]
             [StringLength(4)]
             public string sex { get; set; }
 
             [StringLength(100)]
             [Display(Name = "Địa Chỉ")]
+            [Required(ErrorMessage = "Vui lòng nhập Địa Chỉ.")]
             public string address { get; set; }
 
             [Required(ErrorMessage = "Vui lòng chọn ngày sinh")]
@@ -121,6 +124,7 @@ namespace Libarian.Areas.Identity.Pages.Account
             public DateTime birthday { get; set; }
 
             [Display(Name = "Số Điện Thoại")]
+            [Required(ErrorMessage ="Vui lòng nhập Số Điện Thoại")]
             [DataType(DataType.PhoneNumber)]
             public string Phone { get; set; }
         }
@@ -134,6 +138,7 @@ namespace Libarian.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)

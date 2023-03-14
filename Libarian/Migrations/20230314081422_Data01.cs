@@ -3,16 +3,18 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Libarian.Migrations
 {
     /// <inheritdoc />
-    public partial class Database01 : Migration
+    public partial class Data01 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "AspNetUsers",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -101,7 +103,7 @@ namespace Libarian.Migrations
                     table.ForeignKey(
                         name: "FK_UserClaims_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -121,7 +123,7 @@ namespace Libarian.Migrations
                     table.ForeignKey(
                         name: "FK_UserLogins_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -141,7 +143,7 @@ namespace Libarian.Migrations
                     table.ForeignKey(
                         name: "FK_UserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -208,7 +210,7 @@ namespace Libarian.Migrations
                     table.ForeignKey(
                         name: "FK_UserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -292,14 +294,33 @@ namespace Libarian.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "address", "birthday", "fullName", "sex", "startProfile" },
+                values: new object[] { "a79e98b4-d8a6-4640-98eb-5b417ffb2661", 0, "42e4f84a-a38c-42d7-9e5c-293b30220358", "admin@gmail.com", true, false, null, "ADMIN@GMAIL.COM", "ADMIN@GMAIL.COM", "AQAAAAIAAYagAAAAELolmSdyCOTdHmxrpPlxPjrqVSbfFdZu3pPWHF0fBgGrKTKJrQEPCAfMP9Pc3+1O1A==", "0582072743", false, "9ef42db6-127e-4e1d-b396-b9636a7a448b", false, "admin@gmail.com", "Tắc Vân - Cà Mau", new DateTime(2023, 3, 14, 15, 14, 22, 603, DateTimeKind.Local).AddTicks(4607), "Trần Viễn Đại", "Nam", new DateTime(2023, 3, 14, 15, 14, 22, 603, DateTimeKind.Local).AddTicks(4623) });
+
+            migrationBuilder.InsertData(
+                table: "Role",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "07bf1560-b5ff-4702-a9f1-a64026e570cf", null, "Admin", "ADMIN" },
+                    { "2ccdcef3-db18-46c7-b5ff-910be6ae4906", null, "Thủ Thư", "THỦ THƯ" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "07bf1560-b5ff-4702-a9f1-a64026e570cf", "a79e98b4-d8a6-4640-98eb-5b417ffb2661" });
+
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
-                table: "Users",
+                table: "AspNetUsers",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
-                table: "Users",
+                table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
@@ -380,7 +401,7 @@ namespace Libarian.Migrations
                 name: "Role");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "LBooks");
