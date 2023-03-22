@@ -58,7 +58,7 @@ namespace Librarian.Models
         [ForeignKey("categoryID")]
         public Category category;
 
-        public ICollection<LBook> LBooks;
+        public ICollection<LBook> lBooks { get; set; } = new List<LBook>();
 
     }
 }

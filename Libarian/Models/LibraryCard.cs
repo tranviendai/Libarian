@@ -36,5 +36,7 @@ namespace Librarian.Models
 
         [DisplayFormat(DataFormatString = "{0:dd/M/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime expirationDate { get; set; }
+
+        public ICollection<CallCard> callCards { get; set; } = new List<CallCard>();
     }
 }

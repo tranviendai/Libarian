@@ -13,7 +13,7 @@ namespace Librarian.Models
         [Display(Name = "Thể Loại")]
         [StringLength(50)]
         public string nameCategory { get; set; }
-        public ICollection<Book> books;
+        public ICollection<Book> books { get; set; } = new List<Book>();
 
     }
 }

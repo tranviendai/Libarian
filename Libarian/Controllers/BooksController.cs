@@ -61,7 +61,21 @@ namespace Librarian.Controllers
             else
             {
                 book.bookID = "B000" + (autoID.bookIndex + 1).ToString();
+                if (autoID.bookIndex >= 9)
+                {
+                    book.bookID = "B00" + (autoID.bookIndex + 1).ToString();
+                }
+                if (autoID.bookIndex >= 99)
+                {
+                    book.bookID = "B0" + (autoID.bookIndex + 1).ToString();
+                }
+                else
+                {
+                    book.bookID = "B" + (autoID.bookIndex + 1).ToString();
+                }
+
             }
+           
             ViewBag.categoryID = new SelectList(_context.Category, "categoryID", "nameCategory");
             return View(book);
         }
