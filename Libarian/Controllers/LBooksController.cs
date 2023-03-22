@@ -20,12 +20,23 @@ namespace Librarian.Controllers
         }
 
         // GET: LBooks
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string bookID)
+        {
+            var books = _context.LBooks.AsQueryable();
+
+            if (!string.IsNullOrEmpty(bookID))
+            {
+                books = books.Where(b => b.bookID.Contains(bookID));
+            }
+
+            return View(await books.ToListAsync());
+        }
+        /*public async Task<IActionResult> Index()
         {
               return _context.LBooks != null ? 
                           View(await _context.LBooks.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.LBooks'  is null.");
-        }
+        }*/
 
         // GET: LBooks/Details/5
         public async Task<IActionResult> Details(string id)
