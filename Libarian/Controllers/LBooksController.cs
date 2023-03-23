@@ -22,14 +22,14 @@ namespace Librarian.Controllers
         // GET: LBooks
         public async Task<IActionResult> Index(string bookID)
         {
-            var books = _context.LBooks.AsQueryable();
+            var lBooks = _context.LBooks.AsQueryable();
 
             if (!string.IsNullOrEmpty(bookID))
             {
-                books = books.Where(b => b.bookID.Contains(bookID));
+                lBooks = lBooks.Where(b => b.bookID.Contains(bookID));
             }
 
-            return View(await books.ToListAsync());
+            return View(await lBooks.ToListAsync());
         }
         /*public async Task<IActionResult> Index()
         {

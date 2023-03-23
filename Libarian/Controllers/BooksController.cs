@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Librarian.Data;
 using Librarian.Models;
+using System.Net;
 
 namespace Librarian.Controllers
 {
@@ -20,12 +21,28 @@ namespace Librarian.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm, string searchType)
+        {
+            var books = _context.Book.AsQueryable();
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                if (searchType == "title")
+                {
+                    books = books.Where(b => b.title.Contains(searchTerm));
+                }
+                else if (searchType == "author")
+                {
+                    books = books.Where(b => b.author.Contains(searchTerm));
+                }
+            }
+            return View(await books.ToListAsync());
+        }
+        /*public async Task<IActionResult> Index()
         {
             return _context.Book != null ?
                         View(await _context.Book.ToListAsync()) :
                         Problem("Entity set 'ApplicationDbContext.Book'  is null.");
-        }
+        }*/
 
         // GET: Books/Details/5
         public async Task<IActionResult> Details(string id)
