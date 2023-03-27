@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Librarian.Data;
 using Librarian.Models;
+using System.Net;
 
 namespace Librarian.Controllers
 {
@@ -19,12 +20,41 @@ namespace Librarian.Controllers
             _context = context;
         }
 
-        // GET: Books
-        public async Task<IActionResult> Index()
+        // Get Search Suggestions
+        public IActionResult GetSearchSuggestions(string searchTerm, string searchType)
         {
-            return _context.Book != null ?
-                        View(await _context.Book.ToListAsync()) :
-                        Problem("Entity set 'ApplicationDbContext.Book'  is null.");
+            var suggestions = new List<string>();
+            var books = _context.Book.AsQueryable();
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                if (searchType == "title")
+                {
+                    suggestions = books.Where(b => b.title.Contains(searchTerm)).Select(b => b.title).ToList();
+                }
+                else if (searchType == "author")
+                {
+                    suggestions = books.Where(b => b.author.Contains(searchTerm)).Select(b => b.author).ToList();
+                }
+            }
+            return Json(suggestions);
+        }
+
+        // GET: Books
+        public async Task<IActionResult> Index(string searchTerm, string searchType)
+        {
+            var books = _context.Book.AsQueryable();
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                if (searchType == "title")
+                {
+                    books = books.Where(b => b.title.Contains(searchTerm));
+                }
+                else if (searchType == "author")
+                {
+                    books = books.Where(b => b.author.Contains(searchTerm));
+                }
+            }
+            return View(await books.ToListAsync());
         }
 
         // GET: Books/Details/5
