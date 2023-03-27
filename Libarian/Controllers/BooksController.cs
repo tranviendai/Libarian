@@ -20,6 +20,25 @@ namespace Librarian.Controllers
             _context = context;
         }
 
+        // Get Search Suggestions
+        public IActionResult GetSearchSuggestions(string searchTerm, string searchType)
+        {
+            var suggestions = new List<string>();
+            var books = _context.Book.AsQueryable();
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                if (searchType == "title")
+                {
+                    suggestions = books.Where(b => b.title.Contains(searchTerm)).Select(b => b.title).ToList();
+                }
+                else if (searchType == "author")
+                {
+                    suggestions = books.Where(b => b.author.Contains(searchTerm)).Select(b => b.author).ToList();
+                }
+            }
+            return Json(suggestions);
+        }
+
         // GET: Books
         public async Task<IActionResult> Index(string searchTerm, string searchType)
         {
@@ -37,12 +56,6 @@ namespace Librarian.Controllers
             }
             return View(await books.ToListAsync());
         }
-        /*public async Task<IActionResult> Index()
-        {
-            return _context.Book != null ?
-                        View(await _context.Book.ToListAsync()) :
-                        Problem("Entity set 'ApplicationDbContext.Book'  is null.");
-        }*/
 
         // GET: Books/Details/5
         public async Task<IActionResult> Details(string id)

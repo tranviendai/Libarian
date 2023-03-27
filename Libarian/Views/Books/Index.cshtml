@@ -13,17 +13,30 @@
 </select>
 
 <input type="text" id="searchTermFilter" placeholder="Filter by ..." />
-<!-- Search Script -->
+<div id="searchSuggestions">
+    <ul>
+        Gợi ý hiện ở đây
+    </ul>
+</div>
+<!-- Search And Suggestion Script -->
 @section scripts {
     <script>
         $(document).ready(function () {
             $('#searchTermFilter').on('input', function () {
                 filterTable($(this).val().trim(), $('#searchTypeFilter').val());
+                getSuggestions($(this).val().trim(), $('#searchTypeFilter').val());
             });
         });
         function filterTable(searchTerm, searchType) {
             $.get('/Books/Index', { searchTerm: searchTerm, searchType: searchType }).done(function (result) {
                 $('tbody').replaceWith($(result).find('tbody'));
+            });
+            $.get('/Books/GetSearchSuggestions', { searchTerm: searchTerm, searchType: searchType }).done(function (result) {
+                var suggestions = '';
+                $.each(result, function (i, item) {
+                    suggestions += '<li>' + item + '</li>';
+                });
+                $('#searchSuggestions ul').html(suggestions);
             });
         }
     </script>
