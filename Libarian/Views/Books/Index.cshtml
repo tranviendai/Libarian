@@ -6,6 +6,42 @@
 
 <h1>Index</h1>
 
+<label for="searchTypeFilter">Search by:</label>
+<select id="searchTypeFilter">
+    <option value="title">Title</option>
+    <option value="author">Author</option>
+</select>
+
+<input type="text" id="searchTermFilter" placeholder="Filter by ..." />
+<div id="searchSuggestions">
+    <ul>
+        Gợi ý hiện ở đây
+    </ul>
+</div>
+<!-- Search And Suggestion Script -->
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('#searchTermFilter').on('input', function () {
+                filterTable($(this).val().trim(), $('#searchTypeFilter').val());
+                getSuggestions($(this).val().trim(), $('#searchTypeFilter').val());
+            });
+        });
+        function filterTable(searchTerm, searchType) {
+            $.get('/Books/Index', { searchTerm: searchTerm, searchType: searchType }).done(function (result) {
+                $('tbody').replaceWith($(result).find('tbody'));
+            });
+            $.get('/Books/GetSearchSuggestions', { searchTerm: searchTerm, searchType: searchType }).done(function (result) {
+                var suggestions = '';
+                $.each(result, function (i, item) {
+                    suggestions += '<li>' + item + '</li>';
+                });
+                $('#searchSuggestions ul').html(suggestions);
+            });
+        }
+    </script>
+}
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -24,7 +60,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.author)
             </th>
-           
+
             <th>
                 @Html.DisplayNameFor(model => model.publisher)
             </th>
@@ -44,42 +80,43 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
+        @foreach (var item in Model)
+        {
+            <tr>
                 <td>
-                <img src="@item.image" width="100" height="100"/>    
+                    <img src="@item.image" width="100" height="100" />
                 </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.bookID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.author)
-            </td>
-          
-            <td>
-                @Html.DisplayFor(modelItem => item.publisher)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.publishingYear)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.summary)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.count)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.addDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.bookID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.bookID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.bookID">Delete</a>
-            </td>
-        </tr>
-}
+                <td>
+                    @Html.DisplayFor(modelItem => item.bookID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.author)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.publisher)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.publishingYear)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.summary)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.count)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.addDate)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.bookID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.bookID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.bookID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

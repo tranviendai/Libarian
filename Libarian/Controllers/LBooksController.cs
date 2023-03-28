@@ -20,11 +20,16 @@ namespace Librarian.Controllers
         }
 
         // GET: LBooks
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string bookID)
         {
-              return _context.LBooks != null ? 
-                          View(await _context.LBooks.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.LBooks'  is null.");
+            var lBooks = _context.LBooks.AsQueryable();
+
+            if (!string.IsNullOrEmpty(bookID))
+            {
+                lBooks = lBooks.Where(b => b.bookID.Contains(bookID));
+            }
+
+            return View(await lBooks.ToListAsync());
         }
 
         // GET: LBooks/Details/5
@@ -152,14 +157,14 @@ namespace Librarian.Controllers
             {
                 _context.LBooks.Remove(lBook);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool LBookExists(string id)
         {
-          return (_context.LBooks?.Any(e => e.lBookID == id)).GetValueOrDefault();
+            return (_context.LBooks?.Any(e => e.lBookID == id)).GetValueOrDefault();
         }
     }
 }

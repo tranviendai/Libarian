@@ -6,6 +6,23 @@
 
 <h1>Index</h1>
 
+<input type="text" id="bookIDFilter" placeholder="Filter by book ID...">
+<!-- Filter script -->
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('#bookIDFilter').on('input', function () {
+                filterTable($(this).val().trim());
+            });
+        });
+        function filterTable(bookID) {
+            $.get('/Lbooks/Index', { bookID: bookID }).done(function (result) {
+                $('tbody').replaceWith($(result).find('tbody'));
+            });
+        }
+    </script>
+}
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -28,26 +45,27 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.lBookIndex)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.note)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.bookID)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.lBookID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.lBookID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.lBookID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.lBookIndex)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.note)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.bookID)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.lBookID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.lBookID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.lBookID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
