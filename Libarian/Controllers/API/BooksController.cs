@@ -24,22 +24,20 @@ namespace Librarian.Controllers.API
 
         // GET: api/Books
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBook()
+        public async Task<ActionResult<IEnumerable<Book>>> GetBook(int? cateId, string keyword="", string orderBy = "addDate", bool asc=false)
         {
             var book = from b in _context.Book
-                       from category in _context.Category
-                       where b.categoryID == category.categoryID
-                       select new
-                       {
-                           Title = b.title,
-                           Author =b.author,
-                           Image = b.image,
-                           Count =b.count,
-                           Summary = b.summary,
-                           Publisher = b.publisher,
-                           PublishYear = b.publishingYear,
-                           CategoryName = category.nameCategory
-                       };
+                       where
+                            (cateId == null || b.categoryID == cateId)
+                            && (b.title.ToLower().StartsWith(keyword.ToLower()))
+                       select b;
+
+            //order by
+            string[] orderCols = new string[] { "addDate", "title" };
+            if (orderCols.Contains(orderBy))
+                book = book.OrderBy(x => EF.Property<Book>(x, orderBy)).ThenBy(x => x.bookIndex);
+            if (!asc) book = book.Reverse();
+
           if (_context.Book == null)
           {
               return NotFound();
@@ -55,8 +53,8 @@ namespace Librarian.Controllers.API
           {
               return NotFound();
           }
-            var book = await _context.Book.FindAsync(id);
 
+            var book = _context.Book.FirstOrDefault(x => x.bookID == id);
             if (book == null)
             {
                 return NotFound();
