@@ -6,7 +6,18 @@
 
 <h1>Index</h1>
 
+<!-- Dropdown Status -->
+<select id="statusDropdown">
+    <option value="">Chọn trạng thái</option>
+    <option value="con">Còn</option>
+    <option value="cho-muon">Cho mượn</option>
+    <option value="da-hong">Đã hỏng</option>
+</select>
+<br />
+
+<!-- Input Search -->
 <input type="text" id="bookIDFilter" placeholder="Filter by book ID...">
+
 <!-- Filter script -->
 @section scripts {
     <script>
