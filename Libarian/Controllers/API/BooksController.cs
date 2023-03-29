@@ -146,6 +146,8 @@ namespace Librarian.Controllers.API
           {
               return Problem("Entity set 'ApplicationDbContext.Book'  is null.");
           }
+            book.addDate = DateTime.Now;
+            book.count = 0;
             _context.Book.Add(book);
             try
             {
