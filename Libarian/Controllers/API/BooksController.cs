@@ -146,8 +146,20 @@ namespace Librarian.Controllers.API
           {
               return Problem("Entity set 'ApplicationDbContext.Book'  is null.");
           }
+         /* Book book= new Book();
+            book.title = title;
+            book.author = author;
+            book.publisher = publisher;
+            book.image= image;
+            book.publishingYear= publishingYear;
+            book.summary= summary;
+            book.categoryID= categoryID;*/
             book.addDate = DateTime.Now;
             book.count = 0;
+            var autoID = _context.Book.OrderByDescending(c => c.bookIndex).FirstOrDefault().bookIndex+1;
+            autoID += 1000;
+            book.bookID = "B" + autoID;
+            //Bxxxx
             _context.Book.Add(book);
             try
             {
