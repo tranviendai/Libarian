@@ -149,7 +149,8 @@ namespace Librarian.Controllers.API
         
             book.addDate = DateTime.Now;
             book.count = 0;
-            var autoID = _context.Book.OrderByDescending(c => c.bookIndex).FirstOrDefault().bookIndex+1;
+            var tbook = _context.Book.OrderByDescending(c => c.bookIndex).FirstOrDefault();
+            var autoID = tbook != null ? tbook.bookIndex + 1 : 1;
             autoID += 1000;
             book.bookID = "B" + autoID;
             //Bxxxx
