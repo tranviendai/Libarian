@@ -90,11 +90,14 @@ namespace Librarian.Controllers.API
           {
               return Problem("Entity set 'ApplicationDbContext.LBooks'  is null.");
           }
-            string[]StatusArray= new string[4] {"Còn sách","Đang mượn","Sách hỏng","Sách mất"};
+            /*string[]StatusArray= new string[4] {"Còn sách","Đang mượn","Sách hỏng","Sách mất"};
             if(!StatusArray.Contains(lBook.status))
-            { return Problem("Không có trạng thái đã nhập!");}    
+            { return Problem("Không có trạng thái đã nhập!");}    */
             lBook.status = "Còn sách";
-            var autoID = _context.LBooks.OrderByDescending(c => c.lBookIndex).FirstOrDefault().lBookIndex + 1;
+            var lbook = _context.LBooks.OrderByDescending(c => c.lBookIndex).FirstOrDefault();
+
+            var autoID = lbook != null ? lbook.lBookIndex + 1 : 1;
+            
             autoID += 10;
             lBook.lBookID = lBook.bookID + "L"+ autoID;
             _context.LBooks.Add(lBook);
