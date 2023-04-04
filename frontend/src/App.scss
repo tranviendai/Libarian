@@ -120,6 +120,21 @@ a{
 .hidden{
   display: none;
 }
+.mb-10 {
+  margin-bottom: 10px;
+}
+.mb-20 {
+  margin-bottom: 20px;
+}
+.mb-30 {
+  margin-bottom: 30px;
+}
+.mb-40 {
+  margin-bottom: 40px;
+}
+.mb-50 {
+  margin-bottom: 50px;
+}
 
 .dialog{
   @extend .flex-center;
@@ -879,6 +894,12 @@ a{
     }
   }
 
+  .popular{
+    text-align: left;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
 }
 //END HOMEPAGE
 
@@ -1112,3 +1133,20 @@ a{
   }
 }
 //END PUT BOOK PAGE
+
+//ABOUT PAGE
+.about-page{
+
+  .rules{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+
+    .rule{
+      border-radius: 20px;
+      border: 1px solid black;
+      padding: 10px;
+    }
+  }
+}
+//END ABOUT PAGE
