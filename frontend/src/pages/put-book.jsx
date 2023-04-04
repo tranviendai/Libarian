@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CallApi from "../utils/callApi";
 import {convertToDMY, convertToYMD} from "../utils/convertDate";
 
@@ -9,6 +9,7 @@ const PutBookPage = () => {
     const DefaultFormData = { title: '', author: '', publisher: '', publishingYear: '2000-01-01', summary: '', categoryID: '-1' }
     const [form, setForm] = useState(DefaultFormData);
     const [categories, setCategories] = useState([]);
+    const navigate = useNavigate();
 
     //category
     useEffect(() => { 
@@ -76,7 +77,7 @@ const PutBookPage = () => {
             const body = {
                 ...form,
                 publishingYear: convertToDMY(form.publishingYear),
-                bookID: 'id',
+                bookID: id || 'id',
                 image: 'img'
             }
             console.log(body);
@@ -87,7 +88,8 @@ const PutBookPage = () => {
             }
 
             alert('Thành công!')
-            setForm(DefaultFormData);
+            if (id) navigate('/LMS/Book')
+            else setForm(DefaultFormData);
         } catch (err) { 
             console.log(err);
             alert('Có lỗi!');

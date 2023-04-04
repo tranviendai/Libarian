@@ -1,8 +1,10 @@
+import { useState } from "react";
 import CallApi from "../../../utils/callApi";
 import DialogWrapper from "../../shared/dialog-wrapper"
 
 const FormEditCopy = ({ onExit, copy, refresh }) => { 
     const Statuses = ["Còn sách", "Đang mượn", "Sách hỏng", "Sách mất"];
+    const [formData, setFormData] = useState({ lBookID: copy.lBookID, status: copy.status, note: copy.note, bookID: copy.bookID });
 
     const onConfirm = async (action) => {
         try {
@@ -11,10 +13,8 @@ const FormEditCopy = ({ onExit, copy, refresh }) => {
                     await CallApi.post('/lbooks', {  })
                     break;
                 case 2:
-                    await CallApi.put('/categories/' + copy.lBookID, {
-                        params: {
-                            
-                        }
+                    await CallApi.put('/lbooks/' + copy.lBookID, {
+                        ...formData
                     });
                     break;
                 case 3:
@@ -32,13 +32,17 @@ const FormEditCopy = ({ onExit, copy, refresh }) => {
         }
     }
 
+    const onFormChange = (e) => { 
+        const { id, value } = e.target;
+        setFormData(x => { return {...x, [id]: value} })
+    }
+
     return <DialogWrapper onClickOut={onExit}>
         <div className="edit-copy">
             <div className="title">Chỉnh sửa cuốn sách #{copy.lBookID}</div>
-            <div className="title">(mới xóa được thôi)</div>
             <div>
                 <label htmlFor="status">Tình trạng:</label>
-                <select id="status">
+                <select id="status" value={formData.status || Statuses[0]} onChange={(e) => onFormChange(e)}>
                     {Statuses.map(x => <option key={x} value={x}>
                         {x}
                     </option>)}
@@ -46,12 +50,12 @@ const FormEditCopy = ({ onExit, copy, refresh }) => {
             </div>
             <div>
                 <label htmlFor="note">Ghi chú:</label>
-                <input type="text" id="note" />
+                <input type="text" id="note" value={formData.note} onChange={(e) => onFormChange(e)} />
             </div>
             <div>
                 <div className="btn" onClick={onExit}>Hủy</div>
                 <div className="btn" onClick={() => onConfirm(3)}>Xóa</div>
-                <div className="btn">Cập nhật</div>
+                <div className="btn" onClick={() => onConfirm(2)}>Cập nhật</div>
             </div>
         </div>
     </DialogWrapper>

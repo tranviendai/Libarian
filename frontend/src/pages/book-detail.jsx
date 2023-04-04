@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import CallApi from '../utils/callApi';
-import { getBookCover, booksData, BookCopyData, CategoriesData } from '../mock-data'
+import { getBookCover, booksData, BookCopyData } from '../mock-data'
 import FormEditCopy from "../components/page/book-detail/frm-edit-copy";
 
 const BookDetailPage = () => {
@@ -51,7 +51,7 @@ const BookDetailPage = () => {
 
                 if (mounted) setCategory(data.nameCategory);
             } catch (err) {
-                setCategory(CategoriesData.filter(x => x.categoryID === book.categoryID)[0].cate_name)
+                //setCategory(CategoriesData.filter(x => x.categoryID === book.categoryID)[0].cate_name)
                 console.log(err);
             }
         }
