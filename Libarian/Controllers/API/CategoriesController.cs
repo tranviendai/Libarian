@@ -50,7 +50,7 @@ namespace Librarian.Controllers.API
             return category;
         }
 
-        // PUT: api/Categories/5
+        // PUT: 
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategory(int id, Category category)

@@ -136,6 +136,7 @@ namespace Librarian.Controllers.API
             }
 
             _context.Entry(book).State = EntityState.Modified;
+            _context.Entry(book).Property(x => x.bookIndex).IsModified = false;
 
             try
             {
