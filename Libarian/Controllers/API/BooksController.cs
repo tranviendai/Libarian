@@ -22,6 +22,25 @@ namespace Librarian.Controllers.API
             _context = context;
         }
 
+        [HttpGet("utils/sortBookBy/{sortBy}")]
+        public async Task<ActionResult<IEnumerable<Book>>> SortBookBy(string sortBy)
+        {
+            IQueryable<Book> query = _context.Book;
+
+            query = sortBy.ToLower() switch
+            {
+                "title" => query.OrderBy(b => b.title),
+                "author" => query.OrderBy(b => b.author),
+                "publisher" => query.OrderBy(b => b.publisher),
+                "publishingyear" => query.OrderBy(b => b.publishingYear),
+                "summary" => query.OrderBy(b => b.summary),
+                "count" => query.OrderBy(b => b.count),
+                "adddate" => query.OrderBy(b => b.addDate),
+                _ => query.OrderBy(b => b.title),
+            };
+            return await query.ToListAsync();
+        }
+
         // GET: api/Books
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBook(int? cateId, string keyword = "", string orderBy = "addDate", bool asc = false, int limit = 20, int page = 1)
