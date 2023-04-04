@@ -46,7 +46,8 @@ $purple: #3D4F9F;
 $light-grey: #E8ECF4;
 $grey: #7382A3;
 //$nav-height: 65px;
-$nav-height: 100px;
+$nav-height: 80px;
+//$nav-height: 100px;
 
 :root{
   font-family: 'Quicksand', sans-serif;
@@ -268,7 +269,7 @@ a{
     .btn{
       background-color: $light-blue;
       color: $blue;
-      padding: 8px 20px;
+      padding: 15px 20px;
       font-weight: bolder;
     }
   }
@@ -557,8 +558,10 @@ a{
 
   margin-left: 30px;
   position: relative;
-  height: 100px;
-  width: 230px;
+  //height: 100px;
+  height: 50px;
+  //width: 230px;
+  width: 115px;
   background-color: #5BA9D3;
   border-radius: 100px;
   overflow: hidden;
@@ -579,15 +582,15 @@ a{
 
   .cloud-1{
     bottom: 0;
-    left: 40px;
+    left: 20px;
   }
   .cloud-2{
     bottom: 0;
   }
   .sun-wrap{
     right: 0;
-    height: 100px;
-    width: 100px;
+    height: 50px;
+    width: 50px;
     transform: rotate(90deg);
     border-radius: 100%;
     overflow: hidden;
@@ -595,6 +598,7 @@ a{
     >* {
       position: absolute;
       right: 0;
+      
     }
 
     .moon{
@@ -637,7 +641,7 @@ a{
       opacity: 0
     }
     .sun-wrap{
-      transform: translateX(-125px) rotate(0);
+      transform: translateX(-62px) rotate(0);
 
       .sun{
         opacity: 0;
@@ -649,7 +653,7 @@ a{
         height: 100%;
         width: 100%;
         transform: translate(40%, -60%);
-        transition: all $animation-time;
+        transition: all $animation-time ease-out;
       }
     }
 
