@@ -22,6 +22,8 @@ const BookPage = () => {
     const [selectedCate, setSelectedCate] = useState(-1);
     const [page, setPage] = useState(1);
     const [bookCount, setBookCount] = useState(0);
+    const [orderBy, setOrderBy] = useState('addDate');
+    const [orderAsc, setOrderAsc] = useState(false);
 
     const ItemPerPage = 20;
 
@@ -38,7 +40,9 @@ const BookPage = () => {
                         cateId: selectedCate > 0 ? selectedCate : null,
                         keyword,
                         limit: ItemPerPage,
-                        page
+                        page,
+                        orderBy,
+                        asc: orderAsc
                     }
                 })
 
@@ -58,7 +62,7 @@ const BookPage = () => {
         return () => { 
             mounted = false;
         }
-    }, [keyword, selectedCate, page])
+    }, [keyword, selectedCate, page, orderAsc, orderBy])
 
     //search hint
     useEffect(() => { 
@@ -168,12 +172,18 @@ const BookPage = () => {
         if (e.key === 'Enter') onSearch();
     }
 
+    const onOrderChange = (e) => { 
+        setOrderAsc(e.target.id === 'asc')
+    }
+
     return <div className="book-page">
         <h3 className="page-title">Tìm kiếm sách</h3>
-        <div className="tool-bar">
+        <div className="container-80">
             <div className="add-book-btn btn">
                 <Link to='/LMS/AddBook'>+ Thêm Sách</Link>
             </div>
+        </div>
+        <div className="tool-bar container-80">
             <div>
                 <label htmlFor='searchName'> Tựa sách: </label>
                 <div className="input-wrap">
@@ -194,13 +204,27 @@ const BookPage = () => {
                 <div className="btn" onClick={onSearch}>search</div>
             </div>
             <div>
-                <label>
+                <label htmlFor='category'>
                     Thể loại sách:
                 </label>
-                <select onChange={e => onChangeCategory(e)} value={selectedCate}>
+                <select onChange={e => onChangeCategory(e)} value={selectedCate} id='category'>
                     <option value={-1} key={-1}>Tất cả</option>
                     {categories.map(x => <option value={x.categoryID} key={x.categoryID}>{x.nameCategory}</option>)}
                 </select>
+            </div>
+
+            <div>
+                <label>
+                    Sắp xếp theo
+                </label>
+                <select onChange={(e) => setOrderBy(e.target.value)} value={orderBy}>
+                    <option value="addDate">Ngày thêm vào</option>
+                    <option value="title">Tên sách</option>
+                </select>
+                <label htmlFor='asc'>Tăng dần</label>
+                <input type='radio' id='asc' name='orderby' checked={orderAsc} onChange={onOrderChange} />
+                <label htmlFor='desc'>Giảm dần</label>
+                <input type='radio' id='desc' name='orderby' checked={!orderAsc} onChange={onOrderChange}/>
             </div>
         </div>
         {loading && <div className="loader"></div>} 

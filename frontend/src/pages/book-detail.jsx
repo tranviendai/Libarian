@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import CallApi from '../utils/callApi';
-import { getBookCover, booksData, BookCopyData, CategoriesData } from '../mock-data'
+import { getBookCover, booksData, BookCopyData } from '../mock-data'
 import FormEditCopy from "../components/page/book-detail/frm-edit-copy";
 
+const Statuses = ["Còn sách", "Đang mượn", "Sách hỏng", "Sách mất"];
+
 const BookDetailPage = () => {
+
     const { id } = useParams();
     const [book, setBook] = useState(null);
     const [category, setCategory] = useState('');
@@ -12,8 +15,8 @@ const BookDetailPage = () => {
     const [refeshCopies, setRefeshCopies] = useState(false);
     const [showEditDialog, setShowEditDialog] = useState(false);
     const [selectedCopy, setSelectedCopy] = useState(null);
+    const [status, setStatus] = useState('');
 
-    //const CopyStates = ['Còn', 'Đang cho mượn', 'Bị hỏng', 'Bị mất'];
     const navigate = useNavigate();
 
     //book
@@ -51,7 +54,7 @@ const BookDetailPage = () => {
 
                 if (mounted) setCategory(data.nameCategory);
             } catch (err) {
-                setCategory(CategoriesData.filter(x => x.categoryID === book.categoryID)[0].cate_name)
+                //setCategory(CategoriesData.filter(x => x.categoryID === book.categoryID)[0].cate_name)
                 console.log(err);
             }
         }
@@ -71,7 +74,8 @@ const BookDetailPage = () => {
             try {
                 const resp = await CallApi.get('/lbooks/', {
                     params: {
-                        bookID: id
+                        bookID: id,
+                        status: status||null
                     }
                 });
                 const data = resp.data;
@@ -88,7 +92,7 @@ const BookDetailPage = () => {
         return () => {
             mounted = false;
         }
-    }, [id, refeshCopies])
+    }, [id, refeshCopies, status])
 
     const onDeleteBook = async () => { 
         try {
@@ -162,6 +166,13 @@ const BookDetailPage = () => {
                     {copies.length > 0 &&
                         <>
                         <p><i>click vào cuốn sách để chỉnh sửa</i></p>
+                        <div>
+                            <label>Lọc theo tình trạng</label>
+                            <select value={status} onChange={e => setStatus(e.target.value)}>
+                                <option value=''>Tất cả</option>
+                                {Statuses.map(x => <option key={x} value={x}>{x}</option>)}
+                            </select>
+                        </div>
                         <div className="copy-list">
                             <div className="copy-item">
                                 <div>Mã cuốn sách</div>

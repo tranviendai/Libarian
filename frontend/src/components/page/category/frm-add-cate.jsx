@@ -23,9 +23,8 @@ const FrmAddCate = ({setShow, item, setRefresh}) => {
                     break;
                 case 2:
                     await CallApi.put('/categories/' + item.categoryID, { 
-                        params: {
-                            nameCategory: name
-                        }
+                        categoryID: item.categoryID,
+                        nameCategory: name
                      });
                     break;
                 case 3:

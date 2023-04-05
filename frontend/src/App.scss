@@ -46,7 +46,8 @@ $purple: #3D4F9F;
 $light-grey: #E8ECF4;
 $grey: #7382A3;
 //$nav-height: 65px;
-$nav-height: 100px;
+$nav-height: 80px;
+//$nav-height: 100px;
 
 :root{
   font-family: 'Quicksand', sans-serif;
@@ -118,6 +119,21 @@ a{
 }
 .hidden{
   display: none;
+}
+.mb-10 {
+  margin-bottom: 10px;
+}
+.mb-20 {
+  margin-bottom: 20px;
+}
+.mb-30 {
+  margin-bottom: 30px;
+}
+.mb-40 {
+  margin-bottom: 40px;
+}
+.mb-50 {
+  margin-bottom: 50px;
 }
 
 .dialog{
@@ -268,7 +284,7 @@ a{
     .btn{
       background-color: $light-blue;
       color: $blue;
-      padding: 8px 20px;
+      padding: 15px 20px;
       font-weight: bolder;
     }
   }
@@ -557,8 +573,10 @@ a{
 
   margin-left: 30px;
   position: relative;
-  height: 100px;
-  width: 230px;
+  //height: 100px;
+  height: 50px;
+  //width: 230px;
+  width: 115px;
   background-color: #5BA9D3;
   border-radius: 100px;
   overflow: hidden;
@@ -579,15 +597,15 @@ a{
 
   .cloud-1{
     bottom: 0;
-    left: 40px;
+    left: 20px;
   }
   .cloud-2{
     bottom: 0;
   }
   .sun-wrap{
     right: 0;
-    height: 100px;
-    width: 100px;
+    height: 50px;
+    width: 50px;
     transform: rotate(90deg);
     border-radius: 100%;
     overflow: hidden;
@@ -595,6 +613,7 @@ a{
     >* {
       position: absolute;
       right: 0;
+      
     }
 
     .moon{
@@ -637,7 +656,7 @@ a{
       opacity: 0
     }
     .sun-wrap{
-      transform: translateX(-125px) rotate(0);
+      transform: translateX(-62px) rotate(0);
 
       .sun{
         opacity: 0;
@@ -649,7 +668,7 @@ a{
         height: 100%;
         width: 100%;
         transform: translate(40%, -60%);
-        transition: all $animation-time;
+        transition: all $animation-time ease-out;
       }
     }
 
@@ -875,6 +894,12 @@ a{
     }
   }
 
+  .popular{
+    text-align: left;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
 }
 //END HOMEPAGE
 
@@ -957,6 +982,12 @@ a{
 //BOOK PAGE
 .book-page{
 
+  .add-book-btn {
+    border: 1px solid black;
+    padding: 10px 20px;
+    display: inline-block;
+  }
+
   .tool-bar{
     display: flex;
     justify-content: space-evenly;
@@ -967,12 +998,6 @@ a{
       display: flex;
 
     }
-
-    .add-book-btn{
-      border: 1px solid black;
-      padding: 10px 20px;
-    }
-
     .input-wrap{
       position: relative;
       width: 300px;
@@ -1108,3 +1133,20 @@ a{
   }
 }
 //END PUT BOOK PAGE
+
+//ABOUT PAGE
+.about-page{
+
+  .rules{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+
+    .rule{
+      border-radius: 20px;
+      border: 1px solid black;
+      padding: 10px;
+    }
+  }
+}
+//END ABOUT PAGE
