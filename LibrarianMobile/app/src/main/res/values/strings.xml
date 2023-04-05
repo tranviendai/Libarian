@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Libarian</string>
+    <string name="nav_header_title">Libary Project</string>
+
+    <string name="menu_home">Trang Chủ</string>
+    <string name="menu_search">Tra Cứu</string>
+    <string name="menu_about">Về Chúng Tôi</string>
+    <string name="menu_books">Thông Tin Sách</string>
+</resources>
