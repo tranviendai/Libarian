@@ -1010,6 +1010,10 @@ a{
         }
       }
 
+      .hints.hide{
+        display: none;
+      }
+
       .hints{
         display: grid;
         border: 1px solid black;
