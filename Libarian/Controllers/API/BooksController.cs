@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Librarian.Data;
 using Librarian.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Librarian.Controllers.API
 {
