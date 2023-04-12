@@ -110,7 +110,7 @@ const BookDetailPage = () => {
         try {
             await CallApi.post('lbooks/', {
                 lBookID: 'lBookID',
-                status: 'Còn sách',
+                status: Statuses[0],
                 note: 'Sách mới',
                 bookID: book.bookID
             })

@@ -39,14 +39,14 @@ const Login = ({ setLogin }) => {
                         </div>
                     </div>
 
-                    <label>
+                    <label style={{ visibility: 'hidden' }} >
                         <input type="checkbox" />
                         Lưu mật khẩu
                     </label>
 
                 </div>
                 <div className="frm-2" style={{ backgroundImage: `url(${BGB})` }}>
-                    <p className="btn">Quên mật khẩu?</p>
+                    <p className="btn" style={{ visibility: 'hidden' }}>Quên mật khẩu?</p>
                     <div className="btns">
                         <div className="btn pill" onClick={Exit}>Thoát</div>
                         <div className="btn pill confirm">Đăng nhập</div>

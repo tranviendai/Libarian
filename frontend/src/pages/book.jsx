@@ -189,11 +189,11 @@ const BookPage = () => {
                 <div className="input-wrap">
                     <input type='text' id='searchName' placeholder='Nhập tựa sách' value={searchName}
                         onChange={(e) => { setSearchName(e.target.value) }} onKeyDown={(e) => onSearchKeyDown(e)}
-                        onFocus={() => setShowHint(true)} onBlur={() => setTimeout(() => setShowHint(false), 100)} />
+                        onFocus={() => setShowHint(true)} onBlur={() => setTimeout(() => setShowHint(false), 500)} />
                     
                     
-                    {searchName.length > 0 && showHint &&
-                        <div className="hints">
+                    {searchName.length > 0 &&
+                        <div className={'hints ' + (showHint?'':'hide')}>
                             {searching ? <div><i>Đang tìm...</i></div> :
                                 hint.length > 0 &&
                                 hint.map(x => <div className="hint" key={x} onClick={() => { setSearchName(x);}}>{x}</div>)

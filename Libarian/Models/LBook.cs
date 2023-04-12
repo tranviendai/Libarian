@@ -7,7 +7,7 @@ namespace Librarian.Models
     {
         [Key]
         [Display(Name = "Mã Đầu Sách")]
-        [StringLength(8)]
+        [StringLength(10)]
         public string lBookID { get; set; }
 
         [Display(Name = "Mã Sách")]

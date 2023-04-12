@@ -17,6 +17,7 @@ const Layout = ({ children }) => {
                 </div>
             </div> */}
             <div className='page-container'>
+                <div className="navbar-fill"></div>
                 <Background />
                 {children}
             </div>
