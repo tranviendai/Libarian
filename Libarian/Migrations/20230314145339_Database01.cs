@@ -225,7 +225,7 @@ namespace Librarian.Migrations
                 name: "LBooks",
                 columns: table => new
                 {
-                    lBookID = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
+                    lBookID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     lBookIndex = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     status = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
@@ -255,7 +255,7 @@ namespace Librarian.Migrations
                     endDate = table.Column<DateTime>(type: "Date", nullable: false),
                     bookStatus = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: false),
                     libraryCardID = table.Column<string>(type: "nvarchar(5)", nullable: false),
-                    lBookID = table.Column<string>(type: "nvarchar(8)", nullable: false)
+                    lBookID = table.Column<string>(type: "nvarchar(10)", nullable: false)
                 },
                 constraints: table =>
                 {
