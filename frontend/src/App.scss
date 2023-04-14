@@ -165,7 +165,8 @@ a{
 }
 .page-container{
   position: relative;
-  min-height: calc(100vh - $nav-height);
+  //min-height: calc(100vh - $nav-height);
+  min-height: 100vh;
   overflow: hidden; 
 }
 .container-80{

@@ -70,7 +70,6 @@ namespace Librarian.Controllers.API
             return Ok(await book.ToListAsync());
         }
 
-		// GET: api/Books
 		[HttpGet("utils/countBook")]
 		public async Task<ActionResult<int>> CountBook(int? cateId, string keyword = "")
 		{
@@ -126,6 +125,7 @@ namespace Librarian.Controllers.API
             return book;
         }
 
+        [Authorize]
         // PUT: api/Books/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -138,6 +138,7 @@ namespace Librarian.Controllers.API
 
             _context.Entry(book).State = EntityState.Modified;
             _context.Entry(book).Property(x => x.bookIndex).IsModified = false;
+            _context.Entry(book).Property(x => x.addDate).IsModified = false;
 
             try
             {
@@ -161,6 +162,7 @@ namespace Librarian.Controllers.API
         // POST: api/Books
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Book>> PostBook(Book book)
         {
           if (_context.Book == null)
@@ -170,9 +172,8 @@ namespace Librarian.Controllers.API
         
             book.addDate = DateTime.Now;
             book.count = 0;
-            var tbook = _context.Book.OrderByDescending(c => c.bookIndex).FirstOrDefault();
-            var autoID = tbook != null ? tbook.bookIndex + 1 : 1;
-            autoID += 1000;
+            var tbook = _context.Book.OrderByDescending(c => c.bookID).FirstOrDefault();
+            var autoID = tbook != null ? int.Parse(tbook.bookID.Substring(1, tbook.bookID.Length - 1)) + 1 + "" : "0001";
             book.bookID = "B" + autoID;
             //Bxxxx
             _context.Book.Add(book);
@@ -197,6 +198,7 @@ namespace Librarian.Controllers.API
 
         // DELETE: api/Books/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteBook(string id)
         {
             if (_context.Book == null)

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import CallApi from '../utils/callApi'
 import FrmAddCate from '../components/page/category/frm-add-cate'
+import useGlobalContext from '../contexts/GlobalContext'
 
 const { CategoriesData } = require('../mock-data')
 
@@ -10,6 +11,8 @@ const CategoryPage = () => {
     const [refresh, setRefresh] = useState(false);
     const [selectedItem, setSelectedItem] = useState({});
     const [loading, setLoading] = useState(false);
+
+    const { token } = useGlobalContext();
 
     useEffect(() => { 
         let mounted = true;
@@ -36,6 +39,7 @@ const CategoryPage = () => {
     }, [refresh])
 
     const showFrm = () => { 
+        if (!token) return;
         setShowFrmAdd(true);
     }
 
@@ -48,12 +52,14 @@ const CategoryPage = () => {
         {showFrmAdd && <FrmAddCate setShow={setShowFrmAdd} item={selectedItem} setRefresh={setRefresh} />}
         <h2 className="title">Danh Sách thể loại</h2>
         <div className='container-80'>
-            <div className="btn-add btn" onClick={onAdd}>+ Thêm thể loại</div>
+            {token && <>
+                <div className="btn-add btn" onClick={onAdd}>+ Thêm thể loại</div>
+                <p><i>Click vào thể loại để chỉnh sửa</i></p>
+            </>}
             
                 {loading ?
                     <div className="loader"></div>
                     : <>
-                        <p><i>Click vào thể loại để chỉnh sửa</i></p>
                         <div className="category-list ">
                         {list.map(x => <div key={x.categoryID} className='category-item btn' onClick={() => { setSelectedItem(x); showFrm(); }} >
                                 <div className="name">{x.nameCategory}</div>

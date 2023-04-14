@@ -1,8 +1,12 @@
 import MountainBG from '../resources/imgs/mountain-bg.png';
 import AboutBG from '../resources/imgs/about-bg.png';
+import { CallApiWithToken } from '../utils/callApi';
 
 
 const AboutPage = () => { 
+    const test = CallApiWithToken('token');
+    test.get('/books');
+
     return <div className="about-page-2">
         <img src={MountainBG} alt="" className='mountain-bg' />
         <div className="left">

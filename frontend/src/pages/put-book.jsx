@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom";
-import CallApi from "../utils/callApi";
+import CallApi, {CallApiWithToken} from "../utils/callApi";
 import {convertToDMY, convertToYMD} from "../utils/convertDate";
+import useGlobalContext from "../contexts/GlobalContext";
 
 const PutBookPage = () => { 
     const { id } = useParams();
+    const { token } = useGlobalContext();
 
     const DefaultFormData = { title: '', author: '', publisher: '', publishingYear: '2000-01-01', summary: '', categoryID: '-1' }
     const [form, setForm] = useState(DefaultFormData);
@@ -80,11 +82,10 @@ const PutBookPage = () => {
                 bookID: id || 'id',
                 image: 'img'
             }
-            console.log(body);
             if (id) {
-                await CallApi.put('/books/' + id, body)
+                await CallApiWithToken(token).put('/books/' + id, body)
             } else { 
-                await CallApi.post('/books/', body)
+                await CallApiWithToken(token).post('/books/', body)
             }
 
             alert('Thành công!')

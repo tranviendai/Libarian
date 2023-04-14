@@ -11,7 +11,7 @@ import logo from '../../resources/imgs/logo.png';
 
 const Nav = () => { 
     const [login, setLogin] = useState(false);
-    const { lightMode, toggleLightMode } = useGlobalContext();
+    const { lightMode, toggleLightMode, token, removeToken, role } = useGlobalContext();
 
     return <>
         <div className={`navbar ${!lightMode && 'night'}`}>
@@ -23,10 +23,16 @@ const Nav = () => {
                 <Link to={'/LMS/About'}>Giới thiệu</Link>
                 <Link to={'/LMS/Category'}>Thể loại</Link>
                 <Link to={'/LMS/Book'}>Sách</Link>
+                {token &&  role === 'Admin' && <Link to={'/LMS/Staff'}>Thủ thư</Link>}
             </div>
             <div className="right">
                 <div className="flex-fill"></div>
-                <div className="btn pill" onClick={() => { setLogin(true) }}>Đăng nhập</div>
+                {token ?
+                    <div className="btn pill" onClick={removeToken}>Đăng Xuất</div>
+                    :
+                    <div className="btn pill" onClick={() => { setLogin(true) }}>Đăng nhập</div>
+                }
+                
                 <div className={`light-mode-toggle ${!lightMode && 'night'}`} onClick={toggleLightMode}>
                     <div className="bg abs-fill"></div>
                     <div className="bg-night abs-fill"></div>

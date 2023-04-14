@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import CallApi from '../utils/callApi';
+import CallApi, {CallApiWithToken} from '../utils/callApi';
 import { getBookCover, booksData, BookCopyData } from '../mock-data'
 import FormEditCopy from "../components/page/book-detail/frm-edit-copy";
+import useGlobalContext from "../contexts/GlobalContext";
 
 const Statuses = ["Còn sách", "Đang mượn", "Sách hỏng", "Sách mất"];
 
 const BookDetailPage = () => {
+    const {token} = useGlobalContext();
 
     const { id } = useParams();
     const [book, setBook] = useState(null);
@@ -71,8 +73,10 @@ const BookDetailPage = () => {
         let mounted = true;
 
         const fetchApi = async () => {
+
             try {
-                const resp = await CallApi.get('/lbooks/', {
+                if (!token) throw new Error('no auth token found');
+                const resp = await CallApiWithToken(token).get('/lbooks/', {
                     params: {
                         bookID: id,
                         status: status||null
@@ -92,11 +96,11 @@ const BookDetailPage = () => {
         return () => {
             mounted = false;
         }
-    }, [id, refeshCopies, status])
+    }, [id, refeshCopies, status, token])
 
     const onDeleteBook = async () => { 
         try {
-            await CallApi.delete('books/' + id);
+            await CallApiWithToken(token).delete('books/' + id);
             alert('đã xóa')
             navigate('/LMS/Book')
         } catch (err) { 
@@ -108,7 +112,7 @@ const BookDetailPage = () => {
 
     const onAddCopy = async () => {
         try {
-            await CallApi.post('lbooks/', {
+            await CallApiWithToken(token).post('lbooks/', {
                 lBookID: 'lBookID',
                 status: Statuses[0],
                 note: 'Sách mới',
@@ -148,23 +152,25 @@ const BookDetailPage = () => {
                             <div>NXB: {book.publisher}</div>
                             <div>Năm XB: {book.publishingYear}</div>
                             <div>Ngày thêm: {book.addDate}</div>
-                            <div className="btn">
-                                <Link to={`/LMS/UpdateBook/${book.bookID}`}>Chỉnh Sửa</Link>
-                            </div>
-                            <div className="btn" onClick={onDeleteBook}>
-                                Xóa
-                            </div>
+                            {token && <>
+                                <div className="btn">
+                                    <Link to={`/LMS/UpdateBook/${book.bookID}`}>Chỉnh Sửa</Link>
+                                </div>
+                                <div className="btn" onClick={onDeleteBook}>
+                                    Xóa
+                                </div>
+                            </>}
                         </div>
                     </div>
                     <h3>Tóm tắt: </h3>
                     <div>{book.summary}</div>
                     <br />
-                    <hr />
-                    <br />
-                    <h2 className="page-title">Thông tin các cuốn sách</h2>
-                    <div className="btn" onClick={onAddCopy}>+ Thêm cuốn sách</div>
-                    {copies.length > 0 &&
-                        <>
+                    
+                    {token && <>
+                        <hr />
+                        <br />
+                        <h2 className="page-title">Thông tin các cuốn sách</h2>
+                        <div className="btn" onClick={onAddCopy}>+ Thêm cuốn sách</div>
                         <p><i>click vào cuốn sách để chỉnh sửa</i></p>
                         <div>
                             <label>Lọc theo tình trạng</label>
@@ -179,14 +185,14 @@ const BookDetailPage = () => {
                                 <div>Tình trạng</div>
                                 <div>Ghi chú</div>
                             </div>
-                            {copies.map(x => <div className="copy-item" key={x.lBookID} onClick={()=>selectCopy(x)}>
+                            {copies.map(x => <div className="copy-item" key={x.lBookID} onClick={() => selectCopy(x)}>
                                 <div >{x.lBookID}</div>
                                 <div >{x.status}</div>
                                 <div >{x.note}</div>
                             </div>)}
                         </div>
-                    </>
-                    }
+                    </>} 
+                    
                 </>
                 :
                 <h2>không tìm thấy sách</h2>

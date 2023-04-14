@@ -20,8 +20,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:3000",
-                                              "http://www.contoso.com")
+                          policy.WithOrigins("http://localhost:3000", "https://localhost:3000")
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials();
@@ -33,17 +32,20 @@ builder.Services.AddAuthentication(options =>
 {
 	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-	options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+	//options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(o =>
 {
+    o.RequireHttpsMetadata = false;
+    o.SaveToken = true;
+
 	o.TokenValidationParameters = new TokenValidationParameters
 	{
 		ValidIssuer = builder.Configuration["Jwt:Issuer"],
 		ValidAudience = builder.Configuration["Jwt:Audience"],
 		IssuerSigningKey = new SymmetricSecurityKey
 		(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-		ValidateIssuer = true,
-		ValidateAudience = true,
+		ValidateIssuer = false,
+		ValidateAudience = false,
 		ValidateLifetime = false,
 		ValidateIssuerSigningKey = true
 	};
@@ -81,16 +83,19 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredLength = 6;
 });
 
-            
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+
+});
 
 var app = builder.Build();
 
 
 //cors
 app.UseCors(MyAllowSpecificOrigins);
-//jwt
-app.UseAuthentication();
-app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -109,6 +114,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+//app.UseAuthorization();
+//jwt
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

@@ -14,12 +14,12 @@ namespace Librarian.Controllers.API
 	[ApiController]
 	public class AuthController : ControllerBase
 	{
-		private readonly UserManager<IdentityUser> _userManager;
+		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly RoleManager<IdentityRole> _roleManager;
 		private readonly IConfiguration _configuration;
 
 		public AuthController(
-		   UserManager<IdentityUser> userManager,
+		   UserManager<ApplicationUser> userManager,
 		   RoleManager<IdentityRole> roleManager,
 		   IConfiguration configuration)
 		{
@@ -32,13 +32,14 @@ namespace Librarian.Controllers.API
 		[Route("login")]
 		public async Task<IActionResult> Login([FromBody] MLoginModel model)
 		{
-			var user = await _userManager.FindByNameAsync(model.Username);
+
+            var user = await _userManager.FindByNameAsync(model.Username);
 			if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
 			{
 				var userRoles = await _userManager.GetRolesAsync(user);
 
 				var authClaims = new List<Claim>
-				{
+				{	
 					new Claim(ClaimTypes.Name, user.UserName),
 					new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
 				};
@@ -49,11 +50,13 @@ namespace Librarian.Controllers.API
 				}
 
 				var token = GetToken(authClaims);
+				var encryptedToken = new JwtSecurityTokenHandler().WriteToken(token);
 
-				return Ok(new
+                return Ok(new
 				{
-					token = new JwtSecurityTokenHandler().WriteToken(token),
-					expiration = token.ValidTo
+					token = encryptedToken,
+					expiration = token.ValidTo,
+					Role = userRoles.FirstOrDefault()
 				});
 			}
 			return Unauthorized();
@@ -61,7 +64,7 @@ namespace Librarian.Controllers.API
 
 		private JwtSecurityToken GetToken(List<Claim> authClaims)
 		{
-			var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+			var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
 
 			var token = new JwtSecurityToken(
 				issuer: _configuration["JWT:ValidIssuer"],
@@ -74,24 +77,30 @@ namespace Librarian.Controllers.API
 			return token;
 		}
 
-		/*[HttpPost]
+		[HttpPost]
 		[Route("register")]
-		public async Task<IActionResult> Register([FromBody] MLoginModel model)
+		public async Task<IActionResult> Register([FromBody] ApplicationUser model)
 		{
-			var userExists = await _userManager.FindByNameAsync(model.Username);
+			var userExists = await _userManager.FindByNameAsync(model.UserName);
 			if (userExists != null)
 				return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "User already exists!" });
 
-			IdentityUse	r user = new()
+			/*ApplicationUser user = new ApplicationUser()
 			{
-				SecurityStamp = Guid.NewGuid().ToString(),
-				UserName = model.Username
-			};
-			var result = await _userManager.CreateAsync(user, model.Password);
-			if (!result.Succeeded)
-				return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+				UserName = model.Username,
+				PasswordHash = model.Password,
+				address = "addr"
 
-			return Ok(new { Status = "Success", Message = "User created successfully!" });
-		}*/
+			};*/
+			try
+			{
+                await _userManager.CreateAsync(model, "P@55word");
+				await _userManager.AddToRoleAsync(model, "THỦ THƯ");
+                return Ok(new { Status = "Success", Message = "User created successfully!" });
+            }
+			catch {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+            }	
+		}
 	}
 }
