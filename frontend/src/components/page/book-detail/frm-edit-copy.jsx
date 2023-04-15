@@ -1,24 +1,27 @@
 import { useState } from "react";
-import CallApi from "../../../utils/callApi";
+import {CallApiWithToken} from "../../../utils/callApi";
 import DialogWrapper from "../../shared/dialog-wrapper"
+import useGlobalContext from "../../../contexts/GlobalContext";
 
 const FormEditCopy = ({ onExit, copy, refresh }) => { 
     const Statuses = ["Còn sách", "Đang mượn", "Sách hỏng", "Sách mất"];
     const [formData, setFormData] = useState({ lBookID: copy.lBookID, status: copy.status, note: copy.note, bookID: copy.bookID });
 
+    const {token} = useGlobalContext();
+
     const onConfirm = async (action) => {
         try {
             switch (action) {
                 case 1:
-                    await CallApi.post('/lbooks', {  })
+                    await CallApiWithToken(token).post('/lbooks')
                     break;
                 case 2:
-                    await CallApi.put('/lbooks/' + copy.lBookID, {
+                    await CallApiWithToken(token).put('/lbooks/' + copy.lBookID, {
                         ...formData
                     });
                     break;
                 case 3:
-                    await CallApi.delete('/lbooks/' + copy.lBookID);
+                    await CallApiWithToken(token).delete('/lbooks/' + copy.lBookID);
                     break;
                 default: return;
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Librarian.Data;
 using Librarian.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Librarian.Controllers.API
 {
@@ -53,6 +54,7 @@ namespace Librarian.Controllers.API
         // PUT: 
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutCategory(int id, Category category)
         {
             if (id != category.categoryID)
@@ -84,6 +86,7 @@ namespace Librarian.Controllers.API
         // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
           if (_context.Category == null)
@@ -98,6 +101,7 @@ namespace Librarian.Controllers.API
 
         // DELETE: api/Categories/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             if (_context.Category == null)

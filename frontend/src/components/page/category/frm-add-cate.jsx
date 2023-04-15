@@ -1,9 +1,11 @@
 import { useState } from "react";
 import DialogWrapper from "../../shared/dialog-wrapper"
-import CallApi from "../../../utils/callApi";
+import {CallApiWithToken} from "../../../utils/callApi";
+import useGlobalContext from "../../../contexts/GlobalContext";
 
 const FrmAddCate = ({setShow, item, setRefresh}) => { 
-
+    const {token} = useGlobalContext();
+    
     const [name, setName] = useState((item && item.nameCategory) || '');
 
     const Exit = () => { 
@@ -19,16 +21,16 @@ const FrmAddCate = ({setShow, item, setRefresh}) => {
         try {
             switch (action) { 
                 case 1:
-                    await CallApi.post('/categories', { nameCategory: name })
+                    await CallApiWithToken(token).post('/categories', { nameCategory: name })
                     break;
                 case 2:
-                    await CallApi.put('/categories/' + item.categoryID, { 
+                    await CallApiWithToken(token).put('/categories/' + item.categoryID, { 
                         categoryID: item.categoryID,
                         nameCategory: name
                      });
                     break;
                 case 3:
-                    await CallApi.delete('/categories/' + item.categoryID);
+                    await CallApiWithToken(token).delete('/categories/' + item.categoryID);
                     break;
                 default: return;
 

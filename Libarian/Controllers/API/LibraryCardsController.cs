@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Librarian.Data;
 using Librarian.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Librarian.Controllers.API
 {
@@ -53,6 +54,7 @@ namespace Librarian.Controllers.API
         // PUT: api/LibraryCards/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutLibraryCard(string id, LibraryCard libraryCard)
         {
             if (id != libraryCard.libraryCardID)
@@ -84,6 +86,7 @@ namespace Librarian.Controllers.API
         // POST: api/LibraryCards
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<LibraryCard>> PostLibraryCard(LibraryCard libraryCard)
         {
           if (_context.LibraryCard == null)
@@ -112,6 +115,7 @@ namespace Librarian.Controllers.API
 
         // DELETE: api/LibraryCards/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteLibraryCard(string id)
         {
             if (_context.LibraryCard == null)

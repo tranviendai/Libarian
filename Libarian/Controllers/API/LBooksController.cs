@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Librarian.Data;
 using Librarian.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Librarian.Controllers.API
 {
@@ -23,6 +24,7 @@ namespace Librarian.Controllers.API
 
         // GET: api/LBooks
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<LBook>>> GetLBooks(string? bookID, string? status)
         {
           if (_context.LBooks == null)
@@ -53,6 +55,7 @@ namespace Librarian.Controllers.API
         // PUT: api/LBooks/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutLBook(string id, LBook lBook)
         {
             if (id != lBook.lBookID)
@@ -85,6 +88,7 @@ namespace Librarian.Controllers.API
         // POST: api/LBooks
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<LBook>> PostLBook(LBook lBook)
         {
           if (_context.LBooks == null)
@@ -123,6 +127,7 @@ namespace Librarian.Controllers.API
 
         // DELETE: api/LBooks/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteLBook(string id)
         {
             if (_context.LBooks == null)

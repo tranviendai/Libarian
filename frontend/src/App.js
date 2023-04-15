@@ -9,6 +9,7 @@ import BookDetailPage from './pages/book-detail';
 import PutBookPage from './pages/put-book';
 // import AboutPage from './pages/about';
 import AboutPage2 from './pages/about-2';
+import StaffPage from './pages/staff';
 
 function App() {
   return <GlobalContextProvider>
@@ -24,6 +25,7 @@ function App() {
           <Route path='/LMS/UpdateBook/:id' element={<PutBookPage />} />
           {/* <Route path='/LMS/About/' element={<AboutPage />} /> */}
           <Route path='/LMS/About/' element={<AboutPage2 />} />
+          <Route path='/LMS/Staff/' element={<StaffPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>

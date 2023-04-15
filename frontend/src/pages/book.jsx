@@ -3,11 +3,13 @@ import BooksGrid from '../components/shared/books-grid';
 import { useEffect, useMemo, useState } from 'react';
 import CallApi from '../utils/callApi'
 import { Link, useLocation } from 'react-router-dom';
+import useGlobalContext from '../contexts/GlobalContext';
 
 const BookPage = () => { 
 
     const { state } = useLocation();
     const { search } = state || {};
+    const { token } = useGlobalContext();
 
     //STATES
     const [list, setList] = useState([]); //book list
@@ -179,9 +181,11 @@ const BookPage = () => {
     return <div className="book-page">
         <h3 className="page-title">Tìm kiếm sách</h3>
         <div className="container-80">
-            <div className="add-book-btn btn">
-                <Link to='/LMS/AddBook'>+ Thêm Sách</Link>
-            </div>
+            {token &&
+                <div className="add-book-btn btn">
+                    <Link to='/LMS/AddBook'>+ Thêm Sách</Link>
+                </div>
+            }
         </div>
         <div className="tool-bar container-80">
             <div>
