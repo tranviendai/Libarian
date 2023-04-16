@@ -164,6 +164,27 @@ a{
   background-color: white;
   padding: 20px;
   border-radius: 20px;
+  box-shadow: 0px 25px 80px -30px #8691C3;
+
+  p{
+    color: var(--color-font-header);
+    margin-bottom: 30px;
+  }
+
+  .btn{
+    padding: 10px 16px;
+    border-radius: 10px;
+  }
+
+  .yes{
+    color: var(--color-font-header);
+    margin-right: 20px;
+    background-color: var(--color-bg-2);
+  }
+  .no{
+    color: var(--color-font-light);
+    background-color: var(--color-font-header);
+  }
 }
 
 .text-center{
@@ -342,6 +363,86 @@ a{
   grid-template-columns: repeat(6, 1fr);
   gap: 40px;
   row-gap: 80px;
+
+  //BOOK DETAIL DIALOG
+    .book-detail-dialog {
+      min-height: 50vh;
+      width: 570px;
+      background-color: white;
+      position: relative;
+      text-align: left;
+      padding: 40px 30px 20px;
+  
+      .header{
+        font-size: 2em;
+        letter-spacing: 5px;
+        border-bottom: 1px solid grey;
+        display: inline-block;
+        padding-bottom: 5px;
+        margin-bottom: 20px;
+      }
+
+      h2{
+        font-size: 20px;
+        font-weight: bold;
+        color: var(--color-font-third);
+      }
+
+      .desc{
+        margin: 10px 0 30px;
+        max-height: 60px;
+        overflow-y: auto;
+        color: var(--color-font-second)
+      }
+
+      .info{
+        display: flex;
+
+        .left{
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+          padding-right: 20px;
+          color: var(--color-font-third);
+
+          p{
+            @extend .flex-center;
+            justify-content: flex-start;
+
+            img{
+              margin-right: 10px;
+              height: 22px;
+              width: 22px;
+            }
+          }
+        }
+        .right{
+          img{
+            width: 180px
+          }
+        }
+      }
+
+      .exit {
+        @extend .flex-center;
+
+        position: absolute;
+        right: 20px;
+        top: 10px;
+        font-size: 1.5em;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+
+        &:hover{
+          cursor: pointer;
+          background-color: var(--color-bg-2);
+        }
+      }
+    }
+  
+  //END BOOK DETAIL DIALOG
 }
 //END BOOK GRID
 
@@ -1035,9 +1136,9 @@ a{
 
   height: calc(100vh - $nav-height);
   //background-color: var(--color-bg-1);
-  padding-top: 40px;
 
   .header{
+    padding-top: 40px;
     margin-bottom: 40px;
     display: flex;
     justify-content: space-between;
@@ -1080,6 +1181,8 @@ a{
     border-radius: 20px;
     position: relative;
 
+    $time: 1s;
+
     h2{
       font-size: 40px;
       font-weight: normal;
@@ -1120,10 +1223,73 @@ a{
     }
 
     .toast{
+      @extend .flex-center;
+
+      position: absolute;
       background-color: white;
       padding: 5px 10px;
       border-radius: 10px;
+      box-shadow: 0px 2px 16px #CBD8FF;
+      padding: 10px;
+
+      img{
+        margin-right: 16px;
+      }
+
+      &.update{
+        @include keyframes(slideIn) {
+            0% {
+              top: 50%;
+              left: 0;
+              transform: translate(-100%, -50%);
+            }
+        
+            100% {
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+            }
+          }
+        
+          @include animate(slideIn, $time, ease-in-out, 1);
+      }
+      &.delete{
+        @include keyframes(slideInRev) {
+            0% {
+              top: 50%;
+              right: 0;
+              transform: translate(100%, -50%);
+            }
+        
+            100% {
+              top: 50%;
+              right: 50%;
+              transform: translate(50%, -50%);
+            }
+          }
+        
+          @include animate(slideInRev, $time, ease-in-out, 1);
+      }
     }
+
+    &.fade {
+      @include keyframes(fade) {
+        0% {
+          opacity: 100%;
+        }
+    
+        50% {
+          opacity: 100%;
+        }
+    
+        100% {
+          opacity: 0;
+        }
+      }
+    
+      @include animate(fade, calc($time * 2), ease-in-out, 1)
+    }
+
   }
 
 }
