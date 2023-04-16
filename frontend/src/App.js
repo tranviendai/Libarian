@@ -7,8 +7,7 @@ import CategoryPage from './pages/category';
 import BookPage from './pages/book';
 import BookDetailPage from './pages/book-detail';
 import PutBookPage from './pages/put-book';
-// import AboutPage from './pages/about';
-import AboutPage2 from './pages/about-2';
+import AboutPage from './pages/about';
 import StaffPage from './pages/staff';
 
 function App() {
@@ -23,8 +22,7 @@ function App() {
           <Route path='/LMS/Book/:id' element={<BookDetailPage />} />
           <Route path='/LMS/AddBook' element={<PutBookPage />} />
           <Route path='/LMS/UpdateBook/:id' element={<PutBookPage />} />
-          {/* <Route path='/LMS/About/' element={<AboutPage />} /> */}
-          <Route path='/LMS/About/' element={<AboutPage2 />} />
+          <Route path='/LMS/About/' element={<AboutPage />} />
           <Route path='/LMS/Staff/' element={<StaffPage />} />
         </Routes>
       </Layout>

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import CallApi from '../utils/callApi'
 import FrmAddCate from '../components/page/category/frm-add-cate'
 import useGlobalContext from '../contexts/GlobalContext'
+import CategoriesGrid from '../components/shared/categories-grid'
+import BG from '../resources/imgs/cate_bg.png'
 
 const { CategoriesData } = require('../mock-data')
 
@@ -48,8 +50,38 @@ const CategoryPage = () => {
         showFrm();
     }
 
-    return <div className='category-page'>
+    return token ? <div className='category-page'>
         {showFrmAdd && <FrmAddCate setShow={setShowFrmAdd} item={selectedItem} setRefresh={setRefresh} />}
+        <div className="container-80">
+            <div className="header">
+                <div className="title">Danh Sách Thể Loại</div>
+                <div className="btn btn-add" onClick={onAdd}>
+                    THÊM
+                </div>
+            </div>
+
+            {loading && <div className="loader"></div>}
+            <CategoriesGrid list={list} onSelect={(x) => { setSelectedItem(x); showFrm(); }} />
+        </div>
+    </div> : <div className="category-page">
+            <div className="content">
+                <div className="left">
+                    <div className="header">
+                        <div className="title">Các thể loại sách có trong B - Library</div>
+                    </div>
+
+                    <CategoriesGrid list={list} nCol={4} />
+                </div>
+                <div className="right">
+                    <img src={BG} alt="" />
+                </div>
+            </div>
+    </div>
+}
+
+export default CategoryPage;
+
+{/* {showFrmAdd && <FrmAddCate setShow={setShowFrmAdd} item={selectedItem} setRefresh={setRefresh} />}
         <h2 className="title">Danh Sách thể loại</h2>
         <div className='container-80'>
             {token && <>
@@ -67,8 +99,4 @@ const CategoryPage = () => {
                         </div>
                     </>
                 }
-        </div>
-    </div>
-}
-
-export default CategoryPage;
+        </div> */}

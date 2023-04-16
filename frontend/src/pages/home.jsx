@@ -40,7 +40,7 @@ const Home = () => {
         const fetchApi = async () => { 
             setLoading(true);
             try {
-                const resp = await CallApi.get('/books', {
+                const resp = await CallApi.get('/books/utils/popularBooks', {
                     params: {
                         limit: 6
                     }
@@ -48,7 +48,7 @@ const Home = () => {
                 const data = resp.data; //api result
                 if (mounted) setBookList(data.map(x => { return { ...x, image: getBookCover(x.bookID) } }));
             } catch (err) {
-                if (mounted) setBookList(booksData); //mock data
+                if (mounted) setBookList(booksData.map(x => { return { ...x, image: getBookCover(x.book_id) } })); //mock data
                 console.log('fetch failed: ', err);
             } finally { 
                 setLoading(false);
@@ -94,9 +94,9 @@ const Home = () => {
                 </div>
 
                 <div className="tags">
-                    <div className="tag">Thể Loại</div>
+                    {/* <div className="tag">Thể Loại</div>
                     <div className="tag">Năm xuất bản</div>
-                    <div className="tag">Nhà xuất bản</div>
+                    <div className="tag">Nhà xuất bản</div> */}
                 </div>
             </div>
             

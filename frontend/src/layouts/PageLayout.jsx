@@ -1,12 +1,12 @@
 import Nav from '../components/shared/navbar';
-//import useGlobalContext from '../contexts/GlobalContext';
+import useGlobalContext from '../contexts/GlobalContext';
 import Background from '../components/shared/background';
 
 const Layout = ({ children }) => { 
-    //const { lightMode, toggleLightMode } = useGlobalContext();
+    const { lightMode } = useGlobalContext();
 
     return <>
-        <div className='main'>
+        <div id='main' className={!lightMode ? 'night':''}>
             <Nav />
             {/* <div className={`light-mode btn ${lightMode ? '' : 'night-mode'}`} onClick={toggleLightMode}>
                 <div className="label">
