@@ -64,7 +64,7 @@ const BookDetailDialog = ({ book, onExit }) => {
                     <img src={book.image} alt="" />
                 </div>
             </div>
-            <div className="exit">x</div>
+            <div className="exit" onClick={onExit}>x</div>
         </div>
     </DialogWrapper>
 }
