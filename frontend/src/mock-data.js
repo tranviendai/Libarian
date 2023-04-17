@@ -1,35 +1,35 @@
 
 const booksData = [
     {
-        book_id: 1, coverImg: require('./resources/imgs/img_1.png'),
-        book_name: 'Trong đáy mắt trời xanh là vĩnh viễn viễn viễn',
+        book_id: 1, image: require('./resources/imgs/img_1.png'),
+        title: 'Trong đáy mắt trời xanh là vĩnh viễn viễn viễn',
         author: 'Xuân Quỳnh',
-        cate_id: 3,
+        categoryID: 3,
         summary: 'Có rất nhiều biến thể của Lorem Ipsum mà bạn có thể tìm thấy, nhưng đa số được biến đổi bằng cách thêm các yếu tố hài hước, các từ ngẫu nhiên có khi không có vẻ gì là có ý nghĩa. Nếu bạn định sử dụng một đoạn Lorem Ipsum, bạn nên kiểm tra kĩ để chắn chắn là không có gì nhạy cảm được giấu ở giữa đoạn văn bản. Tất cả các công cụ sản xuất văn bản mẫu Lorem Ipsum đều được làm theo cách lặp đi lặp lại các đoạn chữ cho tới đủ thì thôi, khiến cho lipsum.com trở thành công cụ sản xuất Lorem Ipsum đáng giá nhất trên mạng. Trang web này sử dụng hơn 200 từ la-tinh, kết hợp thuần thục nhiều cấu trúc câu để tạo ra văn bản Lorem Ipsum trông có vẻ thật sự hợp lí. Nhờ thế, văn bản Lorem Ipsum được tạo ra mà không cần một sự lặp lại nào, cũng không cần chèn thêm các từ ngữ hóm hỉnh hay thiếu trật tự.' 
     },
     {
-        book_id: 2, coverImg: require('./resources/imgs/img_2.png'), book_name: 'Những tấm lòng cao cả', author: 'Edmondo De Amicis', cate_id: 3 },
+        book_id: 2, image: require('./resources/imgs/img_2.png'), title: 'Những tấm lòng cao cả', author: 'Edmondo De Amicis', categoryID: 3 },
     {
-        book_id: 3, coverImg: require('./resources/imgs/img_3.png'), book_name: 'Đừng lựa chọn an nhàn khi còn trẻ', author: 'Cảnh Thiên', cate_id: 3 },
+        book_id: 3, image: require('./resources/imgs/img_3.png'), title: 'Đừng lựa chọn an nhàn khi còn trẻ', author: 'Cảnh Thiên', categoryID: 3 },
     {
-        book_id: 4, coverImg: require('./resources/imgs/img_4.png'), book_name: 'Tuổi trẻ đáng giá bao nhiêu', author: 'Rosie Nguyễn', cate_id: 1 },
+        book_id: 4, image: require('./resources/imgs/img_4.png'), title: 'Tuổi trẻ đáng giá bao nhiêu', author: 'Rosie Nguyễn', categoryID: 1 },
     {
-        book_id: 5, coverImg: require('./resources/imgs/img_5.png'), book_name: 'Kiếp nào ta cùng tìm thấy nhau', author: 'Brian L. Weiss', cate_id: 1 },
+        book_id: 5, image: require('./resources/imgs/img_5.png'), title: 'Kiếp nào ta cùng tìm thấy nhau', author: 'Brian L. Weiss', categoryID: 1 },
     {
-        book_id: 6, coverImg: require('./resources/imgs/img_6.png'), book_name: 'Mật mã thần số học', author: 'Glynis Mccants', cate_id: 2 }
+        book_id: 6, image: require('./resources/imgs/img_6.png'), title: 'Mật mã thần số học', author: 'Glynis Mccants', categoryID: 2 }
 ]
 
 const CategoriesData = [
-    { cate_id: 1, cate_name: 'Truyền cảm hứng' },
-    { cate_id: 2, cate_name: 'Giải trí' },
-    { cate_id: 3, cate_name: 'Lịch sử' },
-    { cate_id: 4, cate_name: 'Giáo trình' },
-    { cate_id: 5, cate_name: 'Truyện ngắn' },
-    { cate_id: 6, cate_name: 'Tiểu sử' },
-    { cate_id: 7, cate_name: 'Giả tưởng' },
-    { cate_id: 8, cate_name: 'Tình cảm' },
-    { cate_id: 9, cate_name: 'Văn học' },
-    { cate_id: 10, cate_name: 'Kinh dị' }
+    { categoryID: 1, nameCategory: 'Truyền cảm hứng' },
+    { categoryID: 2, nameCategory: 'Giải trí' },
+    { categoryID: 3, nameCategory: 'Lịch sử' },
+    { categoryID: 4, nameCategory: 'Giáo trình' },
+    { categoryID: 5, nameCategory: 'Truyện ngắn' },
+    { categoryID: 6, nameCategory: 'Tiểu sử' },
+    { categoryID: 7, nameCategory: 'Giả tưởng' },
+    { categoryID: 8, nameCategory: 'Tình cảm' },
+    { categoryID: 9, nameCategory: 'Văn học' },
+    { categoryID: 10, nameCategory: 'Kinh dị' }
 ]
 
 const BookCopyData = [

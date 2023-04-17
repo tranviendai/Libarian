@@ -87,8 +87,29 @@ namespace Librarian.Controllers.API
             return Ok(book.Count());
 		}
 
-		// GET: api/Books
-		[HttpGet("utils/getSearchHint")]
+        [HttpGet("utils/popularBooks")]
+        public async Task<ActionResult<IEnumerable<Book>>> getPoluparBooks(int? limit = 6)
+        {
+            var books = from b in _context.Book
+                        from l in _context.LBooks
+                        where b.bookID == l.bookID
+                        from c in _context.CallCard
+                        where c.lBookID == l.lBookID
+                        group b by b.bookID into g
+                        select new { g.Key, count = g.Count() };
+
+            books = books.OrderByDescending(x => x.count).Take(limit.Value);
+
+            var res = from b in _context.Book
+                      from t in books
+                      where b.bookID == t.Key
+                      select b;
+
+            return new JsonResult(res);
+        }
+
+        // GET: api/Books
+        [HttpGet("utils/getSearchHint")]
 		public async Task<ActionResult<IEnumerable<string>>> SearchHint(int? cateId, string keyword = "")
 		{
             var book = from b in _context.Book

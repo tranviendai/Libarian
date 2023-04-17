@@ -8,7 +8,7 @@ import useGlobalContext from '../contexts/GlobalContext';
 const BookPage = () => { 
 
     const { state } = useLocation();
-    const { search } = state || {};
+    const { search, selectCate } = state || {};
     const { token } = useGlobalContext();
 
     //STATES
@@ -21,7 +21,7 @@ const BookPage = () => {
     const [searching, setSearching] = useState(false); //hint loading
 
     const [categories, setCategories] = useState([]);
-    const [selectedCate, setSelectedCate] = useState(-1);
+    const [selectedCate, setSelectedCate] = useState(selectCate || -1);
     const [page, setPage] = useState(1);
     const [bookCount, setBookCount] = useState(0);
     const [orderBy, setOrderBy] = useState('addDate');
