@@ -30,7 +30,27 @@ namespace Librarian.Controllers.API
           {
               return NotFound();
           }
-            return await _context.Category.ToListAsync();
+
+            var res = from c in _context.Category
+                      join b in _context.Book on c.categoryID equals b.categoryID into gj
+                      from bc in gj.DefaultIfEmpty()
+                      group c by new { c.categoryID, c.nameCategory } into g
+                      select new { g.Key.categoryID, g.Key.nameCategory, Count = g.Count() };
+
+         /*   var res1 = from c in _context.Category
+                       join b in _context.Book on c.categoryID equals b.categoryID
+                       select new
+                       {
+                           c.categoryID,
+                           c.books,
+                           b.title
+                       };*/
+            
+            //var count = from b in _context.Book
+
+
+
+            return new JsonResult(res);
         }
 
         // GET: api/Categories/5

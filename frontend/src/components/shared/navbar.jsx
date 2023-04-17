@@ -14,7 +14,7 @@ const Nav = () => {
     const { lightMode, toggleLightMode, token, removeToken, role } = useGlobalContext();
 
     return <>
-        <div className={`navbar ${!lightMode && 'night'}`}>
+        <div className={`navbar ${!lightMode ? 'night': ''}`}>
             <div className="left">
                 <h2><img src={logo} alt="" /></h2>
             </div>
