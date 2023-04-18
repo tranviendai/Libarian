@@ -19,11 +19,11 @@ const Nav = () => {
                 <h2><img src={logo} alt="" /></h2>
             </div>
             <div className="middle">
-                <Link to={'/LMS'}>Trang chủ</Link>
-                <Link to={'/LMS/About'}>Giới thiệu</Link>
-                <Link to={'/LMS/Category'}>Thể loại</Link>
-                <Link to={'/LMS/Book'}>Sách</Link>
-                {token &&  role === 'Admin' && <Link to={'/LMS/Staff'}>Thủ thư</Link>}
+                <Link to={'/BLibrary'}>Trang chủ</Link>
+                <Link to={'/BLibrary/About'}>Giới thiệu</Link>
+                <Link to={'/BLibrary/Category'}>Thể loại</Link>
+                <Link to={'/BLibrary/Book'}>Sách</Link>
+                {token &&  role === 'Admin' && <Link to={'/BLibrary/Staff'}>Thủ thư</Link>}
             </div>
             <div className="right">
                 <div className="flex-fill"></div>
