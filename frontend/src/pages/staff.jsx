@@ -24,7 +24,7 @@ const StaffPage = () => {
     }, [token])
 
     return <div className="staff-page">
-        <h2>Nhân viên: </h2>
+        <h2>Danh sách : </h2>
         <ol>
             {staffs.map(x => <li key={x.id}>
                 <ul>

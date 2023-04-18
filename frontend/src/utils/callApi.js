@@ -6,7 +6,7 @@ const CallApi = axios.create({
     baseURL
 });
 
-const CallApiWithToken = (token) => {
+const CallApiWithToken = (token) => {   
 
     return axios.create({
         baseURL, headers: {

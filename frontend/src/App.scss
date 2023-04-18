@@ -460,7 +460,8 @@ a{
     //height: 200px;
     aspect-ratio: 2/3;
     background-color: grey;
-    background-image: var(--book-bg);
+    //background-image: var(--book-bg);
+    background-color: var(--color-bg-2);
     background-size: cover; 
     background-position: center;
     border-radius: 20px;
@@ -989,7 +990,15 @@ a{
 }
 
 #main.night{
-  
+  --color-bg-1: #7F75C7;
+  --color-bg-2: #E8ECF4;
+  --color-bg-home-1: rgba(244, 247, 255, 0.2);
+  --color-bg-home-2: #F1F5FF;
+  --color-font-header: #3D4F9F;
+  --color-font-primary: #000;
+  --color-font-second: #A4ABC8;
+  --color-font-third: #3F4255;
+  --color-font-light: #fff;
 }
 
 //HOMEPAGE
@@ -1135,7 +1144,7 @@ a{
 .category-page{
 
   height: calc(100vh - $nav-height);
-  //background-color: var(--color-bg-1);
+  background-color: var(--color-bg-1);
 
   .header{
     padding-top: 40px;
