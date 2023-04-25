@@ -990,15 +990,7 @@ a{
 }
 
 #main.night{
-  --color-bg-1: #7F75C7;
-  --color-bg-2: #E8ECF4;
-  --color-bg-home-1: rgba(244, 247, 255, 0.2);
-  --color-bg-home-2: #F1F5FF;
-  --color-font-header: #3D4F9F;
-  --color-font-primary: #000;
-  --color-font-second: #A4ABC8;
-  --color-font-third: #3F4255;
-  --color-font-light: #fff;
+  
 }
 
 //HOMEPAGE
@@ -1585,3 +1577,22 @@ a{
 }
 //END ABOUT PAGE
 
+//LIB CARD PAGE
+.libcard-page{
+  .header{
+    margin: 20px 0;
+  }
+
+  .card-list{
+    .libcard {
+      border-bottom: 1px solid black;
+      margin-bottom: 20px;
+  
+      &:hover {
+        color: blue;
+        cursor: pointer;
+      }
+    }
+  }
+}
+//END LIB CARD PAGE

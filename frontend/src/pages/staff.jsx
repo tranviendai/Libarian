@@ -11,9 +11,13 @@ const StaffPage = () => {
         let mounted = true;
 
         const fetchApi = async () => { 
-            const resp = await CallApiWithToken(token).get('/staffs');
-            const data = resp.data;
-            if (mounted) setStaffs(data);
+            try {
+                const resp = await CallApiWithToken(token).get('/staffs');
+                const data = resp.data;
+                if (mounted) setStaffs(data);
+            } catch (err) { 
+                console.log(err);
+            }
         }
 
         if (mounted) fetchApi();
