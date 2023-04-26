@@ -89,7 +89,7 @@ const PutBookPage = () => {
             }
 
             alert('Thành công!')
-            if (id) navigate('/BLibrary/Book/' + id);
+            if (id) navigate('/LMS/Book')
             else setForm(DefaultFormData);
         } catch (err) { 
             console.log(err);

@@ -11,13 +11,9 @@ const StaffPage = () => {
         let mounted = true;
 
         const fetchApi = async () => { 
-            try {
-                const resp = await CallApiWithToken(token).get('/staffs');
-                const data = resp.data;
-                if (mounted) setStaffs(data);
-            } catch (err) { 
-                console.log(err);
-            }
+            const resp = await CallApiWithToken(token).get('/staffs');
+            const data = resp.data;
+            if (mounted) setStaffs(data);
         }
 
         if (mounted) fetchApi();
@@ -28,7 +24,7 @@ const StaffPage = () => {
     }, [token])
 
     return <div className="staff-page">
-        <h2>Danh sách : </h2>
+        <h2>Nhân viên: </h2>
         <ol>
             {staffs.map(x => <li key={x.id}>
                 <ul>
