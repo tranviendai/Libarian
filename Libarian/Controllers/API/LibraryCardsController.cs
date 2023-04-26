@@ -50,15 +50,15 @@ namespace Librarian.Controllers.API
         [HttpGet("{id}")]
         public async Task<ActionResult<LibraryCard>> GetLibraryCard(string id)
         {
-          if (_context.LibraryCard == null)
-          {
-              return NotFound();
-          }
+            if (_context.LibraryCard == null)
+            {
+                return NotFound();
+            }
             var libraryCard = await _context.LibraryCard.FindAsync(id);
             var history = from cc in _context.CallCard
                           where cc.libraryCardID == id
-                          select new { cc.lBookID, cc.startDate, cc.deadline ,cc.endDate, cc.bookStatus };
-            
+                          select new { cc.lBookID, cc.startDate, cc.deadline, cc.endDate, cc.bookStatus };
+
 
             if (libraryCard == null)
             {
@@ -106,10 +106,10 @@ namespace Librarian.Controllers.API
         [Authorize]
         public async Task<ActionResult<LibraryCard>> PostLibraryCard(LibraryCard libraryCard)
         {
-          if (_context.LibraryCard == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.LibraryCard'  is null.");
-          }
+            if (_context.LibraryCard == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.LibraryCard'  is null.");
+            }
             _context.LibraryCard.Add(libraryCard);
             try
             {

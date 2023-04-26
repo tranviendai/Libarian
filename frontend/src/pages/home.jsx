@@ -31,7 +31,7 @@ const Home = () => {
     }
     
     const searchBook = () => { 
-        navigate('/BLibrary/Book', { state: { search: bookName } });
+        navigate('/LMS/Book', { state: { search: bookName } });
     }
 
     useEffect(() => { 
