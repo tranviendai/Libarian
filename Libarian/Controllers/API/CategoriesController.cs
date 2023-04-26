@@ -31,21 +31,24 @@ namespace Librarian.Controllers.API
               return NotFound();
           }
 
-            /*var res = from c in _context.Category
+            var res = from c in _context.Category
                       join b in _context.Book on c.categoryID equals b.categoryID into gj
                       from bc in gj.DefaultIfEmpty()
                       group c by new { c.categoryID, c.nameCategory } into g
-                      select new { g.Key.categoryID, g.Key.nameCategory, Count = g.Count() };*/
+                      select new { g.Key.categoryID, g.Key.nameCategory, Count = g.Count() };
 
+         /*   var res1 = from c in _context.Category
+                       join b in _context.Book on c.categoryID equals b.categoryID
+                       select new
+                       {
+                           c.categoryID,
+                           c.books,
+                           b.title
+                       };*/
+            
             //var count = from b in _context.Book
 
-            var res = from c in _context.Category
-                      let count = (
-                        from b in _context.Book
-                        where b.categoryID == c.categoryID
-                        select b
-                      ).Count()
-                      select new { c.categoryID, c.nameCategory, count };
+
 
             return new JsonResult(res);
         }
