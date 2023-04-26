@@ -460,7 +460,8 @@ a{
     //height: 200px;
     aspect-ratio: 2/3;
     background-color: grey;
-    background-image: var(--book-bg);
+    //background-image: var(--book-bg);
+    background-color: var(--color-bg-2);
     background-size: cover; 
     background-position: center;
     border-radius: 20px;
@@ -1135,7 +1136,7 @@ a{
 .category-page{
 
   height: calc(100vh - $nav-height);
-  //background-color: var(--color-bg-1);
+  background-color: var(--color-bg-1);
 
   .header{
     padding-top: 40px;
@@ -1576,3 +1577,22 @@ a{
 }
 //END ABOUT PAGE
 
+//LIB CARD PAGE
+.libcard-page{
+  .header{
+    margin: 20px 0;
+  }
+
+  .card-list{
+    .libcard {
+      border-bottom: 1px solid black;
+      margin-bottom: 20px;
+  
+      &:hover {
+        color: blue;
+        cursor: pointer;
+      }
+    }
+  }
+}
+//END LIB CARD PAGE

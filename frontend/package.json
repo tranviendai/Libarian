@@ -17,7 +17,7 @@
     "sass": "^1.57.1",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://H-a-n-k.github.io/LMS/",
+  "homepage": "https://H-a-n-k.github.io/BLibrary/",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",

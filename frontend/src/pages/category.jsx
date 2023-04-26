@@ -54,7 +54,7 @@ const CategoryPage = () => {
     }
 
     const selectCate = (id) => { 
-        navigate('/LMS/Book', { state: { selectCate: id } });
+        navigate('/BLibrary/Book', { state: { selectCate: id } });
     }
 
     return token ? <div className='category-page'>
