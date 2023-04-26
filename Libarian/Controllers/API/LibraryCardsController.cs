@@ -24,26 +24,13 @@ namespace Librarian.Controllers.API
 
         // GET: api/LibraryCards
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LibraryCard>>> GetLibraryCard(string searchID = "", string searchName = "", int page = 1, int pageLength = 20)
+        public async Task<ActionResult<IEnumerable<LibraryCard>>> GetLibraryCard()
         {
-            if (_context.LibraryCard == null)
-            {
-                return NotFound();
-            }
-            var list = await _context.LibraryCard
-                .Where(x =>
-                    x.fullName.ToLower().Contains(searchName.ToLower())
-                    && x.libraryCardID.ToLower().StartsWith(searchID.ToLower())
-                ).ToListAsync();
-
-            var count = Math.Ceiling(1.0f * list.Count() / pageLength);
-            if (count < 1) count = 1;
-            page = Math.Max(page, 1);
-            pageLength = Math.Max(pageLength, 1);
-
-            list = list.Skip((page - 1) * pageLength).Take(pageLength).ToList();
-
-            return new JsonResult(new { PageCount = count, list = list });
+          if (_context.LibraryCard == null)
+          {
+              return NotFound();
+          }
+            return await _context.LibraryCard.ToListAsync();
         }
 
         // GET: api/LibraryCards/5
@@ -55,17 +42,13 @@ namespace Librarian.Controllers.API
               return NotFound();
           }
             var libraryCard = await _context.LibraryCard.FindAsync(id);
-            var history = from cc in _context.CallCard
-                          where cc.libraryCardID == id
-                          select new { cc.lBookID, cc.startDate, cc.deadline ,cc.endDate, cc.bookStatus };
-            
 
             if (libraryCard == null)
             {
                 return NotFound();
             }
 
-            return new JsonResult(new { detail = libraryCard, history = history.ToList() });
+            return libraryCard;
         }
 
         // PUT: api/LibraryCards/5
