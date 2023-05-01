@@ -79,23 +79,17 @@ namespace Librarian.Controllers.API
 
 		[HttpPost]
 		[Route("register")]
-		public async Task<IActionResult> Register([FromBody] ApplicationUser model)
+		public async Task<IActionResult> Register(MSignUpModel model)
 		{
-			var userExists = await _userManager.FindByNameAsync(model.UserName);
+			ApplicationUser user = model.User;
+			var userExists = await _userManager.FindByNameAsync(user.UserName);
 			if (userExists != null)
 				return StatusCode(StatusCodes.Status500InternalServerError, new { Status = "Error", Message = "User already exists!" });
 
-			/*ApplicationUser user = new ApplicationUser()
-			{
-				UserName = model.Username,
-				PasswordHash = model.Password,
-				address = "addr"
-
-			};*/
 			try
 			{
-                await _userManager.CreateAsync(model, "P@55word");
-				await _userManager.AddToRoleAsync(model, "THỦ THƯ");
+				await _userManager.CreateAsync(user, model.Password);
+				await _userManager.AddToRoleAsync(user, "THỦ THƯ");
                 return Ok(new { Status = "Success", Message = "User created successfully!" });
             }
 			catch {
