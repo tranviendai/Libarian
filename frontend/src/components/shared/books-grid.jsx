@@ -22,7 +22,7 @@ const BooksGrid = ({ bookList, nCol }) => {
 
     return <div className="books-grid" style={style} > 
         {bookList.map(x => (
-            <Link to={`/LMS/Book/${x.bookID}`} key={x.bookID} onClick={(event) => onSelectBook(event, x)}>
+            <Link to={`/BLibrary/Book/${x.bookID}`} key={x.bookID} onClick={(event) => onSelectBook(event, x)}>
                 <div className="book-card">
                     <div className="img-wrap" style={{'--book-bg': `url(${BG})`, '--book-side': `url(${Side})`}}>
                         <div className="img"  alt="" style={{'--bg': `url(${x.image})`}}/>

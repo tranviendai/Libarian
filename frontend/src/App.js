@@ -9,6 +9,8 @@ import BookDetailPage from './pages/book-detail';
 import PutBookPage from './pages/put-book';
 import AboutPage from './pages/about';
 import StaffPage from './pages/staff';
+import LibCard from './pages/LibCard';
+import LibCardDetail from './pages/libcard-detail';
 
 function App() {
   return <GlobalContextProvider>
@@ -16,14 +18,17 @@ function App() {
       <Layout>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/LMS' element={<Home />} />
-          <Route path='/LMS/Category' element={<CategoryPage />} />
-          <Route path='/LMS/Book' element={<BookPage />} />
-          <Route path='/LMS/Book/:id' element={<BookDetailPage />} />
-          <Route path='/LMS/AddBook' element={<PutBookPage />} />
-          <Route path='/LMS/UpdateBook/:id' element={<PutBookPage />} />
-          <Route path='/LMS/About/' element={<AboutPage />} />
-          <Route path='/LMS/Staff/' element={<StaffPage />} />
+          <Route path='/BLibrary' element={<Home />} />
+          <Route path='/BLibrary' element={<Home />} />
+          <Route path='/BLibrary/Category' element={<CategoryPage />} />
+          <Route path='/BLibrary/Book' element={<BookPage />} />
+          <Route path='/BLibrary/Book/:id' element={<BookDetailPage />} />
+          <Route path='/BLibrary/AddBook' element={<PutBookPage />} />
+          <Route path='/BLibrary/UpdateBook/:id' element={<PutBookPage />} />
+          <Route path='/BLibrary/About/' element={<AboutPage />} />
+          <Route path='/BLibrary/Staff/' element={<StaffPage />} />
+          <Route path='/BLibrary/LibCard/' element={<LibCard />} />
+          <Route path='/BLibrary/LibCard/:id' element={<LibCardDetail />} />
         </Routes>
       </Layout>
     </BrowserRouter>

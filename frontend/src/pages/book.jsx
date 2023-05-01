@@ -183,7 +183,7 @@ const BookPage = () => {
         <div className="container-80">
             {token &&
                 <div className="add-book-btn btn">
-                    <Link to='/LMS/AddBook'>+ Thêm Sách</Link>
+                    <Link to='/BLibrary/AddBook'>+ Thêm Sách</Link>
                 </div>
             }
         </div>

@@ -102,7 +102,7 @@ const BookDetailPage = () => {
         try {
             await CallApiWithToken(token).delete('books/' + id);
             alert('đã xóa')
-            navigate('/LMS/Book')
+            navigate('/BLibrary/Book')
         } catch (err) { 
             console.log(err);
             alert('có lỗi xảy ra');
@@ -154,7 +154,7 @@ const BookDetailPage = () => {
                             <div>Ngày thêm: {book.addDate}</div>
                             {token && <>
                                 <div className="btn">
-                                    <Link to={`/LMS/UpdateBook/${book.bookID}`}>Chỉnh Sửa</Link>
+                                    <Link to={`/BLibrary/UpdateBook/${book.bookID}`}>Chỉnh Sửa</Link>
                                 </div>
                                 <div className="btn" onClick={onDeleteBook}>
                                     Xóa
