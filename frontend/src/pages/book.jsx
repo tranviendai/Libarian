@@ -205,9 +205,9 @@ const BookPage = () => {
                         </div>
                     } 
                 </div>
-                <div className="btn" onClick={onSearch}>search</div>
+                <div className="btn" onClick={onSearch}>Tìm</div>
             </div>
-            <div>
+            <div className='cate'>
                 <label htmlFor='category'>
                     Thể loại sách:
                 </label>
@@ -217,9 +217,9 @@ const BookPage = () => {
                 </select>
             </div>
 
-            <div>
+            <div className='sort'>
                 <label>
-                    Sắp xếp theo
+                    Sắp xếp theo:
                 </label>
                 <select onChange={(e) => setOrderBy(e.target.value)} value={orderBy}>
                     <option value="addDate">Ngày thêm vào</option>

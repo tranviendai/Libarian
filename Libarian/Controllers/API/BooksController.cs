@@ -146,37 +146,50 @@ namespace Librarian.Controllers.API
             return book;
         }
 
-        [Authorize]
+
         // PUT: api/Books/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //Controller chạy khi gọi đường dẫn api/books/[Id sách] với phương thức put
+        //Tham số truyền vào: Id cuốn sách và thông tin mới của sách
+        //Authorize: Chỉ khi người dùng đã đang nhập mới gọi dc controller này
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBook(string id, Book book)
         {
+            //kiểm tra nếu id cung cấp trong đường dẫn không giống id của sách truyền vào thì trả về lỗi
             if (id != book.bookID)
             {
                 return BadRequest();
             }
 
+            //Đánh dấu trạng thái thực thể sách đó là vừa được cập nhật
+            //(kiểu cho DB context nó biết là cuốn sách này t mới sửa lại nè, nhớ sửa trong DB nha)
             _context.Entry(book).State = EntityState.Modified;
+            //Đánh dấu không sửa thuộc tính bookIndex của sách (tại trường này là tạo tự động chứ k được sửa)
             _context.Entry(book).Property(x => x.bookIndex).IsModified = false;
+            //Đánh dấu không sửa. trường add date mặc định là ngày add sách đố vô db, k cho sửa
             _context.Entry(book).Property(x => x.addDate).IsModified = false;
 
-            try
+            //try... catch dùng để thử lỗi
+            try //nếu đoạn code nằm trong try lỗi thì mình xử lý lỗi ở đoạn catch. làm vầy app không bị dừng
             {
+                //lưu vô db
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!BookExists(id))
+                if (!BookExists(id)) //nếu không tìm thấy mã sách đó trong db thì trả về lỗi 404 không tìm thấy
                 {
                     return NotFound();
                 }
-                else
+                else //những lỗi khác thì chỉ báo lỗi ra màn hình
                 {
                     throw;
                 }
             }
 
+
+            //Trả về thông tin trống. tại cập nhật thì khỏi báo kết quả. không lỗi thì tự biết là thành công
             return NoContent();
         }
 
