@@ -225,10 +225,10 @@ const BookPage = () => {
                     <option value="addDate">Ngày thêm vào</option>
                     <option value="title">Tên sách</option>
                 </select>
+                <input type='radio' id='asc' name='orderby' checked={orderAsc} onChange={onOrderChange} hidden/>
                 <label htmlFor='asc'>Tăng dần</label>
-                <input type='radio' id='asc' name='orderby' checked={orderAsc} onChange={onOrderChange} />
+                <input type='radio' id='desc' name='orderby' checked={!orderAsc} onChange={onOrderChange} hidden/>
                 <label htmlFor='desc'>Giảm dần</label>
-                <input type='radio' id='desc' name='orderby' checked={!orderAsc} onChange={onOrderChange}/>
             </div>
         </div>
         {loading && <div className="loader"></div>} 

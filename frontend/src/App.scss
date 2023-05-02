@@ -1386,8 +1386,16 @@ a{
         border: 2px solid var(--color-font-header);
       }
 
+      input[type="radio"]:checked+label {
+        font-weight: bold;
+        color: var(--color-font-header);
+        border: 1px solid var(--color-font-header);
+      }
+
       label{
         margin-left: 5px;
+        padding: 5px;
+        cursor: pointer;
       }
     }
   }
