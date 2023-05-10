@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Login from "./login-frm";
 import useGlobalContext from '../../contexts/GlobalContext'
 import cloud1 from '../../resources/imgs/cloud_1.png';
@@ -12,6 +12,13 @@ import logo from '../../resources/imgs/logo.png';
 const Nav = () => { 
     const [login, setLogin] = useState(false);
     const { lightMode, toggleLightMode, token, removeToken, role } = useGlobalContext();
+
+    const navigate = useNavigate();
+
+    const onLogout = () => { 
+        removeToken();
+        navigate('/BLibrary/');
+    }
 
     return <>
         <div className={`navbar ${!lightMode ? 'night': ''}`}>
@@ -34,7 +41,7 @@ const Nav = () => {
             <div className="right">
                 <div className="flex-fill"></div>
                 {token ?
-                    <div className="pointer pill" onClick={removeToken}>Đăng Xuất</div>
+                    <div className="pointer pill" onClick={onLogout}>Đăng Xuất</div>
                     :
                     <div className="pointer pill" onClick={() => { setLogin(true) }}>Đăng nhập</div>
                 }

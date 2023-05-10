@@ -7,6 +7,7 @@ import DialogWrapper from "./dialog-wrapper";
 import { useState } from "react";
 import CallApi from "../../utils/callApi";
 import useGlobalContext from "../../contexts/GlobalContext";
+import { useNavigate } from "react-router-dom";
 
 library.add(faEnvelope);
 library.add(faLock);
@@ -18,6 +19,8 @@ const Login = ({ setLogin }) => {
     
     const [Username, setUsername] = useState('');
     const [Password, setPassword] = useState('');
+
+    const navigate = useNavigate();
 
     const Exit = () => { 
         setLogin(false);
@@ -32,6 +35,15 @@ const Login = ({ setLogin }) => {
             const { token, role } = resp.data;
             addToken(token);
             changeRole(role);
+
+            switch (role) { 
+                case 'Admin':
+                    navigate('/BLibrary/Staff');
+                    break;
+                default:
+                    navigate('/BLibrary/Book')
+                    break;
+            }
 
             setLogin(false);
         } catch { 
