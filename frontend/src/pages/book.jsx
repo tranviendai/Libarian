@@ -1,4 +1,4 @@
-import { booksData, CategoriesData, getBookCover } from '../mock-data';
+import { CategoriesData, getBookCover } from '../mock-data';
 import BooksGrid from '../components/shared/books-grid';
 import BooksTable from '../components/page/book/books-table';
 import { useEffect, useMemo, useState } from 'react';
@@ -20,6 +20,7 @@ const BookPage = () => {
     const [hint, setHint] = useState([]); //hint list
     const [showHint, setShowHint] = useState(false);
     const [searching, setSearching] = useState(false); //hint loading
+    const [searchOpt, setSearchOpt] = useState('1');
 
     const [categories, setCategories] = useState([]);
     const [selectedCate, setSelectedCate] = useState(selectCate || -1);
@@ -45,7 +46,8 @@ const BookPage = () => {
                         limit: ItemPerPage,
                         page,
                         orderBy,
-                        asc: orderAsc
+                        asc: orderAsc,
+                        searchOpt
                     }
                 })
 
@@ -53,8 +55,6 @@ const BookPage = () => {
                 if (mounted) setList(data.map(x => { return { ...x, image: getBookCover(x.bookID) } }));
             } catch (err) {
                 console.log(err);
-                let data = booksData.filter(x => x.book_name.toLowerCase().startsWith(keyword.toLowerCase()) && (selectedCate < 0 || x.cate_id+'' === selectedCate));
-                setList(data);
             }
             finally { 
                 setLoading(false);
@@ -65,7 +65,7 @@ const BookPage = () => {
         return () => { 
             mounted = false;
         }
-    }, [keyword, selectedCate, page, orderAsc, orderBy])
+    }, [keyword, selectedCate, page, orderAsc, orderBy, searchOpt])
 
     //search hint
     useEffect(() => { 
@@ -80,7 +80,8 @@ const BookPage = () => {
                 const resp = await CallApi.get('/books/utils/getsearchHint', {
                     params: {
                         keyword: searchName,
-                        cateId: selectedCate > 0? selectedCate: null
+                        cateId: selectedCate > 0 ? selectedCate : null,
+                        searchOpt
                     }
                 })
 
@@ -88,9 +89,6 @@ const BookPage = () => {
                 if (mounted) setHint(data);
             } catch (err) {
                 console.log(err);
-                let hints = booksData.filter(x => x.book_name.toLowerCase().startsWith(searchName.toLowerCase()) && (selectedCate < 0 || x.cate_id + '' === selectedCate))
-                hints = hints.map(x => x.book_name);
-                if (mounted) setHint(hints);
             } finally { 
                 setSearching(false);
             }
@@ -106,7 +104,7 @@ const BookPage = () => {
             mounted = false;
             if (timer) clearTimeout(timer);
         }
-    }, [searchName, selectedCate])
+    }, [searchName, selectedCate, searchOpt])
 
     //category
     useEffect(() => { 
@@ -146,7 +144,6 @@ const BookPage = () => {
                 if (mounted) setBookCount(data);
             } catch (err) { 
                 console.log(err);
-                if (mounted) setBookCount(booksData.length);
             }
         }
 
@@ -179,6 +176,20 @@ const BookPage = () => {
         setOrderAsc(e.target.id === 'asc')
     }
 
+    const onSearchOptChange = (e) => { 
+        setSearchOpt(e.target.value);
+        setSearchName('');
+        setKeyword('');
+    }
+
+    const searchPlaceHolder = useMemo(() => { 
+        switch (searchOpt) { 
+            case '2': return 'Nhập mã sách';
+            case '3': return 'Nhập tên tác giả';
+            default: return 'Nhập tựa sách';
+        }
+    }, [searchOpt])
+
     return <div className="book-page">
         <h3 className="page-title">Tìm kiếm sách</h3>
         <div className="container-80">
@@ -190,12 +201,17 @@ const BookPage = () => {
         </div>
         <div className="tool-bar container-80">
             <div>
-                <label htmlFor='searchName'> Tựa sách: </label>
+                <label htmlFor='searchName'>
+                    <select value={searchOpt} onChange={(e) => onSearchOptChange(e)} className='p-2 searchOpt'>
+                        <option value="1">Tìm tựa sách</option>
+                        <option value="2">Tìm mã sách</option>
+                        <option value="3">Tìm tác giả</option>
+                    </select>
+                </label>
                 <div className="input-wrap">
-                    <input type='text' id='searchName' placeholder='Nhập tựa sách' value={searchName}
-                        onChange={(e) => { setSearchName(e.target.value) }} onKeyDown={(e) => onSearchKeyDown(e)}
-                        onFocus={() => setShowHint(true)} onBlur={() => setTimeout(() => setShowHint(false), 500)} />
-                    
+                    <input type='text' id='searchName' placeholder={searchPlaceHolder}
+                        value={searchName} onChange={(e) => { setSearchName(e.target.value) }} onKeyDown={(e) => onSearchKeyDown(e)}
+                        onFocus={() => setShowHint(true)} onBlur={() => setTimeout(() => setShowHint(false), 100)} />
                     
                     {searchName.length > 0 &&
                         <div className={'hints ' + (showHint?'':'hide')}>

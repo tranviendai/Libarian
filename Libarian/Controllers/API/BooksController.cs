@@ -44,14 +44,20 @@ namespace Librarian.Controllers.API
 
         // GET: api/Books
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBook(int? cateId, string keyword = "", string orderBy = "addDate", bool asc = false, int limit = 20, int page = 1)
+        public async Task<ActionResult<IEnumerable<Book>>> GetBook(int? cateId, string keyword = "", int searchOpt = 1 ,string orderBy = "addDate", bool asc = false, int limit = 20, int page = 1)
         {
-            var book = from b in _context.Book
+            /*var book = from b in _context.Book
                        where
                             (cateId == null || b.categoryID == cateId)
                             && (b.title.ToLower().StartsWith(keyword.ToLower()))
-                       select b;
+                       select b;*/
 
+            var book = _context.Book.Where(x =>
+                (x.categoryID == cateId || cateId == null) &&
+                (searchOpt == 2 && x.bookID.ToLower().Contains(keyword.ToLower())) ||
+                (searchOpt == 3 && x.author.ToLower().Contains(keyword.ToLower())) ||
+                (x.title.ToLower().Contains(keyword.ToLower()))
+            );
             //order by
             string[] orderCols = new string[] { "addDate", "title" };
             if (orderCols.Contains(orderBy))
@@ -110,16 +116,20 @@ namespace Librarian.Controllers.API
 
         // GET: api/Books
         [HttpGet("utils/getSearchHint")]
-		public async Task<ActionResult<IEnumerable<string>>> SearchHint(int? cateId, string keyword = "")
+		public async Task<ActionResult<IEnumerable<string>>> SearchHint(int? cateId, string keyword = "", int searchOpt = 1)
 		{
-            var book = from b in _context.Book
-                       where
-                            (cateId == null || b.categoryID == cateId)
-                            && (b.title.ToLower().StartsWith(keyword.ToLower()))
-                       select b.title;
+            var book = _context.Book.Where(x =>
+                (x.categoryID == cateId || cateId == null) &&
+                (searchOpt == 2 && x.bookID.ToLower().Contains(keyword.ToLower())) ||
+                (searchOpt == 3 && x.author.ToLower().Contains(keyword.ToLower())) ||
+                (x.title.ToLower().Contains(keyword.ToLower()))
+            ).Select(x => (searchOpt == 2 ? x.bookID: (
+                    searchOpt == 3? x.author: x.title
+                ))
+            );
 
 
-			if (_context.Book == null)
+            if (_context.Book == null)
 			{
 				return NotFound();
 			}
