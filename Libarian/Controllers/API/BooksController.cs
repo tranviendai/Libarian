@@ -77,16 +77,17 @@ namespace Librarian.Controllers.API
         }
 
 		[HttpGet("utils/countBook")]
-		public async Task<ActionResult<int>> CountBook(int? cateId, string keyword = "")
+		public async Task<ActionResult<int>> CountBook(int? cateId, string keyword = "", int searchOpt = 1)
 		{
-            var book = from b in _context.Book
-                       where
-                            (cateId == null || b.categoryID == cateId)
-                            && (b.title.ToLower().StartsWith(keyword.ToLower()))
-                       select b;
+            var book = _context.Book.Where(x =>
+               (x.categoryID == cateId || cateId == null) &&
+               (searchOpt == 2 && x.bookID.ToLower().Contains(keyword.ToLower())) ||
+               (searchOpt == 3 && x.author.ToLower().Contains(keyword.ToLower())) ||
+               (x.title.ToLower().Contains(keyword.ToLower()))
+           );
 
 
-			if (_context.Book == null)
+            if (_context.Book == null)
 			{
 				return NotFound();
 			}

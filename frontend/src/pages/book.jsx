@@ -137,7 +137,8 @@ const BookPage = () => {
                 const resp = await CallApi.get('/books/utils/countbook', {
                     params: {
                         keyword,
-                        cateId: selectedCate > 0 ? selectedCate: null
+                        cateId: selectedCate > 0 ? selectedCate: null,
+                        searchOpt
                     }
                 })
                 const data = resp.data;
@@ -152,7 +153,7 @@ const BookPage = () => {
         return () => { 
             mounted = false
         }
-    }, [keyword, selectedCate])
+    }, [keyword, selectedCate, searchOpt])
 
     const getTotalPage = useMemo(() => { 
         return Math.max(Math.ceil(bookCount / ItemPerPage), 1);
