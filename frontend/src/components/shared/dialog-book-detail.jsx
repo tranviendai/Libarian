@@ -6,6 +6,7 @@ import AuthorIcon from '../../resources/imgs/book_author_icon.png'
 import PubIcon from '../../resources/imgs/book_publisher_icon.png'
 import YearIcon from '../../resources/imgs/book_year_icon.png'
 import DateIcon from '../../resources/imgs/book_adddate_icon.png'
+import { getBookCover } from "../../mock-data";
 
 const BookDetailDialog = ({ book, onExit }) => { 
     const [category, setCategory] = useState('');
@@ -61,7 +62,7 @@ const BookDetailDialog = ({ book, onExit }) => {
                     </p>
                 </div>
                 <div className="right">
-                    <img src={book.image} alt="" />
+                    <img src={getBookCover(book.bookID)} alt="" />
                 </div>
             </div>
             <div className="exit" onClick={onExit}>x</div>

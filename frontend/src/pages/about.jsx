@@ -33,7 +33,7 @@ const AboutPage = () => {
             </div>
         </div>
         <div className='regulation'>
-            <div className="header btn pill">
+            <div className="header pointer pill">
                 <span>
                     <img src={Eye} alt="" />
                     Quy định
