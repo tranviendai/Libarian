@@ -25,7 +25,7 @@ namespace Librarian.Models
 
         public string bookID { get; set; }
         [ForeignKey("bookID")]
-        public Book Books;
+        public Book? Books { get; set; }
 
     }
 }

@@ -33,6 +33,7 @@ namespace Librarian.Models
         [Display(Name = "Ngày trả Sách")]
         [Column(TypeName = "Date")]
         [DisplayFormat(DataFormatString = "{0:dd/M/yyyy}", ApplyFormatInEditMode = true)]
+        [Required]
         public DateTime endDate { get; set; }
 
         [Display(Name = "Tình trạng sách")]
@@ -42,10 +43,10 @@ namespace Librarian.Models
         [Display(Name = "Số Thẻ")]
         public string libraryCardID { get; set; }
         [ForeignKey("libraryCardID")]
-        public LibraryCard libaryCard;
+        public LibraryCard? libaryCard { get; set; }
 
         public string lBookID { get; set; }
         [ForeignKey("lBookID")]
-        public LBook lBook;
+        public LBook? lBook { get; set; }
     }
 }

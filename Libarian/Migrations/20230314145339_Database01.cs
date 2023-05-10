@@ -252,7 +252,7 @@ namespace Librarian.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     startDate = table.Column<DateTime>(type: "Date", nullable: false),
                     deadline = table.Column<DateTime>(type: "Date", nullable: false),
-                    endDate = table.Column<DateTime>(type: "Date", nullable: false),
+                    endDate = table.Column<DateTime>(type: "Date", nullable: true),
                     bookStatus = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: false),
                     libraryCardID = table.Column<string>(type: "nvarchar(5)", nullable: false),
                     lBookID = table.Column<string>(type: "nvarchar(10)", nullable: false)

@@ -56,7 +56,7 @@ namespace Librarian.Models
         [Display(Name = "Thể Loại")]
         public int categoryID { get; set; }
         [ForeignKey("categoryID")]
-        public Category category;
+        public Category? category { get; set; }
 
         public ICollection<LBook> lBooks { get; set; } = new List<LBook>();
 
