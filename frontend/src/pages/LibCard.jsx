@@ -1,68 +1,104 @@
-import { useEffect, useRef, useState } from "react";
-import { CallApiWithToken } from "../utils/callApi";
+import { useEffect, useMemo, useRef, useState } from "react";
 import useGlobalContext from "../contexts/GlobalContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useFetch from "../utils/useFetch";
+import DataTable from "../components/shared/data-table";
 
-const LibCard = () => { 
-    const [Cards, setCards] = useState([]);
-    const [pageCount, setPageCount] = useState(1);
+const LibCard = () => {
     const [page, setPage] = useState(1);
     const [searchName, setSearchName] = useState('');
     const [searchID, setSearchID] = useState('');
+    const [active, setActive] = useState(true);
+    const [cards, setCards] = useState([]);
+    const [pageCount, setPageCount] = useState(1);
 
     //inputs control
     const searchNameRef = useRef('');
     const searchIDRef = useRef('');
 
     const { token } = useGlobalContext();
+    const navigate = useNavigate();
 
-    useEffect(() => { 
-
-        const fetchApi = async () => { 
-            try {
-                const resp = await CallApiWithToken(token).get('/libraryCards', {
-                    params: {
-                        page,
-                        searchName,
-                        searchID
-                    }
-                });
-                const data = resp.data;
-                setPageCount(data.pageCount);
-                setCards(data.list);
-            } catch (err) { 
-                console.log(err);
+    const cardObj = useMemo(() => {
+        return {
+            params: {
+                searchID,
+                searchName,
+                page,
+                active
             }
         }
+    }, [searchID, searchName, page, active])
+    const { data: cardsData } = useFetch('/libraryCards', cardObj, token)
+    
+    useEffect(() => { 
+        if (!cardsData) return;
+        setPageCount(cardsData.pageCount);
+        setCards(cardsData.list);
+    }, [cardsData])
 
-        fetchApi();
+    const headers = ['Mã thẻ', 'Họ tên', 'Tình trạng', 'Ngày mở', 'Hạn'];
+    const rows = cards?.map(x => {
+        const y = {};
+        y.onRowSelected = () => { navigate('/BLibrary/LibCard/' + x.libraryCardID); }
+        y.rowData = ['#' + x.libraryCardID, x.fullName,
+            x.cardStatus === 'Yes' ? 'Hoạt động' : 'Tạm khóa', x.startDate, x.expirationDate]
 
-    }, [token, page, searchName, searchID])
+        return y;
+    });
 
-    const onSearch = () => { 
+    const onSearch = () => {
         setSearchID(searchIDRef.current.value);
         setSearchName(searchNameRef.current.value);
+        setPage(1);
     }
 
-    return <div className="libcard-page">
-        <div className="header">Thẻ thư viện: </div>
-        <div className="search">
-            <div>
-                <label htmlFor="">Tên</label>
-                <input type="text" ref={searchNameRef} />
-            </div>
-            <div>
-                <label htmlFor="">Mã thẻ</label>
-                <input type="text" ref={searchIDRef} />
-            </div>
-            <button onClick={onSearch}>Search</button>
+    const onInputEnter = (event) => {
+        if (event.key === 'Enter') {
+            onSearch();
+        }
+    }
+
+    return <div className="libcard-page container-80 pb-5">
+        <h3 className="page-title">Danh sách thẻ thư viện</h3>
+
+        {/* <div>
+            <button type="button" class="btn btn-primary mb-3">+ Thêm mới</button>
+        </div> */}
+
+        <div className="input-group mb-3">
+            <span className="input-group-text" id="basic-addon1">Tìm theo tên</span>
+            <input type="text" className="form-control" placeholder="Tên" aria-label="Username" aria-describedby="basic-addon1"
+                ref={searchNameRef} onKeyDown={(e) => onInputEnter(e)} />
+
+            <span className="input-group-text ms-4" id="basic-addon1">Tìm theo mã thẻ</span>
+            <input type="text" className="form-control me-4" placeholder="Mã thẻ" aria-label="Username" aria-describedby="basic-addon1"
+                ref={searchIDRef} onKeyDown={(e) => onInputEnter(e)} />
+
+            <button onClick={onSearch} className="btn btn-primary">Tra cứu</button>
         </div>
-        <div className="card-list">
-            {Cards.map(x => <div className="libcard" key={x.libraryCardID}>
-                <Link to={`${x.libraryCardID}`}>mã: {x.libraryCardID}, tên: <b>{x.fullName}</b>, trạng thái: {x.cardStatus}, ngày cấp: {x.startDate}, hạn: {x.expirationDate}</Link>
-            </div>)}
+
+        <div className="m-row mb-3">
+            <Link to={'/BLibrary/AddCard'}>
+                <div className="btn btn-primary">+ Thêm mới</div>
+            </Link>
+            <div style={{ flex: '1' }}></div>
+            <div className="m-row mb-3">
+                <span className="badge bg-info p-2 text-dark">Tình trạng thẻ</span>
+                <label htmlFor="active" className={active ? 'ms-3' : 'ms-3 text-primary'}>Bị khóa</label>
+                <div className="form-check form-switch ms-2">
+                    <input className="form-check-input" type="checkbox" id="active" checked={active} onClick={() => setActive(x => !x)} />
+                </div>
+                <label htmlFor="active" className={active ? 'text-primary' : ''}>Hoạt động</label>
+            </div>
         </div>
-        <div className="pager">
+
+        <div>
+            {(cards && cards.length > 0) ? <DataTable headers={headers} rows={rows} />
+                : <h3>Không tìm thấy</h3>
+            }
+        </div>
+        <div className="pager" style={{float: 'right'}}>
             <input type="number" min={1} max={pageCount} value={page} onChange={e => setPage(e.target.value)} /> / {pageCount}
         </div>
     </div>

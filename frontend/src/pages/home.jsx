@@ -1,16 +1,16 @@
 import BooksGrid from '../components/shared/books-grid';
-import { booksData, getBookCover } from '../mock-data'
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SearchIcon } from "../utils/icons";
-import CallApi from '../utils/callApi';
 import BGGadgets from '../components/shared/bg-gadgets';
 import { useNavigate } from 'react-router-dom';
+import useFetch from '../utils/useFetch';
 
 const Home = () => { 
     const [userId, setUserId] = useState('');
     const [bookName, setBookName] = useState('');
-    const [bookList, setBookList] = useState([]);
-    const [loading, setLoading] = useState(false);
+    
+    //'/books/utils/popularBooks'
+    const { data: bookList, loading } = useFetch('/books/utils/popularBooks');
 
     const navigate = useNavigate();
 
@@ -33,34 +33,6 @@ const Home = () => {
     const searchBook = () => { 
         navigate('/BLibrary/Book', { state: { search: bookName } });
     }
-
-    useEffect(() => { 
-        let mounted = true;
-
-        const fetchApi = async () => { 
-            setLoading(true);
-            try {
-                const resp = await CallApi.get('/books/utils/popularBooks', {
-                    params: {
-                        limit: 6
-                    }
-                })
-                const data = resp.data; //api result
-                if (mounted) setBookList(data.map(x => { return { ...x, image: getBookCover(x.bookID) } }));
-            } catch (err) {
-                if (mounted) setBookList(booksData.map(x => { return { ...x, image: getBookCover(x.book_id) } })); //mock data
-                console.log('fetch failed: ', err);
-            } finally { 
-                setLoading(false);
-            }
-        }
-
-        fetchApi();
-
-        return () => { 
-            mounted = false;
-        }
-    }, [])
 
     return <>
         <div className="home">
@@ -103,7 +75,7 @@ const Home = () => {
             {loading && <div className="loader"></div>}
             <div className="container-80">
                 <h2 className='popular'>Sách được mượn nhiều:</h2>
-                <BooksGrid bookList={bookList} />
+                {bookList && <BooksGrid bookList={bookList} />}
             </div>
 
         </div>

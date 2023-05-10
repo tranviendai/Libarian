@@ -4,6 +4,7 @@ import Side from '../../resources/imgs/book-side.jpg'
 import BookDetailDialog from "./dialog-book-detail";
 import { useState } from "react";
 import useGlobalContext from "../../contexts/GlobalContext";
+import { getBookCover } from "../../mock-data";
 
 const BooksGrid = ({ bookList, nCol }) => { 
 
@@ -25,7 +26,7 @@ const BooksGrid = ({ bookList, nCol }) => {
             <Link to={`/BLibrary/Book/${x.bookID}`} key={x.bookID} onClick={(event) => onSelectBook(event, x)}>
                 <div className="book-card">
                     <div className="img-wrap" style={{'--book-bg': `url(${BG})`, '--book-side': `url(${Side})`}}>
-                        <div className="img"  alt="" style={{'--bg': `url(${x.image})`}}/>
+                        <div className="img" alt="" style={{ '--bg': `url(${getBookCover(x.bookID)})`}}/>
                     </div>
                     <div className="title" title={x.title}>{x.title}</div>
                     <div className="author" title={x.author}>{x.author}</div>

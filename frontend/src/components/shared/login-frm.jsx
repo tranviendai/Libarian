@@ -39,13 +39,19 @@ const Login = ({ setLogin }) => {
         }
     }
 
+    const onFormSubmit = (e) => {
+        e.preventDefault();
+        submitLogin();
+    }
+
     return <DialogWrapper onClickOut={Exit}>
         <div className="login-frm">
             <div className="img-wrap">
                 <img src={LoginImg} alt="" />
             </div>
 
-            <form>
+            <form onSubmit={onFormSubmit}>
+                <input type="submit" hidden />
                 <div className="frm-1" style={{ backgroundImage: `url(${BGA})`}}>
                     <div className="title text-center">Chào mừng bạn</div>
                     <p className='text-center'>đến với thư viện HUFLIT</p>
@@ -69,10 +75,10 @@ const Login = ({ setLogin }) => {
 
                 </div>
                 <div className="frm-2" style={{ backgroundImage: `url(${BGB})` }}>
-                    <p className="btn" style={{ visibility: 'hidden' }}>Quên mật khẩu?</p>
+                    <p className="pointer" style={{ visibility: 'hidden' }}>Quên mật khẩu?</p>
                     <div className="btns">
-                        <div className="btn pill" onClick={Exit}>Thoát</div>
-                        <div className="btn pill confirm" onClick={submitLogin}>Đăng nhập</div>
+                        <div className="pointer pill" onClick={Exit}>Thoát</div>
+                        <div className="pointer pill confirm" onClick={submitLogin}>Đăng nhập</div>
                     </div>
                 </div>
             </form>

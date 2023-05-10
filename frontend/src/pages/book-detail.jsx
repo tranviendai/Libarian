@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import CallApi, {CallApiWithToken} from '../utils/callApi';
-import { getBookCover, booksData, BookCopyData } from '../mock-data'
+import { getBookCover, booksData} from '../mock-data'
 import FormEditCopy from "../components/page/book-detail/frm-edit-copy";
 import useGlobalContext from "../contexts/GlobalContext";
+import useFetch from "../utils/useFetch";
+import DataTable from "../components/shared/data-table";
 
 const Statuses = ["Còn sách", "Đang mượn", "Sách hỏng", "Sách mất"];
 
@@ -13,11 +15,23 @@ const BookDetailPage = () => {
     const { id } = useParams();
     const [book, setBook] = useState(null);
     const [category, setCategory] = useState('');
-    const [copies, setCopies] = useState([]);
     const [refeshCopies, setRefeshCopies] = useState(false);
     const [showEditDialog, setShowEditDialog] = useState(false);
     const [selectedCopy, setSelectedCopy] = useState(null);
     const [status, setStatus] = useState('');
+
+    // eslint-disable-next-line
+    const statusObj = useMemo(() => { return { params: { bookID: id, status: status||null } } }, [id, refeshCopies, status, token])
+    const { data: copies } = useFetch('/lbooks/', statusObj, token);
+
+    //copy table
+    const headers = ['Mã cuốn sách', 'Tình trạng', 'Ghi chú'];
+    const rows = copies?.map(x => {
+        return {
+            onRowSelected: () => selectCopy(x),
+            rowData: ['#' + x.lBookID, x.status, x.note]
+        }
+    })
 
     const navigate = useNavigate();
 
@@ -68,38 +82,9 @@ const BookDetailPage = () => {
         }
     }, [book])
 
-    //copies
-    useEffect(() => {
-        let mounted = true;
-
-        const fetchApi = async () => {
-
-            try {
-                if (!token) throw new Error('no auth token found');
-                const resp = await CallApiWithToken(token).get('/lbooks/', {
-                    params: {
-                        bookID: id,
-                        status: status||null
-                    }
-                });
-                const data = resp.data;
-
-                if (mounted) setCopies(data);
-            } catch (err) {
-                console.log(err);
-                setCopies(BookCopyData.filter(x => x.book_id === parseInt(id)))
-            }
-        }
-
-        fetchApi();
-
-        return () => {
-            mounted = false;
-        }
-    }, [id, refeshCopies, status, token])
-
     const onDeleteBook = async () => { 
         try {
+            if (!window.confirm("Xoa ha")) return;
             await CallApiWithToken(token).delete('books/' + id);
             alert('đã xóa')
             navigate('/BLibrary/Book')
@@ -153,10 +138,10 @@ const BookDetailPage = () => {
                             <div>Năm XB: {book.publishingYear}</div>
                             <div>Ngày thêm: {book.addDate}</div>
                             {token && <>
-                                <div className="btn">
-                                    <Link to={`/BLibrary/UpdateBook/${book.bookID}`}>Chỉnh Sửa</Link>
+                                <div className="btn btn-primary" onClick={() => navigate(`/BLibrary/UpdateBook/${book.bookID}`)}>
+                                    Chỉnh Sửa
                                 </div>
-                                <div className="btn" onClick={onDeleteBook}>
+                                <div className="btn btn-danger" onClick={onDeleteBook}>
                                     Xóa
                                 </div>
                             </>}
@@ -171,25 +156,17 @@ const BookDetailPage = () => {
                         <br />
                         <h2 className="page-title">Thông tin các cuốn sách</h2>
                         <div className="btn" onClick={onAddCopy}>+ Thêm cuốn sách</div>
-                        <p><i>click vào cuốn sách để chỉnh sửa</i></p>
-                        <div>
-                            <label>Lọc theo tình trạng</label>
+                        
+                        <div className="mt-3 mb-3">
+                            <label className="me-3">Lọc theo tình trạng: </label>
                             <select value={status} onChange={e => setStatus(e.target.value)}>
                                 <option value=''>Tất cả</option>
                                 {Statuses.map(x => <option key={x} value={x}>{x}</option>)}
                             </select>
                         </div>
                         <div className="copy-list">
-                            <div className="copy-item">
-                                <div>Mã cuốn sách</div>
-                                <div>Tình trạng</div>
-                                <div>Ghi chú</div>
-                            </div>
-                            {copies.map(x => <div className="copy-item" key={x.lBookID} onClick={() => selectCopy(x)}>
-                                <div >{x.lBookID}</div>
-                                <div >{x.status}</div>
-                                <div >{x.note}</div>
-                            </div>)}
+
+                            {(copies && copies.length > 0) ? <DataTable headers={headers} rows={rows} /> : 'Không tìm thấy'}
                         </div>
                     </>} 
                     

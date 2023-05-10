@@ -1,5 +1,6 @@
 import { booksData, CategoriesData, getBookCover } from '../mock-data';
 import BooksGrid from '../components/shared/books-grid';
+import BooksTable from '../components/page/book/books-table';
 import { useEffect, useMemo, useState } from 'react';
 import CallApi from '../utils/callApi'
 import { Link, useLocation } from 'react-router-dom';
@@ -182,7 +183,7 @@ const BookPage = () => {
         <h3 className="page-title">Tìm kiếm sách</h3>
         <div className="container-80">
             {token &&
-                <div className="add-book-btn btn">
+                <div className="add-book-btn btn mb-3">
                     <Link to='/BLibrary/AddBook'>+ Thêm Sách</Link>
                 </div>
             }
@@ -231,9 +232,16 @@ const BookPage = () => {
                 <label htmlFor='desc'>Giảm dần</label>
             </div>
         </div>
-        {loading && <div className="loader"></div>} 
+        
         <div className="container-80">
-            <BooksGrid bookList={list} nCol={5} />
+            {loading ? <div className="loader"></div> : list && list.length > 0 ?
+                token ?
+                    <BooksTable bookList={list} />
+                    :
+                    <BooksGrid bookList={list} nCol={5} />
+                :
+                <h3>Không tìm thấy thấy theo tiêu chí của bạn</h3>
+            }
             <div className="pager">
                 Trang <input type="number" max={getTotalPage} min={1} value={page} onChange={(e) => setPage(e.currentTarget.value)} /> / {getTotalPage}
             </div>

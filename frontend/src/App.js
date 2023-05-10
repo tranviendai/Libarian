@@ -11,6 +11,8 @@ import AboutPage from './pages/about';
 import StaffPage from './pages/staff';
 import LibCard from './pages/LibCard';
 import LibCardDetail from './pages/libcard-detail';
+import PutCardPage from './pages/put-card';
+import BorrowPage from './pages/borrow';
 
 function App() {
   return <GlobalContextProvider>
@@ -29,6 +31,9 @@ function App() {
           <Route path='/BLibrary/Staff/' element={<StaffPage />} />
           <Route path='/BLibrary/LibCard/' element={<LibCard />} />
           <Route path='/BLibrary/LibCard/:id' element={<LibCardDetail />} />
+          <Route path='/BLibrary/AddCard/' element={<PutCardPage />} />
+          <Route path='/BLibrary/UpdateCard/:id' element={<PutCardPage />} />
+          <Route path='/BLibrary/Borrow/' element={<BorrowPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>

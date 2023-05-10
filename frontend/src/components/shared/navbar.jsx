@@ -28,14 +28,15 @@ const Nav = () => {
                 {token && role === 'Admin' && <Link to={'/BLibrary/Staff'}>Thủ thư</Link>}
                 {token && role === 'Thủ Thư' && <>
                     <Link to={'/BLibrary/LibCard'}>Thẻ thư viện</Link>
+                    <Link to={'/BLibrary/Borrow'}>Mượn-trả sách</Link>
                 </>}
             </div>
             <div className="right">
                 <div className="flex-fill"></div>
                 {token ?
-                    <div className="btn pill" onClick={removeToken}>Đăng Xuất</div>
+                    <div className="pointer pill" onClick={removeToken}>Đăng Xuất</div>
                     :
-                    <div className="btn pill" onClick={() => { setLogin(true) }}>Đăng nhập</div>
+                    <div className="pointer pill" onClick={() => { setLogin(true) }}>Đăng nhập</div>
                 }
                 
                 <div className={`light-mode-toggle ${!lightMode && 'night'}`} onClick={toggleLightMode}>

@@ -24,16 +24,18 @@ namespace Librarian.Controllers.API
 
         // GET: api/LibraryCards
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LibraryCard>>> GetLibraryCard(string searchID = "", string searchName = "", int page = 1, int pageLength = 20)
+        public async Task<ActionResult<IEnumerable<LibraryCard>>> GetLibraryCard(string searchID = "", string searchName = "", int page = 1, int pageLength = 20, bool active = true)
         {
             if (_context.LibraryCard == null)
             {
                 return NotFound();
             }
+            string state = active ? "Yes" : "No";
             var list = await _context.LibraryCard
                 .Where(x =>
                     x.fullName.ToLower().Contains(searchName.ToLower())
                     && x.libraryCardID.ToLower().StartsWith(searchID.ToLower())
+                    && x.cardStatus == state
                 ).ToListAsync();
 
             var count = Math.Ceiling(1.0f * list.Count() / pageLength);
@@ -57,7 +59,11 @@ namespace Librarian.Controllers.API
             var libraryCard = await _context.LibraryCard.FindAsync(id);
             var history = from cc in _context.CallCard
                           where cc.libraryCardID == id
-                          select new { cc.lBookID, cc.startDate, cc.deadline, cc.endDate, cc.bookStatus };
+                          from lb in _context.LBooks
+                          where cc.lBookID == lb.lBookID
+                          from b in _context.Book
+                          where b.bookID == lb.bookID
+                          select new { cc.callCardID, b.title, cc.lBookID, cc.startDate, cc.deadline, cc.endDate, cc.bookStatus };
 
 
             if (libraryCard == null)

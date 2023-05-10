@@ -49,14 +49,16 @@ $grey: #7382A3;
 $nav-height: 80px;
 //$nav-height: 100px;
 
-:root{
-  font-family: 'Quicksand', sans-serif;
-}
 
 body,
 html {
   margin: 0;
   padding: 0;
+}
+
+body{
+  font-family: 'Quicksand', sans-serif;
+  line-height: 1;
 }
 
 *{
@@ -85,6 +87,11 @@ a{
   animation: spin 2s linear infinite;
 }
 
+.m-row{
+  display: flex;
+  align-items: center;
+}
+
 /* Safari */
 @-webkit-keyframes spin {
   0% {
@@ -106,7 +113,7 @@ a{
   }
 }
 
-.btn{
+.pointer{
   cursor: pointer;
 }
 .icon{
@@ -349,7 +356,7 @@ a{
   .right{
     flex: 1;
 
-    .btn{
+    .pointer{
         color: $purple;
         font-weight: bolder;
     }
@@ -672,7 +679,7 @@ a{
       margin: 50px 0;
       justify-content: space-between;
 
-      .btn{
+      .pointer{
         background-color: $light-blue;
         color: $blue;
         padding: 10px 50px;
@@ -1439,6 +1446,11 @@ a{
         font-size: 2em;
       }
 
+      .btn{
+        width: 200px;
+        border: none;
+      }
+
     }
   }
 
@@ -1565,7 +1577,6 @@ a{
             padding: 8px 16px;
             border-radius: 50px;
             margin-top: 20px;
-            cursor: pointer;
           }
       }
     }

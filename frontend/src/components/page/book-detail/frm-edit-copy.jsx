@@ -42,26 +42,51 @@ const FormEditCopy = ({ onExit, copy, refresh }) => {
 
     return <DialogWrapper onClickOut={onExit}>
         <div className="edit-copy">
-            <div className="title">Chỉnh sửa cuốn sách #{copy.lBookID}</div>
-            <div>
-                <label htmlFor="status">Tình trạng:</label>
+            <h3 className="title mb-3">Chỉnh sửa cuốn sách #{copy.lBookID}</h3>
+            <div className="input-group mb-3">
+                <span className="input-group-text">Tình trạng</span>
                 <select id="status" value={formData.status || Statuses[0]} onChange={(e) => onFormChange(e)}>
-                    {Statuses.map(x => <option key={x} value={x}>
-                        {x}
-                    </option>)}
-                </select>
+                     {Statuses.map(x => <option key={x} value={x}>
+                         {x}
+                     </option>)}
+                 </select>
             </div>
-            <div>
-                <label htmlFor="note">Ghi chú:</label>
-                <input type="text" id="note" value={formData.note} onChange={(e) => onFormChange(e)} />
+
+            <div className="form-floating mb-3">
+                <input type="text" className="form-control" id="note" placeholder=" " value={formData.note} onChange={(e) => onFormChange(e)} />
+                <label for="note">Ghi chú</label>
             </div>
-            <div>
-                <div className="btn" onClick={onExit}>Hủy</div>
-                <div className="btn" onClick={() => onConfirm(3)}>Xóa</div>
-                <div className="btn" onClick={() => onConfirm(2)}>Cập nhật</div>
+
+            <div style={{ float: "right" }}>
+                <div className="btn btn-primary" onClick={() => onConfirm(2)}>Cập nhật</div>
+                <div className="btn btn-danger ms-3 me-3" onClick={() => onConfirm(3)}>Xóa</div>
+                <div className="btn btn-secondary" onClick={onExit}>Hủy</div>
             </div>
         </div>
     </DialogWrapper>
+
+    // return <DialogWrapper onClickOut={onExit}>
+    //     <div className="edit-copy">
+    //         <div className="title">Chỉnh sửa cuốn sách #{copy.lBookID}</div>
+    //         <div>
+    //             <label htmlFor="status">Tình trạng:</label>
+    //             <select id="status" value={formData.status || Statuses[0]} onChange={(e) => onFormChange(e)}>
+    //                 {Statuses.map(x => <option key={x} value={x}>
+    //                     {x}
+    //                 </option>)}
+    //             </select>
+    //         </div>
+    //         <div>
+    //             <label htmlFor="note">Ghi chú:</label>
+    //             <input type="text" id="note" value={formData.note} onChange={(e) => onFormChange(e)} />
+    //         </div>
+    //         <div>
+    //             <div className="btn" onClick={onExit}>Hủy</div>
+    //             <div className="btn" onClick={() => onConfirm(3)}>Xóa</div>
+    //             <div className="btn" onClick={() => onConfirm(2)}>Cập nhật</div>
+    //         </div>
+    //     </div>
+    // </DialogWrapper>
 }
 
 export default FormEditCopy
