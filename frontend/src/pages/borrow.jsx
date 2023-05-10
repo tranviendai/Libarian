@@ -41,15 +41,20 @@ const BorrowPage = () => {
         setPage(1)
     }, [borrow, searchId])
 
-    const headers = ['Mã phiếu', 'Ngày mượn', 'Thời hạn', 'Ngày trả', 'Tình trạng sách', 'Mã sách', 'Mã thẻ'];
+    const headers = borrow ?
+        ['Mã phiếu', 'Ngày mượn', 'Thời hạn', 'Mã sách', 'Mã thẻ']
+        : ['Mã phiếu', 'Ngày mượn', 'Thời hạn', 'Ngày trả', 'Tình trạng sách', 'Mã sách', 'Mã thẻ'];
     const rows = borrows?.map(x => { 
         return {
             onRowSelected: () => { 
                 setSelectedItem(x.borrow_id)
                 setShowReturnDialog(true)
             },
-            rowData: [x.callCardID, x.startDate, x.deadline, x.endDate || 'Chưa trả',
-                x.endDate ? x.bookStatus : 'Chưa trả', x.lBookID, x.libraryCardID]
+            rowData: borrow ?
+                [x.callCardID, x.startDate, x.deadline, x.lBookID, x.libraryCardID]
+                :
+                [x.callCardID, x.startDate, x.deadline, x.endDate || 'Chưa trả',
+                    x.endDate ? x.bookStatus : 'Chưa trả', x.lBookID, x.libraryCardID]
         }
     })
 
