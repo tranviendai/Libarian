@@ -72,7 +72,7 @@ const LibCardDetail = () => {
 
         <div className="page-title">Lịch sử mượn</div>
 
-        {history ? <DataTable headers={headers} rows={rows} /> : <h3>Không có lịch sử mượn</h3>}
+        {(history && history.length > 0) ? <DataTable headers={headers} rows={rows} /> : <h3>Không có lịch sử mượn</h3>}
     </div>
 }
 

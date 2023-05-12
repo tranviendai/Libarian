@@ -23,7 +23,7 @@ namespace Librarian.Controllers.API
 
         // GET: api/CallCards
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CallCard>>> GetCallCard(int page = 1, int limit = 20, string id="", bool returned = false)
+        public async Task<ActionResult<IEnumerable<CallCard>>> GetCallCard(int page = 1, int limit = 20, string id="",string bookID ="", string cardID = "" , bool returned = false)
         {
             if (_context.CallCard == null)
             {
@@ -31,7 +31,9 @@ namespace Librarian.Controllers.API
             }
 
             var list = from c in _context.CallCard
-                        where c.callCardID.ToLower().StartsWith(id.ToLower())
+                        where c.callCardID.ToLower().Contains(id.ToLower())
+                            && c.lBookID.ToLower().Contains(bookID.ToLower())
+                            && c.libraryCardID.ToLower().Contains(cardID.ToLower())
                             && ((returned && c.endDate != null) || (!returned && c.endDate == null))
                         select c;
 

@@ -36,7 +36,7 @@ const BookDetailDialog = ({ book, onExit }) => {
     return <DialogWrapper onClickOut={onExit}>
         <div className="book-detail-dialog">
             <div className="header">Thông Tin Sách</div>
-            <h2>{book.title}</h2>
+            <h2 className="m-row"><div>{book.title} #{book.bookID}</div> </h2>
             <div className="desc">{book.summary}</div>
             <div className="info">
                 <div className="left">

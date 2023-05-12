@@ -11,6 +11,7 @@ const LibCard = () => {
     const [active, setActive] = useState(true);
     const [cards, setCards] = useState([]);
     const [pageCount, setPageCount] = useState(1);
+    const [searchByName, setSearchByName] = useState(false);
 
     //inputs control
     const searchNameRef = useRef('');
@@ -59,6 +60,11 @@ const LibCard = () => {
         }
     }
 
+    useEffect(() => { 
+        if (searchByName) searchIDRef.current.value = '';
+        else searchNameRef.current.value = '';
+    }, [searchByName])
+
     return <div className="libcard-page container-80 pb-5">
         <h3 className="page-title">Danh sách thẻ thư viện</h3>
 
@@ -67,13 +73,13 @@ const LibCard = () => {
         </div> */}
 
         <div className="input-group mb-3">
-            <span className="input-group-text" id="basic-addon1">Tìm theo tên</span>
-            <input type="text" className="form-control" placeholder="Tên" aria-label="Username" aria-describedby="basic-addon1"
-                ref={searchNameRef} onKeyDown={(e) => onInputEnter(e)} />
-
-            <span className="input-group-text ms-4" id="basic-addon1">Tìm theo mã thẻ</span>
+            <span className={`input-group-text btn ${!searchByName ? 'btn-primary' : 'btn-secondary'}`} id="basic-addon1" onClick={() => setSearchByName(false)}>Tìm theo mã thẻ</span>
             <input type="text" className="form-control me-4" placeholder="Mã thẻ" aria-label="Username" aria-describedby="basic-addon1"
-                ref={searchIDRef} onKeyDown={(e) => onInputEnter(e)} />
+                ref={searchIDRef} onKeyDown={(e) => onInputEnter(e)} disabled={searchByName} />
+            
+            <span className={`input-group-text btn ${searchByName ? 'btn-primary' : 'btn-secondary'}`} id="basic-addon1" onClick={() => setSearchByName(true)}>Tìm theo tên</span>
+            <input type="text" className="form-control me-4" placeholder="Tên" aria-label="Username" aria-describedby="basic-addon1"
+                ref={searchNameRef} onKeyDown={(e) => onInputEnter(e)} disabled={!searchByName} />
 
             <button onClick={onSearch} className="btn btn-primary">Tra cứu</button>
         </div>

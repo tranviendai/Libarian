@@ -33,8 +33,7 @@ namespace Librarian.Models
         [Display(Name = "Ngày trả Sách")]
         [Column(TypeName = "Date")]
         [DisplayFormat(DataFormatString = "{0:dd/M/yyyy}", ApplyFormatInEditMode = true)]
-        [Required]
-        public DateTime endDate { get; set; }
+        public DateTime? endDate { get; set; }
 
         [Display(Name = "Tình trạng sách")]
         [StringLength(24)]
