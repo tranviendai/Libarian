@@ -125,7 +125,7 @@ const BorrowPage = () => {
 
         {loading && <div className="loader"></div>}
         {(borrows && borrows.length > 0) ?
-            <DataTable headers={headers} rows={rows} />
+            <DataTable headers={headers} rows={rows} noEdit={!borrow} />
             : <p>Không tìm thấy kết quả nào</p>
         }
     

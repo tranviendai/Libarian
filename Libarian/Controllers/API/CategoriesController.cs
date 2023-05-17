@@ -35,7 +35,7 @@ namespace Librarian.Controllers.API
                       join b in _context.Book on c.categoryID equals b.categoryID into gj
                       from bc in gj.DefaultIfEmpty()
                       group c by new { c.categoryID, c.nameCategory } into g
-                      select new { g.Key.categoryID, g.Key.nameCategory, Count = g.Count() };
+                      select new { g.Key.categoryID, g.Key.nameCategory, Count = g.Count(x => x!= null) };
 
          /*   var res1 = from c in _context.Category
                        join b in _context.Book on c.categoryID equals b.categoryID

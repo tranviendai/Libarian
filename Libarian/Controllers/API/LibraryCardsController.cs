@@ -34,7 +34,7 @@ namespace Librarian.Controllers.API
             var list = await _context.LibraryCard
                 .Where(x =>
                     x.fullName.ToLower().Contains(searchName.ToLower())
-                    && x.libraryCardID.ToLower().StartsWith(searchID.ToLower())
+                    && x.libraryCardID.ToLower().Contains(searchID.ToLower())
                     && x.cardStatus == state
                 ).ToListAsync();
 

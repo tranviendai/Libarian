@@ -54,9 +54,11 @@ namespace Librarian.Controllers.API
 
             var book = _context.Book.Where(x =>
                 (x.categoryID == cateId || cateId == null) &&
-                (searchOpt == 2 && x.bookID.ToLower().Contains(keyword.ToLower())) ||
-                (searchOpt == 3 && x.author.ToLower().Contains(keyword.ToLower())) ||
-                (x.title.ToLower().Contains(keyword.ToLower()))
+                (
+                    (searchOpt == 2 && x.bookID.ToLower().Contains(keyword.ToLower())) ||
+                    (searchOpt == 3 && x.author.ToLower().Contains(keyword.ToLower())) ||
+                    (x.title.ToLower().Contains(keyword.ToLower()))
+                )
             );
             //order by
             string[] orderCols = new string[] { "addDate", "title" };
@@ -80,11 +82,13 @@ namespace Librarian.Controllers.API
 		public async Task<ActionResult<int>> CountBook(int? cateId, string keyword = "", int searchOpt = 1)
 		{
             var book = _context.Book.Where(x =>
-               (x.categoryID == cateId || cateId == null) &&
-               (searchOpt == 2 && x.bookID.ToLower().Contains(keyword.ToLower())) ||
-               (searchOpt == 3 && x.author.ToLower().Contains(keyword.ToLower())) ||
-               (x.title.ToLower().Contains(keyword.ToLower()))
-           );
+                (x.categoryID == cateId || cateId == null) &&
+                (
+                    (searchOpt == 2 && x.bookID.ToLower().Contains(keyword.ToLower())) ||
+                    (searchOpt == 3 && x.author.ToLower().Contains(keyword.ToLower())) ||
+                    (x.title.ToLower().Contains(keyword.ToLower()))
+                )
+            );
 
 
             if (_context.Book == null)

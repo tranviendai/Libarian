@@ -17,8 +17,8 @@ const LoginImg = require('../../resources/imgs/login.png');
 const Login = ({ setLogin }) => { 
     const { addToken, changeRole } = useGlobalContext();
     
-    const [Username, setUsername] = useState('');
-    const [Password, setPassword] = useState('');
+    const [Username, setUsername] = useState('admin@gmail.com');
+    const [Password, setPassword] = useState('Admin@123');
 
     const navigate = useNavigate();
 
