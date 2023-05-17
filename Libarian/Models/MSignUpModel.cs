@@ -1,8 +1,7 @@
 ﻿namespace Librarian.Models
 {
-    public class MSignUpModel
+    public class MSignUpModel: ApplicationUser
     {
-        public ApplicationUser User { get; set; } 
         public string Password {get; set; }
     }
 }

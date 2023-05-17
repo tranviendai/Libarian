@@ -36,6 +36,7 @@ const Nav = () => {
                 {token && role === 'Thủ Thư' && <>
                     <Link to={'/BLibrary/LibCard'}>Thẻ thư viện</Link>
                     <Link to={'/BLibrary/Borrow'}>Mượn-trả sách</Link>
+                    <Link to={'/BLibrary/Fine'}>Phiếu phạt</Link>
                 </>}
             </div>
             <div className="right">

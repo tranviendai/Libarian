@@ -143,6 +143,7 @@ const BookPage = () => {
                 })
                 const data = resp.data;
                 if (mounted) setBookCount(data);
+                //alert('new book count '+data)
             } catch (err) { 
                 console.log(err);
             }

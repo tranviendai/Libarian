@@ -79,7 +79,7 @@ namespace Librarian.Controllers.API
 
 		[HttpPost]
 		[Route("register")]
-		public async Task<IActionResult> Register(ApplicationUser user)
+		public async Task<IActionResult> Register(MSignUpModel user)
 		{
 			var userExists = await _userManager.FindByNameAsync(user.UserName);
 			if (userExists != null)
@@ -87,7 +87,7 @@ namespace Librarian.Controllers.API
 
 			try
 			{
-				await _userManager.CreateAsync(user, "P@55word");
+				await _userManager.CreateAsync(user, user.Password);
 				await _userManager.AddToRoleAsync(user, "THỦ THƯ");
                 return Ok(new { Status = "Success", Message = "User created successfully!" });
             }
