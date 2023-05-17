@@ -48,6 +48,31 @@ namespace Librarian.Controllers.API
             return new JsonResult(new { PageCount = count, list = list });
         }
 
+        [HttpGet("utils/rawList")]
+        public async Task<ActionResult<IEnumerable<LibraryCard>>> GetLibraryCardList(string searchID = "", string searchName = "", int page = 1, int pageLength = 20, bool active = true)
+        {
+            if (_context.LibraryCard == null)
+            {
+                return NotFound();
+            }
+            string state = active ? "Yes" : "No";
+            var list = await _context.LibraryCard.Include(x => x.callCards).ThenInclude(x => x.lBook).ThenInclude(x => x.Books)
+                .Where(x =>
+                    x.fullName.ToLower().Contains(searchName.ToLower())
+                    && x.libraryCardID.ToLower().Contains(searchID.ToLower())
+                    && x.cardStatus == state
+                ).ToListAsync();
+
+            var count = Math.Ceiling(1.0f * list.Count() / pageLength);
+            if (count < 1) count = 1;
+            page = Math.Max(page, 1);
+            pageLength = Math.Max(pageLength, 1);
+
+            list = list.Skip((page - 1) * pageLength).Take(pageLength).ToList();
+
+            return new JsonResult(list);
+        }
+
         // GET: api/LibraryCards/5
         [HttpGet("{id}")]
         public async Task<ActionResult<LibraryCard>> GetLibraryCard(string id)
