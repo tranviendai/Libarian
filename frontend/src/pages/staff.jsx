@@ -9,11 +9,11 @@ const StaffPage = () => {
     const navigate = useNavigate();
 
     const { data: emps, loading } = useFetch('/staffs', null, token);
-    const headers = ['Tên', 'Giới tính','Địa chỉ' ,'SĐT', 'Email', 'Ngày sinh'];
+    const headers = ['Tên', 'Giới tính','Địa chỉ', 'Email', 'Ngày sinh'];
     const rows = emps?.map(x => {
         return {
             onRowSelected: () => navigate('/BLibrary/UpdateEmp/' + x.id),
-            rowData: [x.fullName, x.sex, x.address ,x.phone, x.email, x.birthday]
+            rowData: [x.fullName, x.sex, x.address, x.email, x.birthday]
         }
     })
 

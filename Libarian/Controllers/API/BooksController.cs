@@ -52,7 +52,7 @@ namespace Librarian.Controllers.API
                             && (b.title.ToLower().StartsWith(keyword.ToLower()))
                        select b;*/
 
-            var book = _context.Book.Where(x =>
+            var book = _context.Book.Include(x => x.category).Where(x =>
                 (x.categoryID == cateId || cateId == null) &&
                 (
                     (searchOpt == 2 && x.bookID.ToLower().Contains(keyword.ToLower())) ||
@@ -151,14 +151,14 @@ namespace Librarian.Controllers.API
           {
               return NotFound();
           }
-
-            var book = _context.Book.FirstOrDefault(x => x.bookID == id);
+          
+            var book = _context.Book.Include(x => x.category).FirstOrDefault(x => x.bookID == id);
             if (book == null)
             {
                 return NotFound();
             }
 
-            return book;
+            return new JsonResult(book);
         }
 
 
