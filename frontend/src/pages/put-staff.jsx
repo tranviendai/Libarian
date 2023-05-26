@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import CallApi from "../utils/callApi";
 import useFetch from "../utils/useFetch";
+import { convertToDMY } from "../utils/convertDate";
 
 const PutStaffPage = () => { 
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const initForm = { fullName: '', phone: '', email: '', sex: '', address: '' ,Username: '', Password: '', active: true };
+    const initForm = { UserName: '', sex: '', address: '', fullName: '', Password: '' ,birthday: ''};
     const [form, setForm] = useState(initForm);
     const [error, setError] = useState('');
 
@@ -25,13 +26,16 @@ const PutStaffPage = () => {
     const onFrmSubmit = async (e) => {
         e.preventDefault();
         try {
-            if (!id) {
-                await CallApi.post('/Auth/Register', form);
+            const body = {...form,
+                    birthday: convertToDMY(form.birthday)
+                }
+            if (!id) {//Thêm
+                await CallApi.post('/Auth/Register', body);
                 alert('Đã tạo')
                 setForm(initForm);
                 setError('');
             } else { 
-                await CallApi.post('/emp/update/' + id, form);
+                await CallApi.post('/emp/update/' + id, body);
                 navigate('/BLibrary/Staff')
             }
 
@@ -87,9 +91,9 @@ const PutStaffPage = () => {
             {!id &&
                 <div className="row mb-3">
                     <div className={`form-floating col-6`}>
-                        <input type="text" id="Username" className="form-control" placeholder=" "
-                            value={form?.Username} onChange={onFormChange}/>
-                        <label htmlFor="Username" className="ps-4">Tài khoản:</label>
+                        <input type="text" id="UserName" className="form-control" placeholder=" "
+                            value={form?.UserName} onChange={onFormChange}/>
+                        <label htmlFor="UserName" className="ps-4">Tài khoản:</label>
                     </div>
                     <div className="form-floating col-6">
                         <input type="password" id="Password" className="form-control" placeholder=" "
@@ -98,6 +102,11 @@ const PutStaffPage = () => {
                     </div>
                 </div>
             }
+            <div>
+            <label htmlFor="birthday" className="ps-4">Ngày sinh:</label>
+            <input type="date" id="birthday" className="form-control" placeholder=" "
+                    onChange={onFormChange} value={form && form['birthday']} />
+            </div>
             
             <div className="m-row">
                 {error && <p className="text-danger">{error}</p>}

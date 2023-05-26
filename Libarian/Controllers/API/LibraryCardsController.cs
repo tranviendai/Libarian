@@ -105,12 +105,21 @@ namespace Librarian.Controllers.API
         [Authorize]
         public async Task<IActionResult> PutLibraryCard(string id, LibraryCard libraryCard)
         {
+
+            //var libraryCard = await _context.LibraryCard.FindAsync(id);
+            //libraryCard.expirationDate= expirationDate;
             if (id != libraryCard.libraryCardID)
             {
                 return BadRequest();
             }
 
             _context.Entry(libraryCard).State = EntityState.Modified;
+            _context.Entry(libraryCard).Property(x => x.fullName).IsModified = false;
+            _context.Entry(libraryCard).Property(x => x.startDate).IsModified = false;
+            _context.Entry(libraryCard).Property(x => x.cardStatus).IsModified = false;
+
+            _context.Entry(libraryCard).Property(x => x.librayCardIndex).IsModified = false;
+
 
             try
             {
@@ -141,6 +150,12 @@ namespace Librarian.Controllers.API
             {
                 return Problem("Entity set 'ApplicationDbContext.LibraryCard'  is null.");
             }
+            libraryCard.startDate = DateTime.Now;
+            libraryCard.cardStatus = "Yes";
+            libraryCard.expirationDate= DateTime.Now.AddYears(4);
+            var tlib = _context.LibraryCard.OrderByDescending(c => c.libraryCardID).FirstOrDefault();
+            var autoID = tlib != null ? int.Parse(tlib.libraryCardID.Substring(1, tlib.libraryCardID.Length - 1)) + 1 + "" : "0001";
+            libraryCard.libraryCardID = "H" + autoID;
             _context.LibraryCard.Add(libraryCard);
             try
             {
@@ -175,9 +190,24 @@ namespace Librarian.Controllers.API
             {
                 return NotFound();
             }
-
-            _context.LibraryCard.Remove(libraryCard);
-            await _context.SaveChangesAsync();
+            if (libraryCard.cardStatus == "Yes")
+                libraryCard.cardStatus = "No";
+            else libraryCard.cardStatus = "Yes";
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!LibraryCardExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             return NoContent();
         }
