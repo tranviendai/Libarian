@@ -149,7 +149,7 @@ namespace Librarian.Controllers.API
                 return BadRequest();
             }
 
-            _context.Entry(book).State = EntityState.Modified;
+            _context.Entry(book).State = EntityState.Modified; 
             _context.Entry(book).Property(x => x.bookIndex).IsModified = false;
             _context.Entry(book).Property(x => x.addDate).IsModified = false;
 

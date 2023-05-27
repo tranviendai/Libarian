@@ -31,7 +31,7 @@ const LibCardDetail = () => {
 
     const blockCard = async () => {
         try {
-            await CallApiWithToken(token).post('/card/block/' + id);
+            await CallApiWithToken(token).delete('/LibraryCards/' + id);
             window.location.reload();
         } catch {
             alert('Failed')
