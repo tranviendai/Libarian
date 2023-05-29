@@ -23,7 +23,7 @@ namespace Librarian.Controllers.API
 
         // GET: api/CallCards
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CallCard>>> GetCallCard(int page = 1, int limit = 20, string id="",string bookID ="", string cardID = "" , bool returned = false)
+        public async Task<ActionResult<IEnumerable<CallCard>>> GetCallCard(int page = 1, int limit = 20, string id = "", string bookID = "", string cardID = "", bool returned = false)
         {
             if (_context.CallCard == null)
             {
@@ -31,11 +31,11 @@ namespace Librarian.Controllers.API
             }
 
             var list = from c in _context.CallCard
-                        where c.callCardID.ToLower().Contains(id.ToLower())
-                            && c.lBookID.ToLower().Contains(bookID.ToLower())
-                            && c.libraryCardID.ToLower().Contains(cardID.ToLower())
-                            && ((returned && c.endDate != null) || (!returned && c.endDate == null))
-                        select c;
+                       where c.callCardID.ToLower().Contains(id.ToLower())
+                           && c.lBookID.ToLower().Contains(bookID.ToLower())
+                           && c.libraryCardID.ToLower().Contains(cardID.ToLower())
+                           && ((returned && c.endDate != null) || (!returned && c.endDate == null))
+                       select c;
 
             int total = list.Count();
             int pageCount = (int)Math.Max(1, Math.Ceiling(total * 1.0f / limit));
@@ -52,10 +52,10 @@ namespace Librarian.Controllers.API
         [HttpGet("{id}")]
         public async Task<ActionResult<CallCard>> GetCallCard(string id)
         {
-          if (_context.CallCard == null)
-          {
-              return NotFound();
-          }
+            if (_context.CallCard == null)
+            {
+                return NotFound();
+            }
             var callCard = await _context.CallCard.FindAsync(id);
 
             if (callCard == null)
@@ -97,16 +97,24 @@ namespace Librarian.Controllers.API
             return NoContent();
         }
 
-        // POST: api/CallCards
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<CallCard>> PostCallCard(CallCard callCard)
+        public async Task<IActionResult> PostCallCard(CallCard callCard)
         {
-          if (_context.CallCard == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.CallCard'  is null.");
-          }
+            if (callCard == null)
+            {
+                return BadRequest("CallCard object is null.");
+            }
             _context.CallCard.Add(callCard);
+
+            //Update status
+            var lBook = await _context.LBooks.FindAsync(callCard.lBookID);
+            if (lBook == null)
+            {
+                return NotFound("LBook not found.");
+            }
+            lBook.status = "Đang mượn";
+            //_context.LBooks.Update(lBook);
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -115,15 +123,14 @@ namespace Librarian.Controllers.API
             {
                 if (CallCardExists(callCard.callCardID))
                 {
-                    return Conflict();
+                    return Conflict("CallCard already exists.");
                 }
                 else
                 {
                     throw;
                 }
             }
-
-            return CreatedAtAction("GetCallCard", new { id = callCard.callCardID }, callCard);
+            return NoContent();
         }
 
         // DELETE: api/CallCards/5

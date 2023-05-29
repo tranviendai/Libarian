@@ -76,7 +76,7 @@ namespace Librarian.Controllers.API
 
 			return token;
 		}
-
+		//api/Auth
 		[HttpPost]
 		[Route("register")]
 		public async Task<IActionResult> Register(MSignUpModel user)
