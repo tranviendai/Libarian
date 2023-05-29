@@ -6,7 +6,7 @@ import CallApi from '../utils/callApi'
 import { Link, useLocation } from 'react-router-dom';
 import useGlobalContext from '../contexts/GlobalContext';
 
-const BookPage = () => { 
+const BookPage = () => {
 
     const { state } = useLocation();
     const { search, selectCate } = state || {};
@@ -33,10 +33,10 @@ const BookPage = () => {
 
     //EFFECTS
     //book-list
-    useEffect(() => { 
+    useEffect(() => {
         let mounted = true;
 
-        const fetchApi = async () => { 
+        const fetchApi = async () => {
             setLoading(true);
             try {
                 const resp = await CallApi.get('/books', {
@@ -56,23 +56,23 @@ const BookPage = () => {
             } catch (err) {
                 console.log(err);
             }
-            finally { 
+            finally {
                 setLoading(false);
             }
         }
         fetchApi();
 
-        return () => { 
+        return () => {
             mounted = false;
         }
     }, [keyword, selectedCate, page, orderAsc, orderBy, searchOpt])
 
     //search hint
-    useEffect(() => { 
+    useEffect(() => {
         let mounted = true;
         let timer;
 
-        const fetchApi = async () => { 
+        const fetchApi = async () => {
             if (!searchName) return;
 
             setSearching(true);
@@ -89,28 +89,28 @@ const BookPage = () => {
                 if (mounted) setHint(data);
             } catch (err) {
                 console.log(err);
-            } finally { 
+            } finally {
                 setSearching(false);
             }
         }
 
         if (searchName.length > 0) {
             timer = setTimeout(fetchApi, 300);
-        } else { 
+        } else {
             setHint([]);
         }
 
-        return () => { 
+        return () => {
             mounted = false;
             if (timer) clearTimeout(timer);
         }
     }, [searchName, selectedCate, searchOpt])
 
     //category
-    useEffect(() => { 
+    useEffect(() => {
         let mounted = true;
 
-        const fetchApi = async () => { 
+        const fetchApi = async () => {
             try {
                 const resp = await CallApi.get('/categories')
                 const data = (await resp).data;
@@ -123,43 +123,43 @@ const BookPage = () => {
 
         fetchApi();
 
-        return () => { 
+        return () => {
             mounted = false;
         }
     }, [])
 
     //count book
-    useEffect(() => { 
+    useEffect(() => {
         let mounted = true;
 
-        const fetchApi = async () => { 
+        const fetchApi = async () => {
             try {
                 const resp = await CallApi.get('/books/utils/countbook', {
                     params: {
                         keyword,
-                        cateId: selectedCate > 0 ? selectedCate: null,
+                        cateId: selectedCate > 0 ? selectedCate : null,
                         searchOpt
                     }
                 })
                 const data = resp.data;
                 if (mounted) setBookCount(data);
                 //alert('new book count '+data)
-            } catch (err) { 
+            } catch (err) {
                 console.log(err);
             }
         }
 
         fetchApi();
 
-        return () => { 
+        return () => {
             mounted = false
         }
     }, [keyword, selectedCate, searchOpt])
 
-    const getTotalPage = useMemo(() => { 
+    const getTotalPage = useMemo(() => {
         return Math.max(Math.ceil(bookCount / ItemPerPage), 1);
     }, [bookCount])
-    
+
     const onSearch = () => {
         setKeyword(searchName);
         setPage(1);
@@ -170,22 +170,22 @@ const BookPage = () => {
         setPage(1);
     }
 
-    const onSearchKeyDown = (e) => { 
+    const onSearchKeyDown = (e) => {
         if (e.key === 'Enter') onSearch();
     }
 
-    const onOrderChange = (e) => { 
+    const onOrderChange = (e) => {
         setOrderAsc(e.target.id === 'asc')
     }
 
-    const onSearchOptChange = (e) => { 
+    const onSearchOptChange = (e) => {
         setSearchOpt(e.target.value);
         setSearchName('');
         setKeyword('');
     }
 
-    const searchPlaceHolder = useMemo(() => { 
-        switch (searchOpt) { 
+    const searchPlaceHolder = useMemo(() => {
+        switch (searchOpt) {
             case '2': return 'Nhập mã sách';
             case '3': return 'Nhập tên tác giả';
             default: return 'Nhập tựa sách';
@@ -214,15 +214,15 @@ const BookPage = () => {
                     <input type='text' id='searchName' placeholder={searchPlaceHolder}
                         value={searchName} onChange={(e) => { setSearchName(e.target.value) }} onKeyDown={(e) => onSearchKeyDown(e)}
                         onFocus={() => setShowHint(true)} onBlur={() => setTimeout(() => setShowHint(false), 100)} />
-                    
+
                     {searchName.length > 0 &&
-                        <div className={'hints ' + (showHint?'':'hide')}>
+                        <div className={'hints ' + (showHint ? '' : 'hide')}>
                             {searching ? <div><i>Đang tìm...</i></div> :
                                 hint.length > 0 &&
-                                hint.map(x => <div className="hint" key={x} onClick={() => { setSearchName(x);}}>{x}</div>)
+                                hint.map(x => <div className="hint" key={x} onClick={() => { setSearchName(x); }}>{x}</div>)
                             }
                         </div>
-                    } 
+                    }
                 </div>
                 <div className="btn" onClick={onSearch}>Tìm</div>
             </div>
@@ -244,13 +244,13 @@ const BookPage = () => {
                     <option value="addDate">Ngày thêm vào</option>
                     <option value="title">Tên sách</option>
                 </select>
-                <input type='radio' id='asc' name='orderby' checked={orderAsc} onChange={onOrderChange} hidden/>
+                <input type='radio' id='asc' name='orderby' checked={orderAsc} onChange={onOrderChange} hidden />
                 <label htmlFor='asc'>Tăng dần</label>
-                <input type='radio' id='desc' name='orderby' checked={!orderAsc} onChange={onOrderChange} hidden/>
+                <input type='radio' id='desc' name='orderby' checked={!orderAsc} onChange={onOrderChange} hidden />
                 <label htmlFor='desc'>Giảm dần</label>
             </div>
         </div>
-        
+
         <div className="container-80">
             {loading ? <div className="loader"></div> : list && list.length > 0 ?
                 token ?

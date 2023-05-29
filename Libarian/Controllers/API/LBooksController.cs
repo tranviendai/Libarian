@@ -27,21 +27,23 @@ namespace Librarian.Controllers.API
         [Authorize]
         public async Task<ActionResult<IEnumerable<LBook>>> GetLBooks(string? bookID, string? status)
         {
-          if (_context.LBooks == null)
-          {
-              return NotFound();
-          }
-            return await _context.LBooks.Where(x => (bookID == null || x.bookID == bookID) && (status == null || x.status == status)).ToListAsync();
+            //search and filter by status
+            var lBooks = _context.LBooks.Where(x => (bookID == null || x.bookID == bookID) && (status == null || x.status == status));
+            if (lBooks == null)
+            {
+                return NotFound();
+            }
+            return await lBooks.ToListAsync();
         }
 
         // GET: api/LBooks/5
         [HttpGet("{id}")]
         public async Task<ActionResult<LBook>> GetLBook(string id)
         {
-          if (_context.LBooks == null)
-          {
-              return NotFound();
-          }
+            if (_context.LBooks == null)
+            {
+                return NotFound();
+            }
             var lBook = await _context.LBooks.FindAsync(id);
 
             if (lBook == null)
@@ -91,10 +93,10 @@ namespace Librarian.Controllers.API
         [Authorize]
         public async Task<ActionResult<LBook>> PostLBook(LBook lBook)
         {
-          if (_context.LBooks == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.LBooks'  is null.");
-          }
+            if (_context.LBooks == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.LBooks'  is null.");
+            }
             /*string[]StatusArray= new string[4] {"Còn sách","Đang mượn","Sách hỏng","Sách mất"};
             if(!StatusArray.Contains(lBook.status))
             { return Problem("Không có trạng thái đã nhập!");}    */
@@ -102,9 +104,9 @@ namespace Librarian.Controllers.API
             var lbook = _context.LBooks.OrderByDescending(c => c.lBookIndex).FirstOrDefault();
 
             var autoID = lbook != null ? lbook.lBookIndex + 1 : 1;
-            
+
             autoID += 10;
-            lBook.lBookID = lBook.bookID + "L"+ autoID;
+            lBook.lBookID = lBook.bookID + "L" + autoID;
             _context.LBooks.Add(lBook);
             try
             {

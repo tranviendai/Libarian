@@ -22,6 +22,20 @@ namespace Librarian.Controllers.API
             _context = context;
         }
 
+        //Khóa thẻ
+        // Put: api/LibraryCards/utils/lockLibraryCard/{id}
+        [HttpPut("utils/lockLibraryCard/{id}")]
+        public async Task<IActionResult> LockLibraryCard(int id)
+        {
+            var libraryCard = await _context.LibraryCard.FindAsync(id);
+            if (libraryCard == null) return NotFound();
+            if (libraryCard.cardStatus == "No")
+                return BadRequest("Card is already locked!");
+            libraryCard.cardStatus = "No";
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
         // GET: api/LibraryCards
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LibraryCard>>> GetLibraryCard(string searchID = "", string searchName = "", int page = 1, int pageLength = 20, bool active = true)
