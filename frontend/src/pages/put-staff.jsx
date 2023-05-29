@@ -1,21 +1,24 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import CallApi from "../utils/callApi";
+import CallApi, { CallApiWithToken } from "../utils/callApi";
 import useFetch from "../utils/useFetch";
-import { convertToDMY } from "../utils/convertDate";
+import { convertToDMY, convertToYMD } from "../utils/convertDate";
+import useGlobalContext from "../contexts/GlobalContext";
 
 const PutStaffPage = () => { 
     const { id } = useParams();
+    const { token } = useGlobalContext();
     const navigate = useNavigate();
 
-    const initForm = { UserName: '', sex: '', address: '', fullName: '', Password: '' ,birthday: ''};
+    const initForm = { UserName: '', sex: '', address: '', fullName: '', Password: '' ,birthday: '', email: ''};
     const [form, setForm] = useState(initForm);
     const [error, setError] = useState('');
 
-    const { data: emp } = useFetch('/emp/detail/' + (id || -1));
+    const { data: emp } = useFetch('/Staffs/' + (id || -1), null, token);
 
     useEffect(() => { 
-        if (emp) setForm(emp);
+        if (emp) setForm({...emp, birthday: convertToYMD(emp.birthday)});
+        console.log(emp)
     }, [emp])
 
     const onFormChange = (e) => {
@@ -29,15 +32,17 @@ const PutStaffPage = () => {
             const body = {...form,
                     birthday: convertToDMY(form.birthday)
                 }
-            if (!id) {//Thêm
+            if (!id) { //Thêm
                 await CallApi.post('/Auth/Register', body);
                 alert('Đã tạo')
                 setForm(initForm);
                 setError('');
-            } else { 
-                await CallApi.post('/emp/update/' + id, body);
-                navigate('/BLibrary/Staff')
             }
+            if (id){
+                await CallApiWithToken(token).put('/Staffs/' + id, body);
+            }
+ 
+            navigate('/BLibrary/Staff')
 
         } catch (err) {
             console.log(err);
@@ -47,7 +52,7 @@ const PutStaffPage = () => {
 
     const block = async () => { 
         try {
-            await CallApi.post('/account/block/' + form?.acc_id);
+            await CallApiWithToken(token).delete('/Staffs/' + id);
             navigate('/BLibrary/Staff')
         } catch (err) {
             alert('Có lỗi');
@@ -68,11 +73,11 @@ const PutStaffPage = () => {
                     <label htmlFor="fullName" className="ps-4">Họ tên: </label>
                 </div>
 
-                <div className={`form-floating col-3`}>
+                {/* <div className={`form-floating col-3`}>
                     <input type="text" id="sex" className="form-control" placeholder=" "
                         value={form?.sex} onChange={onFormChange} />
                     <label htmlFor="sex" className="ps-4">Giới tính:</label>
-                </div>
+                </div> */}
             </div>
 
             <div className="row mb-3">
@@ -112,13 +117,17 @@ const PutStaffPage = () => {
                 {error && <p className="text-danger">{error}</p>}
                 <div className="flex-fill"></div>
                 <div>
-                    {id && <button className={`btn me-4 ${form?.active ? 'btn-danger' : 'btn-success'}`} onClick={block}>
-                        {form?.active ? 'Khóa' : 'Mở khóa'}
-                    </button>}
                     <button className="btn btn-primary">{id ? 'Chỉnh sửa' : 'Thêm'}</button>
                 </div>
             </div>
         </form>
+
+        <div> 
+            {id && 
+            <button className={`btn me-4 ${form.sex == "Yes" ? 'btn-danger' : 'btn-success'}`} onClick={block}>
+                {form.sex== "Yes"? 'Khóa' : 'Mở khóa'}
+            </button>}
+        </div>
 
     </div>
 }

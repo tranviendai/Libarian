@@ -34,6 +34,8 @@ namespace Librarian.Controllers.API
 		{
 
             var user = await _userManager.FindByNameAsync(model.Username);
+			if(user.sex == "No")
+				return Unauthorized("ui");
 			if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
 			{
 				var userRoles = await _userManager.GetRolesAsync(user);
