@@ -14,14 +14,16 @@ namespace Librarian.Models
         public int bookIndex { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập Tên Sách")]
-        [MaxLength(7, ErrorMessage = "Tên sách quá dài")]
-        [MinLength(5, ErrorMessage = "Vui lòng nhập Tên Sách")]
+        [MaxLength(30, ErrorMessage = "Vui lòng nhập tên sách từ 1-30 kí tự.")]
+        [MinLength(1, ErrorMessage = "Vui lòng nhập tên sách từ 1-30 kí tự.")]
         //[Range]
         [Display(Name = "Tên Sách")]
         [StringLength(32)]
         public string title { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập Tác Giả")]
+        [MaxLength(20, ErrorMessage = "Vui lòng nhập tên tác giả từ 1-20 kí tự.")]
+        [MinLength(1, ErrorMessage = "Vui lòng nhập tên tác giả từ 1-20 kí tự.")]
         [Display(Name = "Tác Giả")]
         [StringLength(24)]
         public string author { get; set; }
@@ -31,11 +33,14 @@ namespace Librarian.Models
         public string image { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập Nhà Sản Xuất")]
+        [MaxLength(30, ErrorMessage = "Vui lòng nhập tên nhà sản xuất từ 1-30 kí tự.")]
+        [MinLength(1, ErrorMessage = "Vui lòng nhập tên nhà sản xuất từ 1-30 kí tự.")]
         [Display(Name = "Nhà Sản Xuất")]
         [StringLength(32)]
         public string publisher { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập Năm Sản Xuất")]
+        //Năm sản xuất bé hơn ngày hiện tại
         [DataType(DataType.Date)]
         [Display(Name = "Năm Sản Xuất")]
         [Column(TypeName = "Date")]
@@ -48,6 +53,8 @@ namespace Librarian.Models
         public string summary { get; set; }
 
         [Display(Name = "Số Lượng")]
+        [MinLength(0, ErrorMessage = "Vui lòng nhập số lượng không âm cho sách.")]
+
         public int count { get; set; }
 
         [DataType(DataType.Date)]
@@ -57,6 +64,7 @@ namespace Librarian.Models
         public DateTime addDate { get; set; }
 
         [Display(Name = "Thể Loại")]
+        [Required(ErrorMessage = "Vui lòng chọn thể loại")]
         public int categoryID { get; set; }
         [ForeignKey("categoryID")]
         public Category? category { get; set; }
