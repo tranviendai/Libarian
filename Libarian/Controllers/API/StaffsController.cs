@@ -36,7 +36,7 @@ namespace Librarian.Controllers.API
             return Ok(list);
         }
         // DELETE: api/Staff/5
-        /*[HttpDelete("{id}")]
+        [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteStaff(string id)
         {
@@ -45,31 +45,66 @@ namespace Librarian.Controllers.API
                 return NotFound();
             }
             var user = await _context.Users.FindAsync(id);
-            if (user. == null)
+            if (user == null)
             {
                 return NotFound();
             }
-            if (libraryCard.cardStatus == "Yes")
-                libraryCard.cardStatus = "No";
-            else libraryCard.cardStatus = "Yes";
+            if (user.sex == "Yes")
+                user.sex = "No";
+            else user.sex = "Yes";
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LibraryCardExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             return NoContent();
-        }*/
-        
+        }
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> PutApplicationUser(string id, ApplicationUser applicationUser)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var user = _context.Users.FirstOrDefault(x => x.Id == id);
+            user.sex = applicationUser.sex;
+            user.address = applicationUser.address;
+            user.fullName = applicationUser.fullName;
+            user.birthday = applicationUser.birthday;
+            user.Email = applicationUser.Email;
+            _context.Entry(user).State = EntityState.Modified;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+            return NoContent();
+        }
+        //GET
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ApplicationUser>> GetApplycationUser(string id)
+        {
+            if (_context.Users == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return user;
+        }
     }
 }

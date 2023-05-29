@@ -14,6 +14,9 @@ namespace Librarian.Models
         public int bookIndex { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập Tên Sách")]
+        [MaxLength(7, ErrorMessage = "Tên sách quá dài")]
+        [MinLength(5, ErrorMessage = "Vui lòng nhập Tên Sách")]
+        //[Range]
         [Display(Name = "Tên Sách")]
         [StringLength(32)]
         public string title { get; set; }
