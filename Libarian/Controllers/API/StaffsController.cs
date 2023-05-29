@@ -29,7 +29,8 @@ namespace Librarian.Controllers.API
         public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetList()
         {
             var list = await _userManager.Users.ToListAsync();
-
+            
+            
             return Ok(list);
         }
 

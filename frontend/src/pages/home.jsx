@@ -21,7 +21,8 @@ const Home = () => {
     }
     const searchHistory = () => { 
         if (!userId) return;
-        alert('Xem lịch sử độc giả #' + userId);
+        //alert('Xem lịch sử độc giả #' + userId);
+        navigate('/BLibrary/LibCard/' + userId);
     }
 
     const onBookKeyDown = (e) => { 
@@ -37,7 +38,7 @@ const Home = () => {
     return <>
         <div className="home">
             <BGGadgets />
-            
+            {/* navigate('/BLibrary/LibCard/' + x.libraryCardID */}
             <div className="title-history">
                 <span style={{ fontWeight: 'lighter' }}>Tra cứu</span> <span style={{ fontWeight: 'bolder' }}>lịch sử</span>
                 <div className="pill-cloud float-in"></div>
