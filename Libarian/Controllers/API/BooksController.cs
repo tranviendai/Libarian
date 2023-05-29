@@ -23,36 +23,14 @@ namespace Librarian.Controllers.API
             _context = context;
         }
 
-        [HttpGet("utils/sortBookBy/{sortBy}")]
-        public async Task<ActionResult<IEnumerable<Book>>> SortBookBy(string sortBy)
-        {
-            IQueryable<Book> query = _context.Book;
-
-            query = sortBy.ToLower() switch
-            {
-                "title" => query.OrderBy(b => b.title),
-                "author" => query.OrderBy(b => b.author),
-                "publisher" => query.OrderBy(b => b.publisher),
-                "publishingyear" => query.OrderBy(b => b.publishingYear),
-                "summary" => query.OrderBy(b => b.summary),
-                "count" => query.OrderBy(b => b.count),
-                "adddate" => query.OrderBy(b => b.addDate),
-                _ => query.OrderBy(b => b.title),
-            };
-            return await query.ToListAsync();
-        }
-
         // GET: api/Books
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBook(int? cateId, string keyword = "", int searchOpt = 1 ,string orderBy = "addDate", bool asc = false, int limit = 20, int page = 1)
+        public async Task<ActionResult<IEnumerable<Book>>> GetBook(int? cateId,
+            string keyword = "", int searchOpt = 1, string orderBy = "addDate",
+            bool asc = false, int limit = 20, int page = 1)
         {
-            /*var book = from b in _context.Book
-                       where
-                            (cateId == null || b.categoryID == cateId)
-                            && (b.title.ToLower().StartsWith(keyword.ToLower()))
-                       select b;*/
-
-            var book = _context.Book.Include(x => x.category).Where(x =>
+            //search
+            var books = _context.Book.Include(x => x.category).Where(x =>
                 (x.categoryID == cateId || cateId == null) &&
                 (
                     (searchOpt == 2 && x.bookID.ToLower().Contains(keyword.ToLower())) ||
@@ -60,27 +38,28 @@ namespace Librarian.Controllers.API
                     (x.title.ToLower().Contains(keyword.ToLower()))
                 )
             );
+
             //order by
             string[] orderCols = new string[] { "addDate", "title" };
             if (orderCols.Contains(orderBy))
-                book = book.OrderBy(x => EF.Property<Book>(x, orderBy)).ThenBy(x => x.bookIndex);
-            if (!asc) book = book.Reverse();
+                books = books.OrderBy(x => EF.Property<Book>(x, orderBy)).ThenBy(x => x.bookIndex);
+            if (!asc) books = books.Reverse();
 
             //paging
             limit = Math.Max(limit, 1);
             page = Math.Max(page, 1);
-            book = book.Skip((page - 1) * limit).Take(limit);
+            books = books.Skip((page - 1) * limit).Take(limit);
 
-          if (_context.Book == null)
-          {
-              return NotFound();
-          }
-            return Ok(await book.ToListAsync());
+            if (_context.Book == null)
+            {
+                return NotFound();
+            }
+            return Ok(await books.ToListAsync());
         }
 
-		[HttpGet("utils/countBook")]
-		public async Task<ActionResult<int>> CountBook(int? cateId, string keyword = "", int searchOpt = 1)
-		{
+        [HttpGet("utils/countBook")]
+        public async Task<ActionResult<int>> CountBook(int? cateId, string keyword = "", int searchOpt = 1)
+        {
             var book = _context.Book.Where(x =>
                 (x.categoryID == cateId || cateId == null) &&
                 (
@@ -92,11 +71,11 @@ namespace Librarian.Controllers.API
 
 
             if (_context.Book == null)
-			{
-				return NotFound();
-			}
+            {
+                return NotFound();
+            }
             return Ok(book.Count());
-		}
+        }
 
         [HttpGet("utils/popularBooks")]
         public async Task<ActionResult<IEnumerable<Book>>> getPoluparBooks(int? limit = 6)
@@ -121,37 +100,35 @@ namespace Librarian.Controllers.API
 
         // GET: api/Books
         [HttpGet("utils/getSearchHint")]
-		public async Task<ActionResult<IEnumerable<string>>> SearchHint(int? cateId, string keyword = "", int searchOpt = 1)
-		{
+        public async Task<ActionResult<IEnumerable<string>>> SearchHint(int? cateId, string keyword = "", int searchOpt = 1)
+        {
             var book = _context.Book.Where(x =>
                 (x.categoryID == cateId || cateId == null) &&
                 (searchOpt == 2 && x.bookID.ToLower().Contains(keyword.ToLower())) ||
                 (searchOpt == 3 && x.author.ToLower().Contains(keyword.ToLower())) ||
                 (x.title.ToLower().Contains(keyword.ToLower()))
-            ).Select(x => (searchOpt == 2 ? x.bookID: (
-                    searchOpt == 3? x.author: x.title
+            ).Select(x => (searchOpt == 2 ? x.bookID : (
+                    searchOpt == 3 ? x.author : x.title
                 ))
             );
 
 
             if (_context.Book == null)
-			{
-				return NotFound();
-			}
+            {
+                return NotFound();
+            }
             return Ok(await book.ToListAsync());
-		}
+        }
 
-
-
-		// GET: api/Books/5
-		[HttpGet("{id}")]
+        // GET: api/Books/5
+        [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(string id)
         {
-          if (_context.Book == null)
-          {
-              return NotFound();
-          }
-          
+            if (_context.Book == null)
+            {
+                return NotFound();
+            }
+
             var book = _context.Book.Include(x => x.category).FirstOrDefault(x => x.bookID == id);
             if (book == null)
             {
@@ -160,7 +137,6 @@ namespace Librarian.Controllers.API
 
             return new JsonResult(book);
         }
-
 
         // PUT: api/Books/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -187,7 +163,7 @@ namespace Librarian.Controllers.API
                 {
                     return NotFound();
                 }
-                else 
+                else
                 {
                     throw;
                 }
@@ -202,11 +178,11 @@ namespace Librarian.Controllers.API
         [Authorize]
         public async Task<ActionResult<Book>> PostBook(Book book)
         {
-          if (_context.Book == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Book'  is null.");
-          }
-        
+            if (_context.Book == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Book'  is null.");
+            }
+
             book.addDate = DateTime.Now;
             book.count = 0;
             var tbook = _context.Book.OrderByDescending(c => c.bookID).FirstOrDefault();
