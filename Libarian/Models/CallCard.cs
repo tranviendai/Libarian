@@ -39,11 +39,13 @@ namespace Librarian.Models
         [StringLength(24)]
         public string bookStatus { get; set; }
 
-        [Display(Name = "Số Thẻ")]
+        [Required(ErrorMessage = "Vui lòng nhập mã thẻ thư viện")]
+        [Display(Name = "Mã thẻ")]
         public string libraryCardID { get; set; }
         [ForeignKey("libraryCardID")]
         public LibraryCard? libaryCard { get; set; }
-
+        [Required(ErrorMessage = "Vui lòng nhập mã cuốn sách")]
+        [Display(Name = "Mã cuốn sách")]
         public string lBookID { get; set; }
         [ForeignKey("lBookID")]
         public LBook? lBook { get; set; }

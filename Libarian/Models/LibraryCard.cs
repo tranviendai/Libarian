@@ -14,6 +14,8 @@ namespace Librarian.Models
         public int librayCardIndex { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập Họ Tên")]
+        [MaxLength(24, ErrorMessage = "Vui lòng nhập tên từ 1-24 kí tự.")]
+        [MinLength(1, ErrorMessage = "Vui lòng nhập tên nhà sản xuất từ 1-24 kí tự.")]
         [Display(Name = "Họ Tên")]
         [StringLength(24)]
         public string fullName { get; set; }

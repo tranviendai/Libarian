@@ -24,8 +24,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://h-a-n-k.github.io", "https://h-a-n-k.github.io",
-                              "http://10.20.5.44:3000/BLibrary")
+                          policy.WithOrigins("http://10.20.5.57:3000", "https://10.20.5.57:3000"
+                              , "http://h-a-n-k.github.io", "https://h-a-n-k.github.io")
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials();
@@ -104,10 +104,9 @@ var app = builder.Build();
 //cors
 //app.UseCors(MyAllowSpecificOrigins);
 app.UseCors(x => x.AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials()
-                .SetIsOriginAllowed(origin => true));
-
+                            .AllowAnyMethod()
+                            .AllowCredentials()
+                            .SetIsOriginAllowed(origin => true));
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
