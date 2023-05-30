@@ -5,6 +5,7 @@ import useGlobalContext from "../../../contexts/GlobalContext";
 import ConfirmDialog from "../../shared/dialog-confirm";
 import UpdIcon from '../../../resources/imgs/cate_upd_icon.png'
 import DelIcon from '../../../resources/imgs/cate_del_icon.png'
+import getErrorMsg from "../../../utils/getErrorMsg";
 
 const FrmAddCate = ({setShow, item, setRefresh}) => { 
     const {token} = useGlobalContext();
@@ -13,6 +14,7 @@ const FrmAddCate = ({setShow, item, setRefresh}) => {
     const [showConfirm, setShowConfirm] = useState(false);
     const [showToastUpd, setShowToastUpd] = useState(false);
     const [showToastDel, setShowToastDel] = useState(false);
+    const [error, setError] = useState('');
 
     const dialogRef = useRef('');
 
@@ -30,7 +32,7 @@ const FrmAddCate = ({setShow, item, setRefresh}) => {
         try {
             switch (action) { 
                 case 1:
-                    if (name) await CallApiWithToken(token).post('/categories', { nameCategory: name });
+                    await CallApiWithToken(token).post('/categories', { nameCategory: name });
                     break;
                 case 2:
                     if (name && item && item.categoryID) await CallApiWithToken(token).put('/categories/' + item.categoryID, {
@@ -53,7 +55,8 @@ const FrmAddCate = ({setShow, item, setRefresh}) => {
                 Exit();
             }, delay)
         } catch (err) {
-            alert('Có lỗi xảy ra')
+            let msg = getErrorMsg(err);
+            setError(msg)
             console.log('failed: ', err)
         }
     }
@@ -85,6 +88,11 @@ const FrmAddCate = ({setShow, item, setRefresh}) => {
                     </>
                 }
             </div>
+            {error &&
+                <p className="text-danger">
+                    <i>{error}</i>
+                </p>
+            }
             
             {showConfirm &&
                 <ConfirmDialog msg={'Có chắc là muốn xóa không?'} onCancle={() => setShowConfirm(false)} onConfirm={() => onConfirm(3)} />

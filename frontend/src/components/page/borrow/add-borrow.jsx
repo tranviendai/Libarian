@@ -2,11 +2,13 @@ import { useState } from "react";
 import DialogWrapper from "../../shared/dialog-wrapper";
 import { CallApiWithToken } from "../../../utils/callApi";
 import useGlobalContext from "../../../contexts/GlobalContext";
+import getErrorMsg from "../../../utils/getErrorMsg";
 
 const AddBorrowDialog = ({ onExit, refresh }) => { 
     
     const [cardId, setCardId] = useState('');
     const [copyId, setCopyId] = useState('');
+    const [error, setError] = useState('');
 
     const {token} = useGlobalContext();
 
@@ -22,8 +24,13 @@ const AddBorrowDialog = ({ onExit, refresh }) => {
             onExit();
             refresh();
         } catch (err) { 
-            alert('Mượn không thành công');
             console.log(err);
+            if (err.response.status === 404) { 
+                setError('Không tìm thấy thông tin trùng khớp');    
+                return;
+            }
+            let msg = getErrorMsg(err);
+            setError(msg);
         }
      }
 
@@ -39,6 +46,9 @@ const AddBorrowDialog = ({ onExit, refresh }) => {
                 <label for="book">Mã cuốn sách</label>
             </div>
             
+            {error &&
+                <p className="text-danger"><i>{error}</i></p>
+            }
             <button className="btn btn-primary" onClick={onSubmit}>Xác nhận</button>
         </div>
     </DialogWrapper>
