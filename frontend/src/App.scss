@@ -1234,7 +1234,7 @@ svg.icon {
       margin: 20px 10px;
     }
 
-    .toast{
+    .m-toast{
       @extend .flex-center;
 
       position: absolute;
@@ -1641,6 +1641,7 @@ svg.icon {
     margin: 20px 0;
   }
 
+
   .card-list{
     .libcard {
       border-bottom: 1px solid black;
@@ -1654,3 +1655,37 @@ svg.icon {
   }
 }
 //END LIB CARD PAGE
+
+.card-detail-page{
+  .title-history {
+      position: relative;
+      color: var(--color-font-header);
+      font-size: 96px;
+    }
+  
+    .search {
+      @extend .flex-center;
+  
+      margin-top: 32px;
+      height: 48px;
+  
+      label {
+        font-weight: bolder;
+        color: #ADADAD;
+      }
+  
+      input {
+        height: 100%;
+        border: 1px solid var(--color-font-second);
+        background-color: white;
+        padding: 8px 15px;
+        width: 335px;
+        margin: 0 10px;
+        font-size: 18px;
+  
+        &::placeholder {
+          color: var(--color-font-second);
+        }
+      }
+    }
+}

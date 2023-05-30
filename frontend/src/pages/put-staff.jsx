@@ -124,8 +124,8 @@ const PutStaffPage = () => {
 
         <div> 
             {id && 
-            <button className={`btn me-4 ${form.sex == "Yes" ? 'btn-danger' : 'btn-success'}`} onClick={block}>
-                {form.sex== "Yes"? 'Khóa' : 'Mở khóa'}
+            <button className={`btn me-4 ${form.sex === "Yes" ? 'btn-danger' : 'btn-success'}`} onClick={block}>
+                {form.sex === "Yes"? 'Khóa' : 'Mở khóa'}
             </button>}
         </div>
 

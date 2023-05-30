@@ -100,14 +100,19 @@ namespace Librarian.Controllers.API
         [HttpPost]
         public async Task<IActionResult> PostCallCard(CallCard callCard)
         {
-            if (callCard == null)
-            {
-                return BadRequest("CallCard object is null.");
-            }
+            string lBookID = callCard.lBookID;
+            string libraryCardID = callCard.libraryCardID;
+            var c = _context.CallCard.OrderByDescending(x => x.callCardIndex).FirstOrDefault();
+            var id = c == null ? 1 : c.callCardIndex;
+            string newId = "C" + (1000 + id);
+
+            callCard.callCardID = newId;
+            callCard.startDate = DateTime.Now;
+            callCard.deadline = DateTime.Now.AddDays(7);
             _context.CallCard.Add(callCard);
 
             //Update status
-            var lBook = await _context.LBooks.FindAsync(callCard.lBookID);
+            var lBook = await _context.LBooks.FindAsync(lBookID);
             if (lBook == null)
             {
                 return NotFound("LBook not found.");
@@ -121,14 +126,7 @@ namespace Librarian.Controllers.API
             }
             catch (DbUpdateException)
             {
-                if (CallCardExists(callCard.callCardID))
-                {
-                    return Conflict("CallCard already exists.");
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
             return NoContent();
         }

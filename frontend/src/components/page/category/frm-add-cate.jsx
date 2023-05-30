@@ -92,7 +92,7 @@ const FrmAddCate = ({setShow, item, setRefresh}) => {
 
             {showToastUpd && 
                 <DialogWrapper noBG>
-                    <div className="toast update">
+                    <div className="m-toast update">
                         <img src={UpdIcon} alt="" />
                         Cập nhật thành công!
                     </div>
@@ -101,7 +101,7 @@ const FrmAddCate = ({setShow, item, setRefresh}) => {
 
             {showToastDel &&
                 <DialogWrapper noBG>
-                    <div className="toast delete">
+                    <div className="m-toast delete">
                         <img src={DelIcon} alt="" />
                         <span>Đã xóa thành công !!</span>
                     </div>
