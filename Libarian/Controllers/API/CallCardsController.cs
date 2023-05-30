@@ -37,6 +37,7 @@ namespace Librarian.Controllers.API
                            && ((returned && c.endDate != null) || (!returned && c.endDate == null))
                        select c;
 
+            list = list.OrderByDescending(x => x.callCardIndex);
             int total = list.Count();
             int pageCount = (int)Math.Max(1, Math.Ceiling(total * 1.0f / limit));
 
@@ -64,6 +65,37 @@ namespace Librarian.Controllers.API
             }
 
             return callCard;
+        }
+
+        [Route("utils/returnBooks/{id}")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> RetCallCard(string id, [FromBody] string state)
+        {
+            var callCard = _context.CallCard.Where(x => x.callCardID == id).FirstOrDefault();
+            if (callCard == null) return NotFound();
+
+            callCard.endDate = DateTime.Now;
+            callCard.bookStatus = state;
+            _context.Entry(callCard).State = EntityState.Modified;
+            _context.Entry(callCard).Property(x => x.callCardIndex).IsModified = false;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                if (!CallCardExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw ex;
+                }
+            }
+
+            return NoContent();
         }
 
         // PUT: api/CallCards/5

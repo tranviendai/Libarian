@@ -30,13 +30,17 @@ const Nav = () => {
                     <Link to={'/BLibrary'}>Trang chủ</Link>
                     <Link to={'/BLibrary/About'}>Giới thiệu</Link>
                 </>}
-                <Link to={'/BLibrary/Category'}>Thể loại</Link>
-                <Link to={'/BLibrary/Book'}>Sách</Link>
-                {token && role === 'Admin' && <Link to={'/BLibrary/Staff'}>Thủ thư</Link>}
+                {token && role === 'Admin' && <>
+                    <Link to={'/BLibrary/Staff'}>Thủ thư</Link>
+                    <Link to={'/BLibrary/Statistics'}>Thống kê</Link>
+                </>}
                 {token && role === 'Thủ Thư' && <>
+                    <Link to={'/BLibrary/Category'}>Thể loại</Link>
+                    <Link to={'/BLibrary/Book'}>Sách</Link>
                     <Link to={'/BLibrary/LibCard'}>Thẻ thư viện</Link>
                     <Link to={'/BLibrary/Borrow'}>Mượn-trả sách</Link>
                     <Link to={'/BLibrary/Fine'}>Phiếu phạt</Link>
+                    <Link to={'/BLibrary/Statistics'}>Thống kê</Link>
                 </>}
             </div>
             <div className="right">

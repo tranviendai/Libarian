@@ -3,7 +3,7 @@ import DialogWrapper from "../../shared/dialog-wrapper";
 import { CallApiWithToken } from "../../../utils/callApi";
 import useGlobalContext from "../../../contexts/GlobalContext";
 
-const AddBorrowDialog = ({ onExit }) => { 
+const AddBorrowDialog = ({ onExit, refresh }) => { 
     
     const [cardId, setCardId] = useState('');
     const [copyId, setCopyId] = useState('');
@@ -20,6 +20,7 @@ const AddBorrowDialog = ({ onExit }) => {
             })
             alert('Mượn thành công');
             onExit();
+            refresh();
         } catch (err) { 
             alert('Mượn không thành công');
             console.log(err);
