@@ -19,6 +19,7 @@ const BorrowPage = () => {
     const [showReturnDialog, setShowReturnDialog] = useState(false);
     const [borrows, setBorrows] = useState([]);
     const [pageCount, setPageCount] = useState(1);
+    const [refresh, setRefresh] = useState(false);
 
     const borrowObj = useMemo(() => { 
 
@@ -28,10 +29,11 @@ const BorrowPage = () => {
                 returned: !borrow,
                 id: searchId,
                 bookID: searchBook,
-                cardID: searchCard
+                cardID: searchCard,
+                refresh
             }
         }
-    }, [page, borrow, searchId, searchBook, searchCard])
+    }, [page, borrow, searchId, searchBook, searchCard, refresh])
     const { data: borrowsData, loading } = useFetch('/callcards', borrowObj);
     useEffect(() => { 
         if (!borrowsData) return;
@@ -54,7 +56,7 @@ const BorrowPage = () => {
     const rows = borrows?.map(x => { 
         return {
             onRowSelected: () => { 
-                setSelectedItem(x.borrow_id)
+                setSelectedItem(x.callCardID)
                 setShowReturnDialog(true)
             },
             rowData: borrow ?
@@ -84,6 +86,10 @@ const BorrowPage = () => {
         if (e.key === 'Enter') onSearch();
     }
 
+    const refreshData = () => { 
+        setRefresh(x => !x);
+    }
+
     return <div className="container-80 pb-3">
         <div className="page-title">Danh sách phiếu mượn - trả</div>
 
@@ -91,8 +97,8 @@ const BorrowPage = () => {
             <button className="btn btn-primary" onClick={() => setShowAddDialog(true)}>Mượn sách</button>
         </div>
 
-        {showAddDialog && <AddBorrowDialog onExit={() => setShowAddDialog(false)} />}
-        {showReturnDialog && selectedItem && <ReturnBookDialog onExit={() => { setShowReturnDialog(false); }} id={selectedItem} />}
+        {showAddDialog && <AddBorrowDialog onExit={() => setShowAddDialog(false)} refresh={refreshData} />}
+        {showReturnDialog && selectedItem && <ReturnBookDialog onExit={() => { setShowReturnDialog(false); }} id={selectedItem} refresh={refreshData} />}
 
         <div className="mb-3">
             <div className="input-group me-2">

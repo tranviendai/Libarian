@@ -15,6 +15,7 @@ import PutCardPage from './pages/put-card';
 import BorrowPage from './pages/borrow';
 import FinePage from './pages/fine';
 import PutStaffPage from './pages/put-staff';
+import StatPage from './pages/stat';
 
 function App() {
   return <GlobalContextProvider>
@@ -39,6 +40,7 @@ function App() {
           <Route path='/BLibrary/Fine/' element={<FinePage />} />
           <Route path='/BLibrary/AddEmp/' element={<PutStaffPage />} />
           <Route path='/BLibrary/UpdateEmp/:id' element={<PutStaffPage />} />
+          <Route path='/BLibrary/Statistics' element={<StatPage/>} />
         </Routes>
       </Layout>
     </BrowserRouter>

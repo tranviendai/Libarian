@@ -14,7 +14,6 @@ namespace Librarian.Models
 
 
         [Display(Name = "Giới Tính")]
-        [Required]
         [StringLength(4)]
         public string sex { get; set; }
 
