@@ -4,13 +4,14 @@ import CallApi, { CallApiWithToken } from "../utils/callApi";
 import useFetch from "../utils/useFetch";
 import { convertToDMY, convertToYMD } from "../utils/convertDate";
 import useGlobalContext from "../contexts/GlobalContext";
+import getErrorMsg from "../utils/getErrorMsg";
 
 const PutStaffPage = () => { 
     const { id } = useParams();
     const { token } = useGlobalContext();
     const navigate = useNavigate();
 
-    const initForm = { UserName: '', sex: '', address: '', fullName: '', Password: '' ,birthday: '', email: ''};
+    const initForm = { UserName: '', sex: '', address: '', fullName: '', Password: '', birthday: '2000-01-01', email: ''};
     const [form, setForm] = useState(initForm);
     const [error, setError] = useState('');
 
@@ -18,7 +19,6 @@ const PutStaffPage = () => {
 
     useEffect(() => { 
         if (emp) setForm({...emp, birthday: convertToYMD(emp.birthday)});
-        console.log(emp)
     }, [emp])
 
     const onFormChange = (e) => {
@@ -46,7 +46,12 @@ const PutStaffPage = () => {
 
         } catch (err) {
             console.log(err);
-            setError(err.response.data.msg)
+            try {
+                let msg = getErrorMsg(err);
+                setError(msg)
+            } catch { 
+                setError('Có lỗi xảy ra')
+            }
         }
     }
 
@@ -78,6 +83,11 @@ const PutStaffPage = () => {
                         value={form?.sex} onChange={onFormChange} />
                     <label htmlFor="sex" className="ps-4">Giới tính:</label>
                 </div> */}
+                <div className="form-floating col-3">
+                    <input type="date" id="birthday" className="form-control" placeholder=" "
+                        onChange={onFormChange} value={form && form['birthday']} />
+                    <label htmlFor="birthday" className="ps-4">Ngày sinh:</label>
+                </div>
             </div>
 
             <div className="row mb-3">
@@ -107,11 +117,6 @@ const PutStaffPage = () => {
                     </div>
                 </div>
             }
-            <div>
-            <label htmlFor="birthday" className="ps-4">Ngày sinh:</label>
-            <input type="date" id="birthday" className="form-control" placeholder=" "
-                    onChange={onFormChange} value={form && form['birthday']} />
-            </div>
             
             <div className="m-row">
                 {error && <p className="text-danger">{error}</p>}

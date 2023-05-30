@@ -53,7 +53,6 @@ namespace Librarian.Models
         public string summary { get; set; }
 
         [Display(Name = "Số Lượng")]
-        [MinLength(0, ErrorMessage = "Vui lòng nhập số lượng không âm cho sách.")]
 
         public int count { get; set; }
 

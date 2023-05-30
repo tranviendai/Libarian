@@ -8,6 +8,7 @@ import { useState } from "react";
 import CallApi from "../../utils/callApi";
 import useGlobalContext from "../../contexts/GlobalContext";
 import { useNavigate } from "react-router-dom";
+import getErrorMsg from "../../utils/getErrorMsg";
 
 library.add(faEnvelope);
 library.add(faLock);
@@ -19,6 +20,7 @@ const Login = ({ setLogin }) => {
     
     const [Username, setUsername] = useState('admin@gmail.com');
     const [Password, setPassword] = useState('Admin@123');
+    const [error, setError] = useState('');
 
     const navigate = useNavigate();
 
@@ -46,8 +48,14 @@ const Login = ({ setLogin }) => {
             }
 
             setLogin(false);
-        } catch { 
-            alert('login failed');
+        } catch (err) { 
+            if (err.response.status === 404) { 
+                setError('Tài khoản hoặc mật khẩu không đúng')
+                return;
+            }
+            let msg = getErrorMsg(err);
+            setError(msg);
+            console.log(err);
         }
     }
 
@@ -80,9 +88,13 @@ const Login = ({ setLogin }) => {
                         </div>
                     </div>
 
-                    <label style={{ visibility: 'hidden' }} >
-                        <input type="checkbox" />
-                        Lưu mật khẩu
+                    
+                    <label >
+                        {error && 
+                            <span className="text-danger"><i>{error}</i></span>
+                        }
+
+                        <input type="checkbox" style={{ visibility: 'hidden' }} />
                     </label>
 
                 </div>

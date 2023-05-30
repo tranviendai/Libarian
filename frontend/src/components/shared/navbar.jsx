@@ -29,6 +29,7 @@ const Nav = () => {
                 {!token && <>
                     <Link to={'/BLibrary'}>Trang chủ</Link>
                     <Link to={'/BLibrary/About'}>Giới thiệu</Link>
+                    <Link to={'/BLibrary/Book'}>Sách</Link>
                 </>}
                 {token && role === 'Admin' && <>
                     <Link to={'/BLibrary/Staff'}>Thủ thư</Link>

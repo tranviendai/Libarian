@@ -4,6 +4,7 @@ import { CallApiWithToken } from '../utils/callApi'
 import {convertToDMY, convertToYMD} from '../utils/convertDate'
 import useGlobalContext from '../contexts/GlobalContext'
 import useFetch from "../utils/useFetch";
+import getErrorMsg from "../utils/getErrorMsg";
 
 const PutCardPage = () => {
     const { id } = useParams();
@@ -14,6 +15,7 @@ const PutCardPage = () => {
         libraryCardID: id||'H1000' , fullname: '', cardStatus: 'Yes'
     };
     const [frmData, setFrmData] = useState(initialFrm);
+    const [error, setError] = useState('');
 
     const { data: card } = useFetch('/LibraryCards/' + id);
     useEffect(() => {
@@ -28,15 +30,18 @@ const PutCardPage = () => {
     const onFrmSubmit = async (e) => { 
         e.preventDefault();
         try {
-            frmData.expirationDate= convertToDMY(frmData.expirationDate); 
-            console.log("22",frmData);
-            if (id) await CallApiWithToken(token).put('/LibraryCards/' + id, frmData);
+            if (id) { 
+                frmData.expirationDate = convertToDMY(frmData.expirationDate); 
+                await CallApiWithToken(token).put('/LibraryCards/' + id, frmData)
+            }
             else await CallApiWithToken(token).post('/LibraryCards', frmData);
 
-            alert(id ? 'updated' : 'added');
+            alert(id ? 'Đã chỉnh sửa' : 'Đã thêm');
             if (id) navigate('/BLibrary/LibCard/' + id);
             setFrmData(initialFrm);
-        } catch(err) { 
+        } catch (err) { 
+            let msg = getErrorMsg(err);
+            setError(msg);
             console.log(err);
         }
     }
@@ -49,7 +54,7 @@ const PutCardPage = () => {
         <form onSubmit={(e) => onFrmSubmit(e)}>
             <div className="row mb-3">
                 {id==null &&
-                    <div className="form-floating col-8">
+                    <div className="form-floating col-12">
                     <input type="text" id="fullname" className="form-control" placeholder=" "
                         value={frmData['fullname']} onChange={onInputChange}/>
                     <label htmlFor="fullname" className="ps-4">Họ tên: </label>
@@ -62,17 +67,18 @@ const PutCardPage = () => {
                 </div> */}
             </div>
 
-            { <div className="row mb-3">
-                
-                {id && 
-                    <div className="form-floating col-4">
-                        <input type="date" id="expirationDate" className="form-control" placeholder=" "
-                            value={frmData['expirationDate']} onChange={onInputChange} />
-                        <label htmlFor="expirationDate" className="ps-4">Hạn</label>
-                    </div>
-                }
+            {id &&<div className="row mb-3">
+                <div className="col-8"></div>
+                <div className="form-floating col-4">
+                    <input type="date" id="expirationDate" className="form-control" placeholder=" "
+                        value={frmData['expirationDate']} onChange={onInputChange} />
+                    <label htmlFor="expirationDate" className="ps-4">Hạn</label>
+                </div>
             </div> }
 
+            {error && 
+                <p className="text-danger"><i>{error}</i></p>
+            }
             <button className="btn btn-primary" style={{float: 'right'}}>Xác nhận</button>
         </form>
 

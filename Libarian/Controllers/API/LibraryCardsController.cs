@@ -50,7 +50,7 @@ namespace Librarian.Controllers.API
                     x.fullName.ToLower().Contains(searchName.ToLower())
                     && x.libraryCardID.ToLower().Contains(searchID.ToLower())
                     && x.cardStatus == state
-                ).ToListAsync();
+                ).OrderByDescending(x => x.librayCardIndex).ToListAsync();
 
 
                 
@@ -105,7 +105,6 @@ namespace Librarian.Controllers.API
                           from b in _context.Book
                           where b.bookID == lb.bookID
                           select new { cc.callCardID, b.title, cc.lBookID, cc.startDate, cc.deadline, cc.endDate, cc.bookStatus };
-
 
             if (libraryCard == null)
             {
