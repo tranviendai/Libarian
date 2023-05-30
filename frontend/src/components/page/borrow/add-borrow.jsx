@@ -12,9 +12,11 @@ const AddBorrowDialog = ({ onExit }) => {
 
     const onSubmit = async () => {
         try {
-            await CallApiWithToken(token).post('/borrow/add', {
-                copy: copyId,
-                card: cardId
+            await CallApiWithToken(token).post('/CallCards', {
+                lBookID: copyId,
+                libraryCardID: cardId,
+                bookStatus: '',
+                callCardID: ''
             })
             alert('Mượn thành công');
             onExit();

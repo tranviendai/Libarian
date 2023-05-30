@@ -52,6 +52,8 @@ namespace Librarian.Controllers.API
                     && x.cardStatus == state
                 ).ToListAsync();
 
+
+                
             var count = Math.Ceiling(1.0f * list.Count() / pageLength);
             if (count < 1) count = 1;
             page = Math.Max(page, 1);
