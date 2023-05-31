@@ -142,6 +142,27 @@ namespace Librarian.Controllers.API
             penaltyTicket.status = true;
             _context.Entry(penaltyTicket).State = EntityState.Modified;
 
+            var lc = (from cc in _context.CallCard
+                      where cc.callCardID == id
+                      from lcc in _context.LibraryCard
+                      where cc.libraryCardID == lcc.libraryCardID
+                      select lcc).FirstOrDefault();
+
+            if (lc == null) return NotFound();
+            int count = 0;
+            var tickets = from cc in _context.CallCard
+                    where cc.libraryCardID == lc.libraryCardID
+                    from pt in _context.PenaltyTicket
+                    where pt.callCardID == cc.callCardID && pt.callCardID != id && !pt.status
+                    select pt;
+            count = tickets.Count();
+            if (count == 0) {
+                lc.cardStatus = "Yes";
+                _context.Entry(lc).State = EntityState.Modified;
+                _context.Entry(lc).Property(x => x.librayCardIndex).IsModified = false;
+            }
+
+
             try
             {
                 await _context.SaveChangesAsync();

@@ -85,10 +85,10 @@ const FinePage = () => {
             <div className={`btn me-5 ${paid ? 'btn-info' : 'btn-outline-info'}`} onClick={() => setPaid(true)}>Đã trả</div>
 
             <span className={`input-group-text btn ${searchByBorrow ? 'btn-primary' : 'btn-secondary'}`} id="basic-addon1" onClick={() => setSearchByBorrow(true)}>Tìm theo mã phiếu</span>
-            <input type="text" className="form-control me-4" placeholder="Mã thẻ" aria-label="Username" aria-describedby="basic-addon1"
+            <input type="text" className="form-control me-4" placeholder="Mã phiếu mượn" aria-label="Username" aria-describedby="basic-addon1"
                 ref={searchBorrowRef} onKeyDown={(e) => onInputEnter(e)} disabled={!searchByBorrow} />
             <span className={`input-group-text btn ${!searchByBorrow ? 'btn-primary' : 'btn-secondary'}`} id="basic-addon1" onClick={() => setSearchByBorrow(false)}>Tìm theo mã thẻ</span>
-            <input type="text" className="form-control me-4" placeholder="Mã phiếu mượn" aria-label="Username" aria-describedby="basic-addon1"
+            <input type="text" className="form-control me-4" placeholder="Mã thẻ" aria-label="Username" aria-describedby="basic-addon1"
                 ref={searchCardRef} onKeyDown={(e) => onInputEnter(e)} disabled={searchByBorrow} />
             <button onClick={onSearch} className="btn btn-primary">Tra cứu</button>
         </div>
