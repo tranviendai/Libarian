@@ -79,6 +79,33 @@ namespace Librarian.Controllers.API
             _context.Entry(callCard).State = EntityState.Modified;
             _context.Entry(callCard).Property(x => x.callCardIndex).IsModified = false;
 
+            if (state != "Nguyên vẹn") {
+                var lc = _context.LibraryCard.Where(x => x.libraryCardID == callCard.libraryCardID).FirstOrDefault();
+                if (lc == null) return NotFound();
+                int p = 0;
+                switch (state) {
+                    case "Sách hỏng":
+                        p = 30000;
+                        break;
+                    case "Mất sách":
+                        p = 40000;
+                        break;
+                    default: p = 20000; break;
+                }
+                PenaltyTicket pt = new PenaltyTicket()
+                {
+                    callCardID = id,
+                    reason = state,
+                    price = p,
+                    status = false
+                };
+                _context.PenaltyTicket.Add(pt);
+
+                lc.cardStatus = "No";
+                _context.Entry(lc).State = EntityState.Modified;
+                _context.Entry(lc).Property(x => x.librayCardIndex).IsModified = false;
+            }
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -132,6 +159,18 @@ namespace Librarian.Controllers.API
         [HttpPost]
         public async Task<IActionResult> PostCallCard(CallCard callCard)
         {
+            LibraryCard lc = _context.LibraryCard.Where(x => x.libraryCardID == callCard.libraryCardID).FirstOrDefault();
+            if (lc == null) return NotFound();
+            if(lc.cardStatus == "No") 
+                return StatusCode(StatusCodes.Status400BadRequest, new { Errors = new { restricted = new string[] { "Thẻ bị khóa" } } });
+            int count = _context.CallCard.Where(x => x.libraryCardID == callCard.libraryCardID && x.endDate == null).Count();
+            if(count >= 3) return StatusCode(StatusCodes.Status400BadRequest, new { Errors = new { restricted = new string[] { "Thẻ đang mượn quá 3 sách" } } });
+
+            LBook lb = _context.LBooks.Where(x => x.lBookID == callCard.lBookID).FirstOrDefault();
+            if(lb == null) return NotFound();
+            if(lb.status != "Còn sách")
+                return StatusCode(StatusCodes.Status400BadRequest, new { Errors = new { notAvailable = new string[] { "Sách không có sẵn để mượn" } } });
+
             string lBookID = callCard.lBookID;
             string libraryCardID = callCard.libraryCardID;
             var c = _context.CallCard.OrderByDescending(x => x.callCardIndex).FirstOrDefault();
